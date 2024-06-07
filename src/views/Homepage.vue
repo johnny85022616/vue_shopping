@@ -1,9 +1,9 @@
 <template>
-  <h1>Homepage</h1>
+  <navigation></navigation>
 </template>
 
 <script setup lang="ts" name="Homepage">
-
+import navigation from '../components/navigation.vue';
 
 </script>
 

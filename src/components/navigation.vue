@@ -2,7 +2,7 @@
   <div class="navigation">
     <div :class="['redBg']" :style="{ backgroundColor: '#f5281e' }">
           <div  div class="mini-logo" @click="openFridaySite">
-            <img src="../../images/friday_logo.svg" />
+            <img src="../assets/icons/friday_logo.svg" />
           </div>
       <div class="new-search">
         <div>
@@ -41,6 +41,8 @@ function openFridaySite(evt:MouseEvent) {
 </script>
 
 <style lang='scss' scoped>
+@import '../style/color';
+
 .navigation{
   position: relative;
     height: 60px;
