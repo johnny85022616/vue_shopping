@@ -6,7 +6,7 @@
           </div>
       <div class="new-search">
         <div>
-          <input v-model="inputTerms" @keydown="goSearchByEnter" ref="input" />
+          <input @keydown="goSearchByEnter" ref="searchInput" />
           <img src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
         </div>
       </div>
@@ -18,10 +18,10 @@
 </template>
 
 <script setup lang="ts" name="Homepage">
-import { ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 
-const inputTerms = ref('')
 
+let searchInput: Ref<HTMLInputElement | null> = ref(null)
 
 // 打開friDay主站
 function openFridaySite(evt:MouseEvent) {
@@ -36,7 +36,34 @@ function openFridaySite(evt:MouseEvent) {
       }
     }
     async function goSearch() {
+      let keyword 
+      if(searchInput.value){
+        keyword = searchInput.value.value
+      }
       
+      console.log('######',keyword);
+      // const { urlSuffix } = this.siteData || {};
+      // // 自然搜尋判斷全站
+      // if (/^([0-9]{5,10})$/i.test(keyword)) {
+      //   const pidInfo = await this.tools.getPidsInfo([keyword]);
+      //   if (pidInfo && pidInfo[keyword]) {
+      //     if (this.isBsite) {
+      //       window.location.href = `${
+      //         urlSuffix ? `/${urlSuffix}` : ""
+      //       }/product/${keyword}`;
+      //       return false;
+      //     }
+      //     window.location.href = `${
+      //       urlSuffix ? `/${urlSuffix}` : ""
+      //     }/product?pid=${keyword}`;
+      //     return false;
+      //   }
+      // }
+      // if (keyword !== "") {
+      //   window.location.href = `${
+      //     urlSuffix ? `/${urlSuffix}` : ""
+      //   }/aisearch?keyword=${encodeURIComponent(keyword)}&bw=1`;
+      // }
     }
 </script>
 
