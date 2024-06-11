@@ -1,6 +1,20 @@
 // import type {anyObject} from '@/types/common';
 // import type {siteData} from '@/types/apiWeb'
 // const api_web = {
+//   urlSearchToObj() {
+//     const pairs = window.location.search.substring(1).split('&');
+//     let obj:{ [key: string]: string }= {};
+//     let pair, i;
+//     for (i in pairs) {
+//       if (pairs[i] === '') continue;
+
+//       pair = pairs[i].split('=');
+//       obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1])
+//         .replace(/</g, '&lt;')
+//         .replace(/>/g, '&gt;');
+//     }
+//     return obj;
+//   },
 //   processSupplier(): anyObject{
 //     if (/friday\.tw/.test(location.hostname)) {
 //       return this.supplierForFriday();
@@ -10,15 +24,7 @@
 //   },
 //   // 取得friday供應商資料
 //   async supplierForFriday() {
-//     let navigationCache = this.getCache('friday_supplier_cache');
-
-//     if (navigationCache) {
-//       (window as any).fridayData = navigationCache;
-//     } else {
-//       window.fridayData = await this.getSiteData('fridayshoppingmall');
-//       this.setCache('friday_supplier_cache', window.fridayData, 86400);
-//     }
-//     return null;
+//     return await this.getSiteData('fridayshoppingmall');
 //   },
 //   // 取得B站供應商資料
 //   async supplierForBsite() {
@@ -32,17 +38,10 @@
 //     ) {
 //       if (siteCode) {
 //         let supplierData = null;
-//         if (/^DW(\d{6,})/.test(siteCode)) {
-//           supplierData = await this.getDemoSiteData(siteCode);
-//         } else {
-//           supplierData = await this.getSiteData(siteCode);
-//         }
+//         supplierData = await this.getSiteData(siteCode);
 
 //         if (supplierData) {
-//           cacheData = supplierData;
-//           // console.log(cacheData);
 //           const { isUnderCounstruction } = supplierData;
-
 //           if (isUnderCounstruction === 'Y') {
 //             const p = sessionStorage.getItem('preview');
 //             const { preview } = this.urlSearchToObj();

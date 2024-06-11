@@ -1,4 +1,4 @@
-export interface siteData {
+export interface siteObject {
   siteId: string;
   siteOwnerNo: string;
   supplierId: string;
@@ -26,3 +26,5 @@ export interface siteData {
   unShowCategoryIds: any[];
   websiteGoogleName: string;
 }
+
+export type siteData = siteObject | null

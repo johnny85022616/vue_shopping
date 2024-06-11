@@ -1,12 +1,14 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
+// import { ref, computed, reactive } from 'vue'
+// import { defineStore } from 'pinia'
+// import type {siteData ,siteObject} from '@/types/apiWeb';
+// import apiweb from '@/apis/api_web';
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
+// export const useBsiteStore = defineStore('siteData', () => {
+//   const siteData = ref(null)
+  
+//   async function getSiteData(){
+//     apiweb.processSupplier()
+//   }
 
-  return { count, doubleCount, increment }
-})
+//   return { siteData}
+// })
