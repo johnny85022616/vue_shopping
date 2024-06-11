@@ -1,5 +1,19 @@
 <template>
   <div class="navigation">
+    <!-- <div v-if="siteData" class="redBg isBsite" :style="{ backgroundColor: `${siteData.headerColor ? siteData.headerColor : '#ddd5cc'}` }">
+      <div class="mini-logo" @click="openBsiteSite">
+        <img v-else :src="siteData.logoMobile" />
+      </div>
+      <div class="subSiteName" v-if="siteData.b2Info && siteData.b2Info.subSiteName">
+        <p>{{ siteData.b2Info.subSiteName }}</p>
+      </div>
+      <div class="new-search" @click="showSearchInput">
+        <div :class="[{grayb: isBsite}]">
+          <input v-model="inputTerms" @keydown="goSearchByEnter" ref="input" />
+          <img src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
+        </div>
+      </div>
+    </div> -->
     <div :class="['redBg']" :style="{ backgroundColor: '#f5281e' }">
           <div  div class="mini-logo" @click="openFridaySite">
             <img src="../assets/icons/friday_logo.svg" />
