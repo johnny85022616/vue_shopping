@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts" name="Homepage">
-import navigation from '../components/navigation.vue';
+import navigation from '../components/common/navigation.vue';
 
 </script>
 

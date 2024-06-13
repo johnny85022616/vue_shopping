@@ -5,17 +5,17 @@
       <div class="mini-logo" @click="(evt)=>openBsiteSite(evt)">
         <img :src="siteData.logoMobile" />
       </div>
-      <!-- <div class="subSiteName" v-if="siteData && siteData.b2Info && siteData.b2Info.subSiteName">
+      <div class="subSiteName" v-if="siteData && siteData.b2Info && siteData.b2Info.subSiteName">
         <p>{{ siteData.b2Info.subSiteName }}</p>
       </div>
-      <div class="new-search" @click="showSearchInput">
-        <div :class="[{ grayb: isBsite }]">
-          <input v-model="inputTerms" @keydown="goSearchByEnter" ref="input" />
+      <div class="new-search">
+        <div class="grayb">
+          <input @keydown="goSearchByEnter" ref="searchInput" />
           <img src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
         </div>
-      </div> -->
+      </div>
     </div>
-    <div :class="['redBg']" :style="{ backgroundColor: '#f5281e' }">
+    <div v-else :class="['redBg']" :style="{ backgroundColor: '#f5281e' }">
       <div div class="mini-logo" @click="openFridaySite">
         <img src="../assets/icons/friday_logo.svg" />
       </div>
@@ -25,19 +25,15 @@
           <img src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
         </div>
       </div>
-      <!-- <div class="downLoadBtn">
-        <appDownload />
-      </div> -->
     </div>
   </div>
 </template>
 
 <script setup lang="ts" name="Homepage">
   import { ref, type Ref } from 'vue';
-  import { useBsiteStore } from '../stores/bsiteStore';
+  import { useBsiteStore } from '../../stores/bsiteStore';
   import { storeToRefs } from 'pinia';
 import type { siteData } from '@/types/apiWeb';
-import { computed } from '@vue/reactivity';
 
 
   let searchInput: Ref<HTMLInputElement | null> = ref(null)
@@ -70,8 +66,8 @@ import { computed } from '@vue/reactivity';
       keyword = searchInput.value.value
     }
 
-    console.log('######', keyword);
-    // const { urlSuffix } = this.siteData || {};
+    // console.log('######', keyword);
+    // const { urlSuffix } = siteData|| {};
     // // 自然搜尋判斷全站
     // if (/^([0-9]{5,10})$/i.test(keyword)) {
     //   const pidInfo = await this.tools.getPidsInfo([keyword]);
@@ -97,7 +93,7 @@ import { computed } from '@vue/reactivity';
 </script>
 
 <style lang='scss' scoped>
-  @import '../style/color';
+  @import '../../style/color';
 
   .navigation {
     position: relative;
