@@ -33,13 +33,16 @@
   import { ref, type Ref } from 'vue';
   import { useBsiteStore } from '../../stores/bsiteStore';
   import { storeToRefs } from 'pinia';
-import type { siteData } from '@/types/apiWeb';
+  import type { siteData } from '@/types/apiWeb';
 
-
+  import tools from '@/util/tools';
+  console.log(tools);
+  
   let searchInput: Ref<HTMLInputElement | null> = ref(null)
   const BsiteStore = useBsiteStore()
   const { siteData } = storeToRefs(BsiteStore)
   console.log(siteData.value?.urlSuffix);
+
 
   // 打開friDay主站
   function openFridaySite(evt: MouseEvent) {
@@ -61,34 +64,38 @@ import type { siteData } from '@/types/apiWeb';
     }
   }
   async function goSearch() {
-    let keyword
+    let keyword = ""
     if (searchInput.value) {
       keyword = searchInput.value.value
     }
 
-    // console.log('######', keyword);
-    // const { urlSuffix } = siteData|| {};
-    // // 自然搜尋判斷全站
-    // if (/^([0-9]{5,10})$/i.test(keyword)) {
-    //   const pidInfo = await this.tools.getPidsInfo([keyword]);
-    //   if (pidInfo && pidInfo[keyword]) {
-    //     if (this.isBsite) {
-    //       window.location.href = `${
-    //         urlSuffix ? `/${urlSuffix}` : ""
-    //       }/product/${keyword}`;
-    //       return false;
-    //     }
-    //     window.location.href = `${
-    //       urlSuffix ? `/${urlSuffix}` : ""
-    //     }/product?pid=${keyword}`;
-    //     return false;
-    //   }
-    // }
-    // if (keyword !== "") {
-    //   window.location.href = `${
-    //     urlSuffix ? `/${urlSuffix}` : ""
-    //   }/aisearch?keyword=${encodeURIComponent(keyword)}&bw=1`;
-    // }
+    console.log('######', keyword);
+   
+      const { urlSuffix } = siteData.value || {} ;
+    
+    // 自然搜尋判斷全站
+    if (/^([0-9]{5,10})$/i.test(keyword)) {
+        
+      const pidInfo = await tools.getPidsInfo([keyword]);
+      console.log(pidInfo);
+      // if (pidInfo && pidInfo[keyword]) {
+      //   if (siteData.value) {
+      //     window.location.href = `${
+      //       urlSuffix ? `/${urlSuffix}` : ""
+      //     }/product/${keyword}`;
+      //     return false;
+      //   }
+      //   window.location.href = `${
+      //     urlSuffix ? `/${urlSuffix}` : ""
+      //   }/product?pid=${keyword}`;
+      //   return false;
+      // }
+    }
+    if (keyword !== "") {
+      window.location.href = `${
+        urlSuffix ? `/${urlSuffix}` : ""
+      }/aisearch?keyword=${encodeURIComponent(keyword)}&bw=1`;
+    }
   }
 </script>
 

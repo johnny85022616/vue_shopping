@@ -8,7 +8,7 @@ export const useBsiteStore = defineStore('siteData', () => {
   
   async function getSiteData(){
     const res = await apiweb.processSupplier()
-    if(res){
+    if(res && res){
       siteData.value = res
       console.log(siteData.value.urlSuffix);
     }
