@@ -29,12 +29,14 @@ const api_cart = {
 
 
 
-      await fetch(`${mobileApiPath('')}shoppingcart`)
+      const cartData = await fetch(`${mobileApiPath('')}shoppingcart`)
       .then((res) => res.json()).then(res=>{
-        if(res && res.status === 'OK'){
-          console.log('=====',res);
+        const {response , payload} = res
+        if(res && res.response.status === 'OK'){
+          const { bagcount, shoppingCartDetails } = payload;
         }
       })
+      
   },
 }
 
