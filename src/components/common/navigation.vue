@@ -36,7 +36,6 @@
   import type { siteData } from '@/types/apiWeb';
 
   import tools from '@/util/tools';
-  console.log(tools);
 
   let searchInput: Ref<HTMLInputElement | null> = ref(null)
   const BsiteStore = useBsiteStore()
