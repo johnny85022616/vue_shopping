@@ -26,10 +26,12 @@
         </div>
       </div>
     </div>
+    <navigationBottom/>
   </div>
 </template>
 
 <script setup lang="ts" name="Homepage">
+  import navigationBottom from '../navigation/navigationBottom.vue';
   import { ref, type Ref } from 'vue';
   import { useBsiteStore } from '../../stores/bsiteStore';
   import { storeToRefs } from 'pinia';

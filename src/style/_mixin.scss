@@ -1,0 +1,91 @@
+@mixin font-break($line: 1) {
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@mixin shadow {
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.16);
+}
+
+@mixin picSetting($width, $height) {
+  width: $width;
+  height: $height;
+  object-fit: contain;
+  overflow: hidden;
+  img {
+    width: 100%;
+    object-fit: contain;
+  }
+}
+
+@mixin productPicSetting($width, $height) {
+  width: $width;
+  height: $height;
+  object-fit: contain;
+  overflow: hidden;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@mixin customTag($bgc) {
+  color: white;
+  background-color: $bgc;
+  font-size: 12px;
+  width: fit-content;
+  height: fit-content;
+  padding: 2px 10px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+@mixin memberBtn($bgc, $color: #fff){
+  font-size: 16px;
+  color: $color;
+  background-color: $bgc;
+  width: 345px;
+  margin-top: 20px;
+  padding: 10px 0;
+  border: 0;
+  border-radius: 10px;
+  outline: 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+@mixin dialogMask() {
+  background-color: rgba($color: $black, $alpha: 0.5);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+@mixin tag {
+  display: flex;
+  position: absolute;
+  top: 2px;
+  right: 23px;
+  align-items: center;
+  box-sizing: border-box;
+  width: fit-content;
+  min-width: 14px;
+  height: 15px;
+  padding: 1px 5px;
+  border-radius: 25px;
+  color: $white;
+  font-size: 12px;
+  background-color: $pomegranateapprox;
+}
+
