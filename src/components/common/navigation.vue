@@ -2,7 +2,7 @@
   <div class="navigation">
     <div v-if="siteData" class="redBg isBsite"
       :style="{ backgroundColor: `${siteData.headerColor ? siteData.headerColor : '#ddd5cc'}` }">
-      <div class="mini-logo" @click="(evt)=>openBsiteSite(evt)">
+      <div class="mini-logo" @click="(evt) => openBsiteSite(evt)">
         <img :src="siteData.logoMobile" />
       </div>
       <div class="subSiteName" v-if="siteData && siteData.b2Info && siteData.b2Info.subSiteName">
@@ -37,7 +37,7 @@
 
   import tools from '@/util/tools';
   console.log(tools);
-  
+
   let searchInput: Ref<HTMLInputElement | null> = ref(null)
   const BsiteStore = useBsiteStore()
   const { siteData } = storeToRefs(BsiteStore)
@@ -59,7 +59,7 @@
   // 打開bSite主站
   function openBsiteSite(evt: Event) {
     if (evt) evt.preventDefault();
-    if(siteData.value){
+    if (siteData.value) {
       window.location.href = "/" + siteData.value.urlSuffix;
     }
   }
@@ -68,33 +68,27 @@
     if (searchInput.value) {
       keyword = searchInput.value.value
     }
+    const { urlSuffix } = siteData.value || {};
 
-    console.log('######', keyword);
-   
-      const { urlSuffix } = siteData.value || {} ;
-    
     // 自然搜尋判斷全站
     if (/^([0-9]{5,10})$/i.test(keyword)) {
-        
-      const pidInfo = await tools.getPidsInfo([keyword]);
+
+      const pidInfo: any = await tools.getPidsInfo([keyword]);
       console.log(pidInfo);
-      // if (pidInfo && pidInfo[keyword]) {
-      //   if (siteData.value) {
-      //     window.location.href = `${
-      //       urlSuffix ? `/${urlSuffix}` : ""
-      //     }/product/${keyword}`;
-      //     return false;
-      //   }
-      //   window.location.href = `${
-      //     urlSuffix ? `/${urlSuffix}` : ""
-      //   }/product?pid=${keyword}`;
-      //   return false;
-      // }
+      if (pidInfo && pidInfo[keyword]) {
+        if (siteData.value) {
+          window.location.href = `${urlSuffix ? `/${urlSuffix}` : ""
+            }/product/${keyword}`;
+          return false;
+        }
+        window.location.href = `${urlSuffix ? `/${urlSuffix}` : ""
+          }/product?pid=${keyword}`;
+        return false;
+      }
     }
     if (keyword !== "") {
-      window.location.href = `${
-        urlSuffix ? `/${urlSuffix}` : ""
-      }/aisearch?keyword=${encodeURIComponent(keyword)}&bw=1`;
+      window.location.href = `${urlSuffix ? `/${urlSuffix}` : ""
+        }/aisearch?keyword=${encodeURIComponent(keyword)}&bw=1`;
     }
   }
 </script>

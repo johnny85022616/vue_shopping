@@ -32,7 +32,7 @@ export default {
   frontApiPath: () => {
     return `${VITE_APP_FRONT_API_DOMAIN}/frontendapi/`;
   },
-  cloudApiPath: () => {
+  frontCloudApiPath: () => {
     return `${VITE_APP_FRONT_CLOUD_API_DOMAIN}/frontendapi/`;
   },
   mobileApiPath: (apiRoot = 'api/') => {
