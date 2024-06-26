@@ -1,6 +1,6 @@
 <template>
-  <div class="navigation">
-    <div v-if="siteData" class="redBg isBsite"
+  <div class="navigation relative h-15 m-0">
+    <div v-if="siteData" class="redBg isBsite w-full h-15 flex z-2 fixed px-20 box-border"
       :style="{ backgroundColor: `${siteData.headerColor ? siteData.headerColor : '#ddd5cc'}` }">
       <div class="mini-logo" @click="(evt) => openBsiteSite(evt)">
         <img :src="siteData.logoMobile" />
@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <div v-else :class="['redBg']" :style="{ backgroundColor: '#f5281e' }">
+    <div v-else class="redBg" :style="{ backgroundColor: '#f5281e' }">
       <div div class="mini-logo" @click="openFridaySite">
         <img src="../assets/icons/friday_logo.svg" />
       </div>
@@ -44,7 +44,7 @@
   const { siteData } = storeToRefs(BsiteStore)
   console.log(siteData.value?.urlSuffix);
 
-    alert(8888)
+
   // 打開friDay主站
   function openFridaySite(evt: MouseEvent) {
     if (evt) evt.preventDefault();
@@ -96,21 +96,19 @@
 
 <style lang='scss' scoped>
   @import '../../style/color';
-
+  @tailwind base;
+@tailwind components;
+@tailwind utilities;
   .navigation {
-    position: relative;
-    height: 60px;
-    margin: 0;
-
     .redBg {
-      width: 100%;
-      height: 60px; // this.logoHeight
-      display: flex;
-      z-index: 2;
-      position: fixed;
-      will-change: transform;
-      padding: 0 20px;
-      box-sizing: border-box;
+      // width: 100%;
+      // height: 60px; // this.logoHeight
+      // display: flex;
+      // z-index: 2;
+      // position: fixed;
+      // will-change: transform;
+      // padding: 0 20px;
+      // box-sizing: border-box;
 
       &.haBack {
         padding: 0 20px 0 10px;
