@@ -44,7 +44,7 @@
   const { siteData } = storeToRefs(BsiteStore)
   console.log(siteData.value?.urlSuffix);
 
-
+    alert(8888)
   // 打開friDay主站
   function openFridaySite(evt: MouseEvent) {
     if (evt) evt.preventDefault();

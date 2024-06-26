@@ -4,6 +4,7 @@ import {useBsiteStore} from './stores/bsiteStore';
 import tools from '@/util/tools';
 import App from './App.vue'
 import router from './router'
+import './index.css'
 
 const app = createApp(App)
 app.provide('tools',tools)
