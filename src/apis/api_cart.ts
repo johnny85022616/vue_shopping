@@ -33,8 +33,11 @@ const api_cart = {
       .then((res) => res.json()).then(res=>{
         const {response , payload} = res
         if(res && res.response.status === 'OK'){
-          const { bagcount, shoppingCartDetails } = payload;
+          return payload
         }
+      }).catch((err)=>{
+        console.error(err)
+        return null
       })
       
   },

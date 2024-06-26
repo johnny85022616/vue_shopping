@@ -38,9 +38,7 @@ const cartTypeNum = ref(0)
 const BsiteStore = useBsiteStore()
 const { siteData } = storeToRefs(BsiteStore)
 
-onMounted(()=>{
-  api.cart.getEcCart()
-})
+const cartData = api.cart.getEcCart()
 
 </script>
 
