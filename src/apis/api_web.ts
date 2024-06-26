@@ -20,14 +20,8 @@ const api_web = {
   //從網址取得供應商代號
   getSiteCode() {
     let siteCode;
-    const isLocal = /localhost|127/.test(location.hostname)
-    if (isLocal) {
-      const param = this.urlSearchToObj();
-      siteCode = param.siteCode;
-    } else {
-      const s = location.pathname.split('/');
-      if (s && s.length > 1) siteCode = s[1];
-    }
+    const s = location.pathname.split('/');
+    if (s && s.length > 1) siteCode = s[1];
     return siteCode;
   },
   processSupplier(): Promise<siteData>{
