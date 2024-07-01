@@ -96,9 +96,6 @@
 
 <style lang='scss' scoped>
   @import '../../style/color';
-  @tailwind base;
-@tailwind components;
-@tailwind utilities;
   .navigation {
     .redBg {
       // width: 100%;
