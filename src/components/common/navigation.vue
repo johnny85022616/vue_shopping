@@ -1,6 +1,6 @@
 <template>
   <div class="navigation relative  h-[60px] m-0">
-    <div v-if="siteData" class="redBg isBsite w-full h-[60px] flex z-2 fixed px-5 box-border hover:cursor-pointer"
+    <div v-if="siteData" class="redBg isBsite w-full h-[60px] flex z-2 fixed px-5"
       :style="{ backgroundColor: `${siteData.headerColor ? siteData.headerColor : '#ddd5cc'}` }">
       <div class="mini-logo" @click="(evt) => openBsiteSite(evt)">
         <img :src="siteData.logoMobile" />
