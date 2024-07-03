@@ -2,24 +2,24 @@
   <div class="navigation relative  h-[60px] m-0">
     <div v-if="siteData" class="redBg isBsite w-full h-[60px] flex z-2 fixed px-5"
       :style="{ backgroundColor: `${siteData.headerColor ? siteData.headerColor : '#ddd5cc'}` }">
-      <div class="mini-logo" @click="(evt) => openBsiteSite(evt)">
-        <img :src="siteData.logoMobile" />
+      <div class="mini-logo flex justify-center items-center" @click="(evt) => openBsiteSite(evt)">
+        <img class="w-auto max-h-[35px] mr-4" :src="siteData.logoMobile" />
       </div>
-      <div class="subSiteName" v-if="siteData && siteData.b2Info && siteData.b2Info.subSiteName">
-        <p>{{ siteData.b2Info.subSiteName }}</p>
+      <div class="subSiteName flex justify-center items-center w-[20%] text-base" v-if="siteData && siteData.b2Info && siteData.b2Info.subSiteName">
+        <p class="text-$white bg-[rgba($color: $black, $alpha: 0.2)] leading-[35px] tracking-[1px] border-1 border-solid border-$white rounded-[5px]">{{ siteData.b2Info.subSiteName }}</p>
       </div>
-      <div class="new-search">
+      <div class="new-search flex justify-center items-center">
         <div class="grayb">
           <input @keydown="goSearchByEnter" ref="searchInput" />
           <img src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
         </div>
       </div>
     </div>
-    <div v-else class="redBg" :style="{ backgroundColor: '#f5281e' }">
-      <div div class="mini-logo" @click="openFridaySite">
+    <div v-else class="redBg w-full h-[60px] flex z-2 fixed px-5" :style="{ backgroundColor: '#f5281e' }">
+      <div div class="mini-logo w-[30%] mx-auto my-0 flex justify-center items-center" @click="openFridaySite">
         <img src="../assets/icons/friday_logo.svg" />
       </div>
-      <div class="new-search">
+      <div class="new-search flex justify-center items-center">
         <div>
           <input @keydown="goSearchByEnter" ref="searchInput" />
           <img src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
@@ -105,81 +105,33 @@
       // position: fixed;
       // will-change: transform;
       // padding: 0 20px;
-      // box-sizing: border-box;
+      // box-sizing: border-box
 
-      &.haBack {
-        padding: 0 20px 0 10px;
+      // >div {
+      //   display: flex;
+      //   align-items: center;
+      //   justify-content: center;
+      // }
 
-        .mini-logo {
-          flex: 1 1 20%;
-        }
-      }
+      
 
-      .back {
-        i {
-          display: inline-block;
-          width: 25px;
-          height: 25px;
-          background-image: url(../../images/icons/index_arrow.png);
-          background-repeat: no-repeat;
-          background-position-x: 50%;
-          background-position-y: 8%;
-          background-size: 85%;
-        }
-      }
+      // .subSiteName {
+        
 
-      &.isBsite {
-        .mini-logo img {
-          width: auto;
-          // max-height: 42px;
-          max-height: 35px;
-          margin-right: 15px;
-        }
-
-        .new-search input {
-          border: 3px solid $gallery !important;
-        }
-      }
-
-      >div {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .mini-logo {
-        flex: 1 1 30%;
-
-        img {
-          width: 100px;
-          margin: 0 auto !important;
-        }
-
-        &.fetnet {
-          img {
-            width: 55px;
-          }
-        }
-      }
-
-      .subSiteName {
-        flex: 1 1 20%;
-        font-size: 16px;
-
-        p {
-          color: $white;
-          background-color: rgba($color: $black, $alpha: 0.2);
-          line-height: 35px;
-          letter-spacing: 1px;
-          border: 1px solid $white;
-          border-radius: 5px;
-          padding: 0 4px;
-          box-sizing: border-box;
-        }
-      }
+      //   p {
+      //     color: $white;
+      //     background-color: rgba($color: $black, $alpha: 0.2);
+      //     line-height: 35px;
+      //     letter-spacing: 1px;
+      //     border: 1px solid $white;
+      //     border-radius: 5px;
+      //     padding: 0 4px;
+      //     box-sizing: border-box;
+      //   }
+      // }
 
       .new-search {
-        flex: 1 1 50%;
+        width: 50%;
 
         >div {
           position: relative;

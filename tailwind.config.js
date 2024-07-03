@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+import customColor from './src/style/color';
 export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   presets: [],
@@ -159,6 +160,7 @@ export default {
       fuchsia: colors.fuchsia,
       pink: colors.pink,
       rose: colors.rose,
+      ...customColor,
     }),
     columns: {
       auto: 'auto',
