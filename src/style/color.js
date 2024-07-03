@@ -1,5 +1,5 @@
 export default {
-  $white: '#ffffff',
+  customWhite: '#ffffff',
   $red: '#f34f59',
   $pomegranate: '#f5281e',
   $pomegranateapprox: '#f5281e',

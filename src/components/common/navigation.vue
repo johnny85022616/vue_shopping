@@ -6,7 +6,7 @@
         <img class="w-auto max-h-[35px] mr-4" :src="siteData.logoMobile" />
       </div>
       <div class="subSiteName flex justify-center items-center w-[20%] text-base" v-if="siteData && siteData.b2Info && siteData.b2Info.subSiteName">
-        <p class="text-$white bg-[rgba($color: $black, $alpha: 0.2)] leading-[35px] tracking-[1px] border-1 border-solid border-$white rounded-[5px]">{{ siteData.b2Info.subSiteName }}</p>
+        <p class="text-customWhite bg-[rgba($color: $black, $alpha: 0.2)] leading-[35px] tracking-[1px] border-1 border-solid border-$white rounded-[5px]">{{ siteData.b2Info.subSiteName }}</p>
       </div>
       <div class="new-search flex justify-center items-center">
         <div class="grayb">
