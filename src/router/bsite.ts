@@ -5,7 +5,7 @@ const bsitePrefixReg = '([\\w,-_]+[\\/]?)';
 export const bsiteRoutes =  [
   {
     path:`/:urlSuffix${bsitePrefixReg}`,
-    name: 'home',
+    name: 'bsiteHome',
     component: HomePage
   },
 ]
