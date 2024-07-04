@@ -6,12 +6,12 @@
         <img class="w-auto max-h-[35px] mr-4" :src="siteData.logoMobile" />
       </div>
       <div class="subSiteName flex justify-center items-center w-[20%] text-base" v-if="siteData && siteData.b2Info && siteData.b2Info.subSiteName">
-        <p class="text-customWhite bg-[rgba($color: $black, $alpha: 0.2)] leading-[35px] tracking-[1px] border-1 border-solid border-$white rounded-[5px]">{{ siteData.b2Info.subSiteName }}</p>
+        <p class="text-c_white bg-[rgba($color: $black, $alpha: 0.2)] leading-[35px] tracking-[1px] border border-solid border-c_white rounded-[5px] px-1 box-border">{{ siteData.b2Info.subSiteName }}</p>
       </div>
-      <div class="new-search flex justify-center items-center">
-        <div class="grayb">
-          <input @keydown="goSearchByEnter" ref="searchInput" />
-          <img src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
+      <div class="new-search flex justify-center items-center w-1/2">
+        <div class="relative w-[90%]">
+          <input class="border border-solid border-c_gallery inline-flex items-center relative box-border w-full h-10 rounded-lg bg-c_white pl-[10px] text-base" @keydown="goSearchByEnter" ref="searchInput" />
+          <img class="w-5 h-5 absolute right-2 top-1/2 -translate-y-1/2 " src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
         </div>
       </div>
     </div>
@@ -20,13 +20,13 @@
         <img src="../assets/icons/friday_logo.svg" />
       </div>
       <div class="new-search flex justify-center items-center">
-        <div>
-          <input @keydown="goSearchByEnter" ref="searchInput" />
-          <img src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
+        <div class="relative w-[90%]">
+          <input class="inline-flex items-center relative box-border w-full h-10 border border-solid border-[rgba(255, 0, 0, 0.5)] rounded-lg bg-c_white pl-[10px] text-base" @keydown="goSearchByEnter" ref="searchInput" />
+          <img class="w-5 h-5 absolute right-2 top-1/2 -translate-y-1/2 " src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
         </div>
       </div>
     </div>
-    <navigationBottom/>
+    <navigationBottom :openShowMenu="openShowMenu"/>
   </div>
 </template>
 
@@ -38,24 +38,17 @@
   import type { siteData } from '@/types/apiWeb';
 
   import tools from '@/util/tools';
-
-  let searchInput: Ref<HTMLInputElement | null> = ref(null)
+  
   const BsiteStore = useBsiteStore()
-  const { siteData } = storeToRefs(BsiteStore)
-  console.log(siteData.value?.urlSuffix);
+  let searchInput: Ref<HTMLInputElement | null> = ref(null) // input值
+  const { siteData } = storeToRefs(BsiteStore) //siteData
+  const isShowMenu = ref(false)
 
 
   // 打開friDay主站
   function openFridaySite(evt: MouseEvent) {
     if (evt) evt.preventDefault();
     window.location.href = "/";
-  }
-  function goSearchByEnter(evt: KeyboardEvent) {
-    if (evt && evt.keyCode === 13) {
-      // evt.preventDefault();
-      goSearch();
-      evt.stopPropagation();
-    }
   }
   // 打開bSite主站
   function openBsiteSite(evt: Event) {
@@ -64,6 +57,15 @@
       window.location.href = "/" + siteData.value.urlSuffix;
     }
   }
+  //搜尋框按下enter
+  function goSearchByEnter(evt: KeyboardEvent) {
+    if (evt && evt.keyCode === 13) {
+      // evt.preventDefault();
+      goSearch();
+      evt.stopPropagation();
+    }
+  }
+  //搜尋事件
   async function goSearch() {
     let keyword = ""
     if (searchInput.value) {
@@ -92,135 +94,20 @@
         }/aisearch?keyword=${encodeURIComponent(keyword)}&bw=1`;
     }
   }
+
+  function closeShowMenu() {
+      isShowMenu.value = false;
+    }
+  // 打開漢堡選單
+  function openShowMenu(evt:Event) {
+    if (evt) evt.preventDefault();
+    if (!isShowMenu.value) {
+      console.log(111);
+    } else {
+      console.log(222);
+    }
+  }
 </script>
 
 <style lang='scss' scoped>
-  @import '../../style/color';
-  .navigation {
-    .redBg {
-      // width: 100%;
-      // height: 60px; // this.logoHeight
-      // display: flex;
-      // z-index: 2;
-      // position: fixed;
-      // will-change: transform;
-      // padding: 0 20px;
-      // box-sizing: border-box
-
-      // >div {
-      //   display: flex;
-      //   align-items: center;
-      //   justify-content: center;
-      // }
-
-      
-
-      // .subSiteName {
-        
-
-      //   p {
-      //     color: $white;
-      //     background-color: rgba($color: $black, $alpha: 0.2);
-      //     line-height: 35px;
-      //     letter-spacing: 1px;
-      //     border: 1px solid $white;
-      //     border-radius: 5px;
-      //     padding: 0 4px;
-      //     box-sizing: border-box;
-      //   }
-      // }
-
-      .new-search {
-        width: 50%;
-
-        >div {
-          position: relative;
-          width: 90%;
-
-          input {
-            display: inline-flex;
-            position: relative;
-            align-items: center;
-            box-sizing: border-box;
-            width: 100%;
-            height: 40px;
-            border: 3px solid rgba(255, 0, 0, 0.5);
-            border-radius: 10px;
-            background-color: $white;
-            padding-left: 10px;
-            font-size: 1.5rem;
-
-            &.grayb {
-              border: 3px solid $gallery;
-            }
-          }
-        }
-
-        a {
-          text-decoration: none;
-        }
-
-        span {
-          color: $web_minor;
-          font-size: 1.4rem;
-          margin-left: 10px;
-        }
-
-        img {
-          width: 20px;
-          height: 20px;
-          position: absolute;
-          right: 8px;
-          top: 50%;
-          transform: translateY(-10px);
-        }
-      }
-
-      .new-search {
-        flex: 1 1 50%;
-
-        >div {
-          position: relative;
-          width: 90%;
-
-          input {
-            display: inline-flex;
-            position: relative;
-            align-items: center;
-            box-sizing: border-box;
-            width: 100%;
-            height: 40px;
-            border: 3px solid rgba(255, 0, 0, 0.5);
-            border-radius: 10px;
-            background-color: $white;
-            padding-left: 10px;
-            font-size: 1.5rem;
-
-            &.grayb {
-              border: 3px solid $gallery;
-            }
-          }
-        }
-
-        a {
-          text-decoration: none;
-        }
-
-        span {
-          color: $web_minor;
-          font-size: 1.4rem;
-          margin-left: 10px;
-        }
-
-        img {
-          width: 20px;
-          height: 20px;
-          position: absolute;
-          right: 8px;
-          top: 50%;
-          transform: translateY(-10px);
-        }
-      }
-    }
-  }
 </style>
