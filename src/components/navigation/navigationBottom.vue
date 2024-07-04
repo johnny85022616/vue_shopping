@@ -57,7 +57,7 @@
   })
 
   //我的最愛按鈕連結
-  const viewedUrl = computed(()=>{
+  const viewedUrl = computed<string>(()=>{
     return siteData.value ? `/${siteData.value.urlSuffix}/favorite` : '/favorite';
   })
 
