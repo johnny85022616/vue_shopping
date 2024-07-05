@@ -1,19 +1,19 @@
 <template>
   <div :class="[`navigation-bottom-bar flex items-center justify-evenly fixed z-[2] left-0 right-0 bottom-0 w-full h-[50px] py-1 px-0`,  `${siteData?`border-t border-solid border-t-c_alto bg-c_white`:'bg-c_dune'}`]">
-    <a :class="['text-[10px] text-c_white',{'text-c_dune':siteData}]" :href="setHomepageUrl">首頁
+    <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative', `${siteData? 'text-c_dune':'text-c_white'}`]" :href="setHomepageUrl">首頁
       <i :class="`${siteData ? 'homepage_bk' : 'homepage'}`"></i>
     </a>
-    <a :class="['text-[10px] text-c_white',{'text-c_dune':siteData}]" href="#" @click="openMenu($event)">全分類
+    <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" href="#" @click="openMenu($event)">全分類
       <i :class="`${siteData ? 'catalog_bk' : 'catalog'}`"></i>
     </a>
-    <a :class="['text-[10px] text-c_white',{'text-c_dune':siteData}]" :href="setCartUrl">購物車
+    <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" :href="setCartUrl">購物車
       <i :class="`${siteData ? 'shoppingcart_bk' : 'shoppingcart'}`"></i>
       <span class="countShoppingBag">{{ cartCount }}</span>
     </a>
-    <a :class="['text-[10px] text-c_white',{'text-c_dune':siteData}]" :href="viewedUrl">我的最愛
+    <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" :href="viewedUrl">我的最愛
       <i :class="`${siteData ? 'viewed_bk' : 'viewed'}`"></i>
     </a>
-    <a :class="['text-[10px] text-c_white',{'text-c_dune':siteData}]" href="#" @click="openMyProfile">我的
+    <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" href="#" @click="openMyProfile">我的
       <i :class="`${siteData ? 'mine_bk' : 'mine'}`"></i>
     </a>
   </div>
@@ -119,22 +119,22 @@
       // background-color: $white;
       // border-top: 1px solid #ddd;
 
-      a {
-        color: $dune;
-      }
+      // a {
+      //   color: $dune;
+      // }
     }
 
-    a {
-      font-size: 10px;
-      // color: $white;
-      width: 50px;
-      height: fit-content;
-      text-decoration: none;
-      display: inline-flex;
-      flex-direction: column-reverse;
-      align-items: center;
-      position: relative;
-    }
+    // a {
+    //   font-size: 10px;
+    //   // color: $white;
+    //   width: 50px;
+    //   height: fit-content;
+    //   text-decoration: none;
+    //   display: inline-flex;
+    //   flex-direction: column-reverse;
+    //   align-items: center;
+    //   position: relative;
+    // }
 
     .countShoppingBag,
     .notice,
