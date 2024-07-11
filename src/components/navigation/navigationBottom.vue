@@ -13,7 +13,7 @@
     <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" :href="viewedUrl">我的最愛
       <i :class="`${siteData ? 'viewed_bk' : 'viewed'}`"></i>
     </a>
-    <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" href="#" @click="openMyProfile">我的
+    <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" href="#" @click="(e)=>openMyProfile(e)">我的
       <i :class="`${siteData ? 'mine_bk' : 'mine'}`"></i>
     </a>
   </div>
