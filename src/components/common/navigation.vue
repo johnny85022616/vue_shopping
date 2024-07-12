@@ -26,12 +26,14 @@
         </div>
       </div>
     </div>
-    <navigationBottom @openShowMenu="openShowMenu"/>
+    <navigationBottom @openShowMenu="openShowMenu" @showPeopleLinks="showPeopleLinks"/>
+    <peoplelinks v-if="isShowPeopleLinks"/>
   </div>
 </template>
 
 <script setup lang="ts" name="Homepage">
   import navigationBottom from '../navigation/navigationBottom.vue';
+  import peoplelinks from '../navigation/peoplelinks.vue';
   import { ref, type Ref } from 'vue';
   import { useBsiteStore } from '../../stores/bsiteStore';
   import { storeToRefs } from 'pinia';
@@ -43,6 +45,7 @@
   let searchInput: Ref<HTMLInputElement | null> = ref(null) // input值
   const { siteData } = storeToRefs(BsiteStore) //siteData
   const isShowMenu = ref(false)
+  const isShowPeopleLinks = ref(false)
 
 
   // 打開friDay主站
@@ -105,6 +108,13 @@
       console.log(111);
     } else {
       console.log(222);
+    }
+  }
+  function showPeopleLinks(evt:Event) {
+      if (evt) evt.preventDefault();
+      isShowPeopleLinks.value = !isShowPeopleLinks.value;
+      if (isShowPeopleLinks.value) {
+        // isShowMenu = false;
     }
   }
 </script>
