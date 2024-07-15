@@ -1,5 +1,5 @@
 <template>
-  <div :class="[`peoplelinks pt-[60px] relative h-screen transition-transform duration-100 ease-linear ${isSlideToScreen?'translate-y-0': 'translate-y-full'}`]">
+  <div :class="[`peoplelinks pt-[60px] relative h-screen`]">
     <ul>
       <li class="p-3 border-b border-solid border-c_alto text-base">
         <a class="inline-block w-full"href="">我的帳戶</a>
@@ -20,20 +20,12 @@
 </template>
 
 <script setup lang="ts" name="peoplelinks">
-import { onMounted, ref } from 'vue';
-
+import { ref } from 'vue';
 
 const iscustomerServiceOpen = ref(false)
-const isSlideToScreen = ref(false)
 
 function changeCustomerService(){
   iscustomerServiceOpen.value = !iscustomerServiceOpen.value
 }
-
-onMounted(()=>{
-  setTimeout(()=>{
-    isSlideToScreen.value = true
-  },100)
-})
   
 </script>

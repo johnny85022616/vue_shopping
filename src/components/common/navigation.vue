@@ -27,7 +27,9 @@
       </div>
     </div>
     <navigationBottom @openShowMenu="openShowMenu" @showPeopleLinks="showPeopleLinks"/>
-    <peoplelinks v-if="isShowPeopleLinks"/>
+    <transition name="slide">
+      <peoplelinks v-if="isShowPeopleLinks"/>
+    </transition>
   </div>
 </template>
 
@@ -120,4 +122,5 @@
 </script>
 
 <style lang='scss' scoped>
+
 </style>
