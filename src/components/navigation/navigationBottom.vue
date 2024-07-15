@@ -78,11 +78,12 @@
     emit('openShowMenu')
   }
 
-
+  //打開我的(peopleLinks)
   function openMyProfile(evt: Event) {
     const b2cUid = $cookies.get('FEEC-B2C-UID');
     const b2cTicket = $cookies.get('FEEC-B2C-TICKET');
-    if (b2cUid && b2cTicket) {
+    const faToken = $cookies.get('FEEC-FA-TOKEN');
+    if (b2cUid && b2cTicket && faToken) {
       //登入狀態轉會員中心頁
       location.href = '/memberCenter';
       return;

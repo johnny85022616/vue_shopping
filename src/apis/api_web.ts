@@ -40,7 +40,7 @@ const api_web = {
     let siteData = null;
     const siteCode = this.getSiteCode();
     if (
-      !/^(friday|ec2|category|aisearch|search|product|brandPromotion|branchPromotion|allBrands|aiPromotion|website|member|onsale|order_otp|login|intro|favorite|discount|crazy|arrive|myhome|happygo|superBrand|fetmcAppBonus|googleAi)$/i.test(
+      !/^(friday|ec2|category|aisearch|search|product|brandPromotion|branchPromotion|allBrands|aiPromotion|website|member|onsale|order_otp|login|intro|favorite|discount|crazy|arrive|myhome|happygo|superBrand|fetmcAppBonus|googleAi|memberCenter)$/i.test(
         siteCode as string
       )
     ) {

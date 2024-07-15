@@ -2,7 +2,7 @@
   <div :class="[`peoplelinks pt-[60px] relative h-screen`]">
     <ul>
       <li class="p-3 border-b border-solid border-c_alto text-base">
-        <a class="inline-block w-full"href="">我的帳戶</a>
+        <a @click="(e)=>doLogin(e)" class="inline-block w-full"href="">我的帳戶</a>
       </li>
       <li class="p-3 border-b border-solid border-c_alto text-base">
         <div class="flex justify-between items-center" @click="changeCustomerService">
@@ -20,12 +20,32 @@
 </template>
 
 <script setup lang="ts" name="peoplelinks">
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+const $cookies = inject<any>('$cookies');
+const routes = useRoute()
+const router = useRouter()
 
 const iscustomerServiceOpen = ref(false)
 
 function changeCustomerService(){
   iscustomerServiceOpen.value = !iscustomerServiceOpen.value
+}
+
+console.log(routes);
+
+function doLogin(e:Event){
+  e.preventDefault()
+  const nowUrl = routes.fullPath
+  console.log(nowUrl);
+  $cookies.set('FEEC-B2C-UID', '63hiMqFBVEiDNYJttgytCw%3D%3D');
+  $cookies.set('FEEC-B2C-TICKET', 'MCwCFBdPjFo72ujJhWEqBG2fBTQxJYcRAhR4aOomWrqphXMQKZuTCD8ICNi6bg');
+  $cookies.set('FEEC-FA-TOKEN', '2D9XFN2FhSV5qJUcf1KJcIhJXU3kKSaF');
+  alert('登入成功')
+
+  // 刷新當前頁面
+  router.replace(nowUrl)
+  
 }
   
 </script>
