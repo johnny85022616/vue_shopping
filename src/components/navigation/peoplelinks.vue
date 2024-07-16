@@ -33,19 +33,18 @@ function changeCustomerService(){
 }
 
 console.log(routes);
+console.log(router);
 
 function doLogin(e:Event){
   e.preventDefault()
   const nowUrl = routes.fullPath
-  console.log(nowUrl);
   $cookies.set('FEEC-B2C-UID', '63hiMqFBVEiDNYJttgytCw%3D%3D');
   $cookies.set('FEEC-B2C-TICKET', 'MCwCFBdPjFo72ujJhWEqBG2fBTQxJYcRAhR4aOomWrqphXMQKZuTCD8ICNi6bg');
   $cookies.set('FEEC-FA-TOKEN', '2D9XFN2FhSV5qJUcf1KJcIhJXU3kKSaF');
   alert('登入成功')
 
   // 刷新當前頁面
-  router.replace(nowUrl)
-  
+  router.go(0)
 }
   
 </script>
