@@ -1,20 +1,20 @@
 <template>
   <div :class="[`navigation-bottom-bar flex items-center justify-evenly fixed z-[2] left-0 right-0 bottom-0 w-full h-[50px] py-1 px-0`,  `${siteData?`border-t border-solid border-t-c_alto bg-c_white`:'bg-c_dune'}`]">
     <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative', `${siteData? 'text-c_dune':'text-c_white'}`]" :href="setHomepageUrl">首頁
-      <i :class="`${siteData ? 'homepage_bk' : 'homepage'}`"></i>
+      <i :class="[`w-[30px] h-[30px] bg-contain bg-no-repeat bg-center ${siteData ? 'homepage_bk' : 'homepage'}`]"></i>
     </a>
     <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" href="#" @click="openMenu($event)">全分類
-      <i :class="`${siteData ? 'catalog_bk' : 'catalog'}`"></i>
+      <i :class="[`w-[30px] h-[30px] bg-contain bg-no-repeat bg-center ${siteData ? 'catalog_bk' : 'catalog'}`]"></i>
     </a>
     <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" :href="setCartUrl">購物車
-      <i :class="`${siteData ? 'shoppingcart_bk' : 'shoppingcart'}`"></i>
+      <i :class="[`w-[30px] h-[30px] bg-contain bg-no-repeat bg-center ${siteData ? 'shoppingcart_bk' : 'shoppingcart'}`]"></i>
       <span class="countShoppingBag">{{ cartCount }}</span>
     </a>
     <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" :href="viewedUrl">我的最愛
-      <i :class="`${siteData ? 'viewed_bk' : 'viewed'}`"></i>
+      <i :class="[`w-[30px] h-[30px] bg-contain bg-no-repeat bg-center ${siteData ? 'viewed_bk' : 'viewed'}`]"></i>
     </a>
     <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" href="#" @click="(e)=>openMyProfile(e)">我的
-      <i :class="`${siteData ? 'mine_bk' : 'mine'}`"></i>
+      <i :class="[`w-[30px] h-[30px] bg-contain bg-no-repeat bg-center ${siteData ? 'mine_bk' : 'mine'}`]"></i>
     </a>
   </div>
 </template>
@@ -144,11 +144,11 @@
     }
 
     i {
-      width: 30px;
-      height: 30px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
+      // width: 30px;
+      // height: 30px;
+      // background-size: contain;
+      // background-repeat: no-repeat;
+      // background-position: center;
 
       &.homepage {
         background-image: url('../../assets/icons/01_homepage.png');
