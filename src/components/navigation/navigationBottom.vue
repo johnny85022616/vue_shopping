@@ -1,20 +1,20 @@
 <template>
   <div :class="[`navigation-bottom-bar flex items-center justify-evenly fixed z-[2] left-0 right-0 bottom-0 w-full h-[50px] py-1 px-0`,  `${siteData?`border-t border-solid border-t-c_alto bg-c_white`:'bg-c_dune'}`]">
     <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative', `${siteData? 'text-c_dune':'text-c_white'}`]" :href="setHomepageUrl">首頁
-      <i :class="[`w-[30px] h-[30px] bg-contain bg-no-repeat bg-center ${siteData ? 'homepage_bk' : 'homepage'}`]"></i>
+      <i :class="[`w-[30px] h-[30px] bg-contain bg-no-repeat bg-center ${siteData ? 'bg-bsite-homepage':'bg-friday-homepage' }`]"></i>
     </a>
     <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" href="#" @click="openMenu($event)">全分類
-      <i :class="[`w-[30px] h-[30px] bg-contain bg-no-repeat bg-center ${siteData ? 'catalog_bk' : 'catalog'}`]"></i>
+      <i :class="[`w-[30px] h-[30px] bg-no-repeat bg-center bg-75% ${siteData ? 'bg-bsite-catalog' : 'bg-firday-catalog'}`]"></i>
     </a>
     <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" :href="setCartUrl">購物車
-      <i :class="[`w-[30px] h-[30px] bg-contain bg-no-repeat bg-center ${siteData ? 'shoppingcart_bk' : 'shoppingcart'}`]"></i>
-      <span class="countShoppingBag">{{ cartCount }}</span>
+      <i :class="[`w-[30px] h-[30px] bg-85% bg-no-repeat bg-center ${siteData ? 'bg-bsite-shoppingcart' : 'bg-firday-shoppingcart'}`]"></i>
+      <span class="redCount">{{ cartCount }}</span>
     </a>
     <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" :href="viewedUrl">我的最愛
-      <i :class="[`w-[30px] h-[30px] bg-contain bg-no-repeat bg-center ${siteData ? 'viewed_bk' : 'viewed'}`]"></i>
+      <i :class="[`w-[30px] h-[30px] bg-85% bg-no-repeat bg-center ${siteData ? 'bg-bsite-favorite' : 'bg-firday-favorite'}`]"></i>
     </a>
     <a :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative',`${siteData? 'text-c_dune':'text-c_white'}`]" href="#" @click="(e)=>openMyProfile(e)">我的
-      <i :class="[`w-[30px] h-[30px] bg-contain bg-no-repeat bg-center ${siteData ? 'mine_bk' : 'mine'}`]"></i>
+      <i :class="[`w-[30px] h-[30px] bg-65% bg-no-repeat bg-center ${siteData ? 'bg-bsite-mine' : 'bg-firday-mine'}`]"></i>
     </a>
   </div>
 </template>
@@ -94,118 +94,4 @@
 </script>
 
 <style lang="scss" scoped>
-  @import '../../style/color';
-  @import '../../style/mixin';
-  @import '../../style/icons.module.scss';
-
-  // .icon{
-  //   @apply w-[30px] h-[30px] bg-contain bg-no-repeat bg-center
-  // }
-
-  .navigation-bottom-bar {
-    // display: flex;
-    // align-items: center;
-    // justify-content: space-evenly;
-    // position: fixed;
-    // z-index: 2;
-    // left: 0;
-    // right: 0;
-    // bottom: 0;
-    // width: 100%;
-    // height: 50px;
-    // background-color: $dune;
-    // padding: 5px 0;
-
-    &.is-bsite {
-      // background-color: $white;
-      // border-top: 1px solid #ddd;
-
-      // a {
-      //   color: $dune;
-      // }
-    }
-
-    // a {
-    //   font-size: 10px;
-    //   // color: $white;
-    //   width: 50px;
-    //   height: fit-content;
-    //   text-decoration: none;
-    //   display: inline-flex;
-    //   flex-direction: column-reverse;
-    //   align-items: center;
-    //   position: relative;
-    // }
-
-    .countShoppingBag,
-    .notice,
-    .fcoin {
-      @include tag;
-    }
-
-    i {
-      // width: 30px;
-      // height: 30px;
-      // background-size: contain;
-      // background-repeat: no-repeat;
-      // background-position: center;
-
-      &.homepage {
-        background-image: url('../../assets/icons/01_homepage.png');
-      }
-
-      &.catalog {
-        background-size: 75%;
-        background-image: url('../../assets/icons/02_catalog.png');
-      }
-
-      &.shoppingcart {
-        background-size: 85%;
-        background-image: url('../../assets/icons/03_shoppingcart.png');
-      }
-
-      &.viewed {
-        background-size: 85%;
-        background-image: url('https://event.shopping.friday.tw/event/CP/common/mobile_icon/favorite.png');
-      }
-
-      &.notification {
-        background-size: 65%;
-        background-image: url('../../assets/icons/05_notification.png');
-      }
-
-      &.mine {
-        background-size: 65%;
-        background-image: url('../../assets/icons/06_mine.png');
-      }
-      &.homepage_bk {
-        background-image: url('https://event.shopping.friday.tw/event/CP/common/mobile_icon/01_homepage_bk.png');
-      }
-
-      &.catalog_bk {
-        background-size: 75%;
-        background-image: url('https://event.shopping.friday.tw/event/CP/common/mobile_icon/02_catalog_bk.png');
-      }
-
-      &.shoppingcart_bk {
-        background-size: 85%;
-        background-image: url('https://event.shopping.friday.tw/event/CP/common/mobile_icon/03_shoppingcart_bk.png');
-      }
-
-      &.viewed_bk {
-        background-size: 85%;
-        background-image: url('https://event.shopping.friday.tw/event/CP/common/mobile_icon/ai4Favorite.png');
-      }
-
-      &.notification_bk {
-        background-size: 65%;
-        background-image: url('https://event.shopping.friday.tw/event/CP/common/mobile_icon/05_notification_bk.png');
-      }
-
-      &.mine_bk {
-        background-size: 65%;
-        background-image: url('https://event.shopping.friday.tw/event/CP/common/mobile_icon/06_mine_bk.png');
-      }
-    }
-  }
 </style>

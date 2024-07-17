@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import customColor from './src/style/color';
+import icons from './src/style/icon';
 export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   presets: [],
@@ -52,7 +53,7 @@ export default {
       'gradient-to-bl': 'linear-gradient(to bottom left, var(--tw-gradient-stops))',
       'gradient-to-l': 'linear-gradient(to left, var(--tw-gradient-stops))',
       'gradient-to-tl': 'linear-gradient(to top left, var(--tw-gradient-stops))',
-      'arrow-bottom': "url('https://m.shopping.friday.tw/static/images/down.svg')",
+      ...icons,
     },
     backgroundOpacity: ({ theme }) => theme('opacity'),
     backgroundPosition: {
@@ -71,6 +72,9 @@ export default {
       cover: 'cover',
       contain: 'contain',
       '100%': '100% 100%',
+      '65%': '65%',
+      '75%': '75%',
+      '85%': '85%',
     },
     blur: {
       0: '0',
