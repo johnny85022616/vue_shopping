@@ -2,6 +2,7 @@ import { createApp, inject } from 'vue'
 import { createPinia } from 'pinia'
 import VueCookies from 'vue-cookies'
 import {useBsiteStore} from './stores/bsiteStore';
+import api from './apis/api';
 import tools from '@/util/tools';
 import App from './App.vue'
 import router from './router'
