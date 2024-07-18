@@ -13,7 +13,26 @@ const api_member = {
       isLogin = true;
     }
     return isLogin
-  }
+  },
+  //取得會員資料
+  async getMemeberData() {
+    const ticket = tools.getCookie('FEEC-B2C-TICKET');
+    const data = await fetch(`${mobileApiPath()}/member/detail`, {
+      ...fetchGetHeaders,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res && res.data) {
+          return res.data[0];
+        }
+      })
+      .catch((err) => {
+        console.error(`getMemeberData faliure.`);
+        console.error(err);
+      });
+    return data;
+  },
+  
 }
 
 

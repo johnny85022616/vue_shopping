@@ -17,16 +17,21 @@ import api from '../apis/api';
   const maskName = ref('')
   const memberType = ref(null)
 
-  isLogin.value = api.member.checkLogin()
-  if(isLogin.value){
-    checkFetLife()
-  }
-
-
   function checkFetLife() {
     const feecInfo = $cookie.get("FEEC-B2C-INFO");
     fetLife.value = feecInfo?.data?.fetLife;
   }
+
+  const init = async function(){
+    isLogin.value = api.member.checkLogin()
+    if(isLogin.value){
+      checkFetLife()
+      const data = await api.member.getMemeberData()
+      memberInfo.value = data
+    }
+  }
+  
+  init()
 </script>
 
 <style lang='scss' scoped>

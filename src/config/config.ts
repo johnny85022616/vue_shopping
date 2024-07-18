@@ -16,7 +16,7 @@ const { getCookie } = tools;
 
 // 登入驗證
 const token = getCookie('FEEC-FA-TOKEN');
-const exHeaders = {};
+const exHeaders:any = {};
 if (token) {
   exHeaders['Authorization'] = 'Bearer ' + token;
 }
@@ -84,7 +84,7 @@ export default {
   setTicket() {
     const ticket = getCookie('FEEC-B2C-TICKET');
     // 登入驗證
-    const exHeaders = {};
+    const exHeaders:any = {};
     if (ticket) {
       exHeaders['headers'] = {
         Authorization: 'Bearer' + ticket,
