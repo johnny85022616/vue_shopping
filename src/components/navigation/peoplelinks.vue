@@ -39,8 +39,8 @@ function doLogin(e:Event){
   e.preventDefault()
   const nowUrl = routes.fullPath
   $cookies.set('FEEC-B2C-UID', '63hiMqFBVEiDNYJttgytCw%3D%3D');
-  $cookies.set('FEEC-B2C-TICKET', 'MCwCFBdPjFo72ujJhWEqBG2fBTQxJYcRAhR4aOomWrqphXMQKZuTCD8ICNi6bg');
-  $cookies.set('FEEC-FA-TOKEN', '2D9XFN2FhSV5qJUcf1KJcIhJXU3kKSaF');
+  $cookies.set('FEEC-B2C-TICKET', 'MCwCFCnFlF3X4soUtzkD2OL5GJu5gIiUAhQIDWoYxozb2ZKt_QguZpb4nrJiyg');
+  $cookies.set('FEEC-FA-TOKEN', 'R2OqwvNPPPoPKkLCdhwXDSVDem5ZsQnY');
   alert('登入成功')
 
   // 刷新當前頁面

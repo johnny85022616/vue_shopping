@@ -17,7 +17,7 @@ const api_member = {
   //取得會員資料
   async getMemeberData() {
     const ticket = tools.getCookie('FEEC-B2C-TICKET');
-    const data = await fetch(`${mobileApiPath()}/member/detail`, {
+    const data = await fetch(`${mobileApiPath()}member/detail`, {
       ...fetchGetHeaders,
     })
       .then((res) => res.json())
