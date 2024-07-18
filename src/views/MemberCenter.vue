@@ -1,9 +1,12 @@
 <template>
-  
+  membercenter
 </template>
 
 <script setup lang="ts" name="memberCenter">
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
+import api from '../apis/api';
+
+  const $cookie = inject<any>('$cookies');
 
   const memberInfo = ref(null)
   const fetLife = ref(null)
@@ -14,8 +17,16 @@ import { ref } from 'vue';
   const maskName = ref('')
   const memberType = ref(null)
 
-  
+  isLogin.value = api.member.checkLogin()
+  if(isLogin.value){
+    checkFetLife()
+  }
 
+
+  function checkFetLife() {
+    const feecInfo = $cookie.get("FEEC-B2C-INFO");
+    fetLife.value = feecInfo?.data?.fetLife;
+  }
 </script>
 
 <style lang='scss' scoped>

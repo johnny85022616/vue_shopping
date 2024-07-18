@@ -1,16 +1,18 @@
 import config from '../config/config';
-import $cookies from 'vue-cookies'
+import tools from '../util/tools';
 
-const { mobileApiPath, fetchGetHeaders } = config
+const { mobileApiPath, fetchGetHeaders} = config
+
 
 const api_member = {
-  checkLogin(){
+  checkLogin():boolean{
     let isLogin = false;
-    console.log($cookies);
-// const uid = $cookies.get('FEEC-B2C-UID');
-// if (uid && faToken) {
-//   isLogin = true;
-// }
+    const faToken = tools.getCookie('FEEC-FA-TOKEN');
+    const uid = tools.getCookie('FEEC-B2C-UID');
+    if (uid && faToken) {
+      isLogin = true;
+    }
+    return isLogin
   }
 }
 
