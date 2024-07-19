@@ -1,10 +1,12 @@
 <template>
+  <navigation></navigation>
   membercenter
 </template>
 
 <script setup lang="ts" name="memberCenter">
 import { inject, ref } from 'vue';
 import api from '../apis/api';
+import navigation from '@/components/common/navigation.vue';
 
   const $cookie = inject<any>('$cookies');
 
@@ -27,6 +29,7 @@ import api from '../apis/api';
     if(isLogin.value){
       checkFetLife()
       const data = await api.member.getMemeberData()
+      console.log(data);
       memberInfo.value = data
     }
   }

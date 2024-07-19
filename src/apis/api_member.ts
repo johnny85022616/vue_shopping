@@ -1,7 +1,7 @@
 import config from '../config/config';
 import tools from '../util/tools';
 
-const { mobileApiPath, fetchGetHeaders} = config
+const { mobileApiPath, fetchGetHeaders , setTicket} = config
 
 
 const api_member = {
@@ -16,9 +16,10 @@ const api_member = {
   },
   //取得會員資料
   async getMemeberData() {
-    const ticket = tools.getCookie('FEEC-B2C-TICKET');
+    const exHeaders = setTicket();
     const data = await fetch(`${mobileApiPath()}member/detail`, {
       ...fetchGetHeaders,
+      ...exHeaders
     })
       .then((res) => res.json())
       .then((res) => {
