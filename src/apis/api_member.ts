@@ -15,7 +15,7 @@ const api_member = {
     return isLogin
   },
   //取得會員資料
-  async getMemeberData() {
+  async getMemberData() {
     const exHeaders = setTicket();
     const data = await fetch(`${mobileApiPath()}member/detail`, {
       ...fetchGetHeaders,
