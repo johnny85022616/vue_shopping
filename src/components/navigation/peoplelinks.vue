@@ -22,7 +22,8 @@
 <script setup lang="ts" name="peoplelinks">
 import { inject, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import memberInfo from '../../mockData/memberInfo';
+import api from '../../apis/api';
+
 const $cookies = inject<any>('$cookies');
 const routes = useRoute()
 const router = useRouter()
@@ -38,13 +39,7 @@ console.log(router);
 
 function doLogin(e:Event){
   e.preventDefault()
-  const nowUrl = routes.fullPath
-  $cookies.set('FEEC-B2C-UID', '63hiMqFBVEiDNYJttgytCw%3D%3D');
-  $cookies.set('FEEC-B2C-TICKET', 'MCwCFCnFlF3X4soUtzkD2OL5GJu5gIiUAhQIDWoYxozb2ZKt_QguZpb4nrJiyg');
-  $cookies.set('FEEC-FA-TOKEN', 'R2OqwvNPPPoPKkLCdhwXDSVDem5ZsQnY');
-  $cookies.set('FEEC-B2C-INFO' , memberInfo.memInfo)
-  alert('登入成功')
-
+  api.member.login();
   // 刷新當前頁面
   router.go(0)
 }

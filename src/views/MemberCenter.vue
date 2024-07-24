@@ -95,7 +95,7 @@
             <p>Line</p>
           </a>
         </li>
-        <li class="py-2 text-sm"><a class="no-underline text-c_tundora text-sm" href="">登出</a></li>
+        <li class="py-2 text-sm" @click="logout"><a class="no-underline text-c_tundora text-sm" href="">登出</a></li>
       </ul>
     </div>
     <div class="w-[90%] text-c_sliver">
@@ -109,8 +109,10 @@
 import { inject, ref } from 'vue';
 import api from '../apis/api';
 import navigation from '@/components/common/navigation.vue';
+import { useRouter } from 'vue-router';
 
 const $cookie = inject<any>('$cookies');
+const router = useRouter()
 
 const fetLife = ref(null)
 const voucher = ref(0)
@@ -122,6 +124,7 @@ const type = ref(null)
 function checkFetLife() {
   const feecInfo = $cookie.get("FEEC-B2C-INFO");
   fetLife.value = feecInfo?.data?.fetLife;
+  console.log(feecInfo);
 }
 
 function goOrderPage(e: Event) {
@@ -135,9 +138,14 @@ const getMemberData = async () => {
   const {maskName , memberType} = info.MaskInfo || {}
   name.value =  maskName
   type.value = memberType
-  
+  voucher.value = await api.member.queryVoucherBalance()
+  fcoin.value = await api.member.getFetCoins()
 }
 
+const logout = ()=>{
+  api.member.logout()
+  router.push('/')
+}
 
 const init = async function () {
   const isLogin = api.member.checkLogin()
