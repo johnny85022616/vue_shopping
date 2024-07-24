@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <div v-else class="redBg w-full h-[60px] flex z-2 fixed px-5" :style="{ backgroundColor: '#f5281e' }">
+    <div v-else class="redBg w-full h-[60px] flex z-10 fixed px-5" :style="{ backgroundColor: '#f5281e' }">
       <div div class="mini-logo w-[30%] mx-auto my-0 flex justify-center items-center" @click="openFridaySite">
         <img src="../../assets/icons/friday_logo.svg" />
       </div>
