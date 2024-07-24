@@ -288,7 +288,10 @@ export default {
     }
     document.cookie = name + '=' + (value || '') + expires + '; path=/';
   },
-
+  deleteCookie(name) {
+    // 设置 cookie 的过期时间为一个过去的日期
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  },
   //將api時間格式轉為date格式
   apiTimeFormat(apiDate) {
     if (typeof apiDate !== 'string') {
