@@ -23,53 +23,64 @@ const excludeUnshown = (payload: anyObject) => {
 };
 
 const api_ai = {
-  // async getAiData(aiType:string, payload:{
-  //   [key:string] : any
-  // }, notGetProductsInfoFlag = false) {
-  //   payload = excludeUnshown(payload) || payload;
+//   async getAiData(aiType:string, payload:{
+//     [key:string] : any
+//   }, notGetProductsInfoFlag = false) {
+//     payload = excludeUnshown(payload) || payload;
 
-  //   // 部份上雲的AI API判斷
-  //   const apiUrl = /get(a|k|v|w)list/i.test(aiType) ? aiCloudApiPath : aiApiPath;
-  //   const data = await fetch(`${apiUrl}api/${aiType}`, {
-  //     ...fetchPostHeaders,
-  //     body: JSON.stringify(
-  //       Object.assign({
-  //         target_value: aiUserId(),
-  //         ...payload,
-  //       })
-  //     ),
-  //   } as anyObject)
-  //     .then((res) => res.json())
-  //     .then(async (res) => {
-  //       const isAorWlist = ['getalist', 'getwlist'].includes(aiType);
-  //       if (!isAorWlist || (isAorWlist && notGetProductsInfoFlag)) {
-  //         return res && res[0] ? res[0] : null;
-  //       } else {
-  //         const data = res && res[0] && res[0].pids && res[0].pids.length > 0 ? res[0].pids : null;
+//     // 部份上雲的AI API判斷
+//     const apiUrl = /get(a|k|v|w)list/i.test(aiType) ? aiCloudApiPath : aiApiPath;
+//     const data = await fetch(`${apiUrl}api/${aiType}`, {
+//       ...fetchPostHeaders,
+//       body: JSON.stringify(
+//         Object.assign({
+//           target_value: aiUserId(),
+//           ...payload,
+//         })
+//       ),
+//     } as anyObject)
+//       .then((res) => res.json())
+//       .then(async (res) => {
+//         const isAorWlist = ['getalist', 'getwlist'].includes(aiType);
+//         if (!isAorWlist || (isAorWlist && notGetProductsInfoFlag)) {
+//           return res && res[0] ? res[0] : null;
+//         } else {
+//           const data = res && res[0] && res[0].pids && res[0].pids.length > 0 ? res[0].pids : null;
 
-  //         if (!data) return [];
+//           if (!data) return [];
 
-  //         const priceData = await getProducts(data.map((v) => v.pid));
-  //         const originData = data.map((e) => {
-  //           if (priceData[e.pid]) {
-  //             return {
-  //               ...e,
-  //               ...priceData[e.pid],
-  //               image_url: priceData[e.pid].images && priceData[e.pid].images.replace('-uat2', ''),
-  //             };
-  //           } else {
-  //             return e;
-  //           }
-  //         });
-  //         return !getCache('supplier_cache') ? originData.filter((e) => e.price > 0) : originData;
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.error(`get aiapi ${aiType} faliure.`);
-  //       console.error(err);
-  //     });
-  //   return data;
-  // },
+//           const priceData = await getProducts(data.map((v) => v.pid));
+//           const originData = data.map((e) => {
+//             if (priceData[e.pid]) {
+//               return {
+//                 ...e,
+//                 ...priceData[e.pid],
+//                 image_url: priceData[e.pid].images && priceData[e.pid].images.replace('-uat2', ''),
+//               };
+//             } else {
+//               return e;
+//             }
+//           });
+//           return !getCache('supplier_cache') ? originData.filter((e) => e.price > 0) : originData;
+//         }
+//       })
+//       .catch((err) => {
+//         console.error(`get aiapi ${aiType} faliure.`);
+//         console.error(err);
+//       });
+//     return data;
+//   },
+//   // 站台ID
+// aiUserId() {
+//   // AI API target_value
+//   // 設定 ai api target_value
+//   let aiUserId = '0';
+//   const gaCookie = getCookies('_ga');
+//   if (gaCookie) {
+//     aiUserId = gaCookie.match(/(\d+)\.(\d+)$/gi)[0];
+//   }
+//   return aiUserId;
+// }
 }
 
 
