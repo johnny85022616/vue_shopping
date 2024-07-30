@@ -1,19 +1,27 @@
-import type {anyObject} from '@/types/common';
-import type {siteData} from '@/types/apiWeb'
+import type { anyObject } from '@/types/common';
+import type { siteData } from '@/types/apiWeb';
 import config from '../config/config';
-const {configApiPath, fetchGetHeaders} = config
+const { configApiPath, fetchGetHeaders } = config;
+
 const api_web = {
+  //判斷是否是friday主站
+  determineIsFriday() {
+    const siteCode = this.getSiteCode();
+    const isFriday =
+      /^(category|aisearch|product|brandPromotion|branchPromotion|allBrands|aiPromotion|website|member|onsale|order_otp|login|intro|favorite|discount|crazy|arrive|myhome|happygo|superBrand|fetmcAppBonus|googleAi|memberCenter)$/i.test(
+        siteCode
+      ) || siteCode === '';
+    return isFriday;
+  },
   urlSearchToObj() {
     const pairs = window.location.search.substring(1).split('&');
-    let obj:{ [key: string]: string }= {};
+    let obj: anyObject = {};
     let pair, i;
     for (i in pairs) {
       if (pairs[i] === '') continue;
 
       pair = pairs[i].split('=');
-      obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1])
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+      obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]).replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
     return obj;
   },
@@ -22,55 +30,48 @@ const api_web = {
     let siteCode;
     const s = location.pathname.split('/');
     if (s && s.length > 1) siteCode = s[1];
-    return siteCode;
+    return siteCode || '';
   },
-  processSupplier(): Promise<siteData>{
-    if (/friday\.tw/.test(location.hostname)) {
-      return this.supplierForFriday();
+  processSupplier(): Promise<siteData | null>|void {
+    if (this.determineIsFriday()) {
+      this.supplierForFriday();
     } else {
       return this.supplierForBsite();
     }
   },
   // 取得friday供應商資料
-  async supplierForFriday() {
-    return await this.getSiteData('fridayshoppingmall');
+  async supplierForFriday(){
+    (window as anyObject).fridayData = await this.getSiteData('fridayshoppingmall');
   },
   // 取得B站供應商資料
-  async supplierForBsite() {
+  async supplierForBsite(): Promise<siteData | null> {
     let siteData = null;
     const siteCode = this.getSiteCode();
-    if (
-      !/^(friday|ec2|category|aisearch|search|product|brandPromotion|branchPromotion|allBrands|aiPromotion|website|member|onsale|order_otp|login|intro|favorite|discount|crazy|arrive|myhome|happygo|superBrand|fetmcAppBonus|googleAi|memberCenter)$/i.test(
-        siteCode as string
-      )
-    ) {
-      if (siteCode) {
-        let supplierData = null;
-        supplierData = await this.getSiteData(siteCode);
+    if (!siteCode) return siteData;
+    let supplierData = null;
+    supplierData = await this.getSiteData(siteCode);
 
-        if (supplierData) {
-          const { isUnderCounstruction } = supplierData;
-          if (isUnderCounstruction === 'Y') {
-            const p = sessionStorage.getItem('preview');
-            const { preview } = this.urlSearchToObj();
-            if (preview || p) {
-              sessionStorage.setItem('preview', '1');
-            } else {
-              window.location.href = '/consturction';
-            }
-          }
-          siteData = supplierData
+    if (supplierData) {
+      const { isUnderCounstruction } = supplierData;
+      if (isUnderCounstruction === 'Y') {
+        const p = sessionStorage.getItem('preview');
+        const { preview } = this.urlSearchToObj();
+        if (preview || p) {
+          sessionStorage.setItem('preview', '1');
         } else {
-          window.location.href = '/entrance/brand'; // 都沒資料轉去品牌牆
+          window.location.href = '/consturction';
         }
       }
-    } 
+      siteData = supplierData;
+    } else {
+      window.location.href = '/entrance/brand'; // 都沒資料轉去品牌牆
+    }
     return siteData;
   },
   //取得AI4資料
-  async getSiteData(siteCode:string) {
+  async getSiteData(siteCode: string): Promise<siteData | null> {
     let pathname = `bWeb/config?urlSuffix=${siteCode}&version=1`;
-    const fgh:anyObject = {...fetchGetHeaders}
+    const fgh: anyObject = { ...fetchGetHeaders };
     let resultData = await fetch(`${configApiPath}${pathname}`, fgh)
       .then((res) => res.json())
       .then((res) => {
@@ -84,7 +85,7 @@ const api_web = {
         console.error(`get bWeb/config faliure`);
         console.error(err);
       });
-    
+
     if (!resultData) {
       return null;
     }
@@ -135,12 +136,12 @@ const api_web = {
     return resultData;
   },
   // 解析productScope 轉productScopeK, productScopeV. 對應後端ai api filter k,v
-  getProductScope(productScope:anyObject) {
-    const obj:anyObject = {};
+  getProductScope(productScope: anyObject) {
+    const obj: anyObject = {};
     if (productScope) {
       const aryData = productScope.split(';');
       const productScopeK = aryData[0].replace(/\[|\]/g, '');
-      const productScopeV = aryData.slice(1).reduce((p:any, v:any) => {
+      const productScopeV = aryData.slice(1).reduce((p: any, v: any) => {
         const d = v.replace(/\[|\]|\s/g, '');
         const f = p.concat([d]);
         return f;
@@ -150,6 +151,6 @@ const api_web = {
     }
     return obj;
   },
-}
+};
 
 export default api_web;
