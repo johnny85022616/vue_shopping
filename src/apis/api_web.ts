@@ -63,6 +63,7 @@ const api_web = {
         }
       }
       siteData = supplierData;
+      (window as anyObject).siteData = siteData
     } else {
       window.location.href = '/entrance/brand'; // 都沒資料轉去品牌牆
     }
