@@ -8,8 +8,9 @@ const { mobileApiPath, frontApiPath, fetchGetHeaders , setTicket} = config
 const api_member = {
   login(){
   tools.setCookie('FEEC-B2C-UID', '63hiMqFBVEiDNYJttgytCw%3D%3D');
-  tools.setCookie('FEEC-B2C-TICKET', 'MCwCFCnFlF3X4soUtzkD2OL5GJu5gIiUAhQIDWoYxozb2ZKt_QguZpb4nrJiyg');
+  tools.setCookie('_ga', 'GA1.1.794667265.1722235111');
   tools.setCookie('FEEC-FA-TOKEN', 'R2OqwvNPPPoPKkLCdhwXDSVDem5ZsQnY');
+  tools.setCookie('FEEC-B2C-INFO' , encodeURIComponent(JSON.stringify((memberInfo.memInfo))))
   tools.setCookie('FEEC-B2C-INFO' , encodeURIComponent(JSON.stringify((memberInfo.memInfo))))
   alert('登入成功')
   },
@@ -18,6 +19,7 @@ const api_member = {
     tools.deleteCookie('FEEC-B2C-TICKET')
     tools.deleteCookie('FEEC-FA-TOKEN')
     tools.deleteCookie('FEEC-B2C-INFO')
+    tools.deleteCookie('_ga')
     alert('已登出')
   },
   checkLogin():boolean{
