@@ -26,7 +26,7 @@
         </div>
       </div>
     </div>
-    <navigationBottom @openShowMenu="openShowMenu" @showPeopleLinks="showPeopleLinks"/>
+    <navigationBottom @openShowMenu="openShowMenu" @showPeopleLinks="showPeopleLinks" @resetAllLinkAreaStatus="resetAllLinkAreaStatus"/>
     <transition name="slide">
       <peoplelinks v-if="isShowPeopleLinks"/>
     </transition>
@@ -118,6 +118,11 @@
       if (isShowPeopleLinks.value) {
         // isShowMenu = false;
     }
+  }
+  //關閉所有navigationBottom展開的區塊
+  function resetAllLinkAreaStatus(){
+    isShowMenu.value = false;
+    isShowPeopleLinks.value = false 
   }
 </script>
 
