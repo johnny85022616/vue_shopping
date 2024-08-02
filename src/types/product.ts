@@ -15,6 +15,7 @@ export interface product {
   auto_category_id_M_c?: string;
   auto_category_id?: string;
   auto_category_id_c?: string;
+  [key:string]:any //供之後vue添加屬性不報錯
 }
 export interface productsObj{
   [key: number]: product

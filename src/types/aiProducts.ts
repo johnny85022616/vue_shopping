@@ -16,6 +16,7 @@ export interface aiProduct{
   brand?: string;
   kids_show?: Kidsshow[];
   kids?: Kidsshow[];
+  [key:string]:any //供之後vue添加屬性不報錯
 }
 
 interface Kidsshow {
