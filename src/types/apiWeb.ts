@@ -1,6 +1,7 @@
 export interface siteData {
   siteId?: string;
   siteOwnerNo?: string;
+  supplierId?: string;
   siteName?: string;
   urlSuffix?: string;
   agentId?: string;
@@ -14,22 +15,23 @@ export interface siteData {
   profitGet?: string;
   fixedMarginRate?: string;
   paymentFee?: string;
+  freight?: string;
+  freightDiscountCondition?: string;
   contactName?: string;
   contactPhone?: string;
   discountFlag?: string;
-  discountName?: string;
   logo?: string;
   logoMobile?: string;
   headerColor?: string;
   favicon?: string;
-  b2Info?: B2Info;
   isEligible?: string;
+  categoryIdL?: string;
+  skuCount?: string;
   unShowSupplierIds?: string[];
   subBWebInfos?: any[];
-  unShowCategoryIds?: any[];
+  unShowCategoryIds?: string[];
+  websiteGoogleName?: string;
   websiteGoogleDescription?: string;
-  isAsite?: boolean;
-  subSiteData?: any[];
 }
 
 interface B2Info {
