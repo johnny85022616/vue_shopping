@@ -32,7 +32,7 @@ const api_ai = {
       [key: string]: any;
     },
     notGetProductsInfoFlag = false
-  ) {
+  ):Promise<mixProduct[]|aiProduct[]|null>{
     payload = excludeUnshown(payload) || payload;
 
     // 部份上雲的AI API判斷
@@ -54,7 +54,7 @@ const api_ai = {
         } else {
           const data = res && res[0] && res[0].pids && res[0].pids.length > 0 ? res[0].pids : null;
           console.log(data);
-          if (!data) return [];
+          if (!data) return null
 
           const priceData = await api.product.getProducts(data.map((v:aiProduct) => v.pid));
           if(!priceData) return null

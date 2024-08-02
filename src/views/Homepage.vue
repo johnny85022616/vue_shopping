@@ -1,38 +1,87 @@
 <template>
   <navigation></navigation>
-  <template>
+  <template v-if="!isB4">
+    <template v-if="siteData && Number(siteData.skuCount) < 50 && isNotExposeToMeTag">
+      <template v-if="isShowSimpleHomePage">
+        <div class="homepage-bottom">
+          
+        </div>
+      </template>
+    </template>
   </template>
 </template>
 
 <script setup lang="ts" name="Homepage">
+  import api from '@/apis/api';
   import { ref } from 'vue';
   import navigation from '../components/common/navigation.vue';
   import topic from '../components/topic/topic.vue';
   import { useBsiteStore } from '../stores/bsiteStore';
   import { storeToRefs } from 'pinia';
-import type { siteData } from '@/types/apiWeb';
+  import type { siteData } from '@/types/apiWeb';
+  import type { mixProduct } from '@/types/mixProducts';
+  import type { aiProduct } from '@/types/aiProducts';
 
   const BsiteStore = useBsiteStore()
   const { siteData } = storeToRefs(BsiteStore) //siteData
   const isysdt = ref(false) //是否為ysdt
   const isB4 = ref(false) //是否為主題頁面
+  const isShowSimpleHomePage = ref(false) //是否為簡化版本首頁
+  const isShowListHomePage = ref(false) //是否為只有list的首頁
   const isNotExposeToMeTag = ref(false)
+  const notIsOthersExposeToMeData = ref<mixProduct[] | aiProduct[] | null>(null)
 
-  if (siteData.value) {
-    if (siteData.value.urlSuffix === "ysdt") {
-      isysdt.value = true
+  async function getNotIsOthersExposeToMeData() {
+    let postData: any = {
+      type: "3",
+      q1_x: 0.5,
+      supplier_y: 1,
+      list_num: 100,
+    };
+    let sid = ""
+    if (siteData.value) {
+      const s = siteData.value.supplierId;
+      if (s) {
+        sid = s
+      }
     }
-    if(siteData.value.siteType === 'B4'){
-      isB4.value = true
-    }
+    postData.filter = {
+      k: "1000",
+      v: [sid, "", "", ""],
+    };
 
-    if (
-      siteData.value.siteType && ["B1", "b1"].includes(siteData.value.siteType) &&
-      siteData.value.isOthersExposeToMe === "N"
+    const data = await api.ai.getAiData("getalist", postData, true);
+    return data
+  }
+
+  const init = async () => {
+    if (siteData.value) {
+      if (siteData.value.urlSuffix === "ysdt") {
+        isysdt.value = true
+      }
+      if (siteData.value.siteType === 'B4') {
+        isB4.value = true
+      }
+
+      if (
+        siteData.value.siteType && ["B1", "b1"].includes(siteData.value.siteType) &&
+        siteData.value.isOthersExposeToMe === "N"
       ) {
         isNotExposeToMeTag.value = true
+        const data = await getNotIsOthersExposeToMeData();
+        if (data) {
+          if (data.length >= 50) {
+            isShowSimpleHomePage.value = true
+            return
+          }
+          isShowListHomePage.value = true;
+          notIsOthersExposeToMeData.value = data
+        }
       }
+    }
   }
+
+  init()
 
 </script>
 
