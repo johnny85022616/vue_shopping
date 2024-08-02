@@ -2,12 +2,12 @@ import config from '@/config/config';
 import type { anyObject } from '@/types/common';
 import type { product, productsObj } from '@/types/product';
 
-const { aiCloudApiPath, aiApiPath, fetchPostHeaders } = config;
+const {cloudApiPath, aiApiPath, fetchPostHeaders } = config;
 
 const api_product = {
   // 取商品集合資料
   async getProducts(pids: (string[]), type = 1): Promise<productsObj|null>{
-    const resultData = await fetch(`${aiCloudApiPath}product/v2/productinfo`, {
+    const resultData = await fetch(`${cloudApiPath}product/v2/productinfo`, {
       ...fetchPostHeaders,
       body: JSON.stringify({
         param: {
