@@ -24,6 +24,7 @@ if (token) {
 export default {
   aiApiPath: VITE_APP_AI_API_DOMAIN,
   aiCloudApiPath: VITE_APP_AI_CLOUD_API_DOMAIN,
+  cloudApiPath: `${VITE_APP_FRONT_CLOUD_API_DOMAIN}/frontendapi/`,
   // BSite對應DOMAIN
   ysdtDomain: VITE_APP_YSDT_DOMAIN,
   websiteDomain: () => {
@@ -49,7 +50,7 @@ export default {
       exHeaders
     ),
     // mode: 'no-cors',
-    credentials: 'include',
+    // credentials: 'include',
   },
   fetchPutHeaders: {
     method: 'PUT',
