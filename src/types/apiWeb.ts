@@ -6,7 +6,7 @@ export interface siteData {
   urlSuffix?: string;
   agentId?: string;
   isAType?: string;
-  siteType?: string;
+  siteType: string;
   paymentType?: string;
   isUnderCounstruction?: string;
   isExposeToOthers?: string;

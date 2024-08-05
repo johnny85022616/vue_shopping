@@ -3,10 +3,16 @@
   <template v-if="!isB4">
     <template v-if="siteData && Number(siteData.skuCount) < 50 && isNotExposeToMeTag">
       <template v-if="isShowSimpleHomePage">
+        <bsiteBanner />
         <div class="homepage-bottom">
-          
         </div>
       </template>
+      <template v-else-if="isShowListHomePage">
+      </template>
+    </template>
+    <template v-else>
+      <div class="homepage-top">
+      </div>
     </template>
   </template>
 </template>
@@ -15,6 +21,7 @@
   import api from '@/apis/api';
   import { ref } from 'vue';
   import navigation from '../components/common/navigation.vue';
+  import bsiteBanner from '@/components/homePage/bsiteBanner.vue';
   import topic from '../components/topic/topic.vue';
   import { useBsiteStore } from '../stores/bsiteStore';
   import { storeToRefs } from 'pinia';
@@ -50,7 +57,7 @@
       v: [sid, "", "", ""],
     };
 
-    const data = await api.ai.getAiData("getalist", postData, true);
+    const data = await api.ai.getAiData("getalist", postData);
     return data
   }
 
@@ -69,6 +76,7 @@
       ) {
         isNotExposeToMeTag.value = true
         const data = await getNotIsOthersExposeToMeData();
+        console.log(data);
         if (data) {
           if (data.length >= 50) {
             isShowSimpleHomePage.value = true
