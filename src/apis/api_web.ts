@@ -1,7 +1,7 @@
 import type { anyObject } from '@/types/common';
 import type { siteData } from '@/types/apiWeb';
 import config from '../config/config';
-const { configApiPath, fetchGetHeaders } = config;
+const { configApiPath, fetchGetHeaders , apiPath} = config;
 
 const api_web = {
   //判斷是否是friday主站
@@ -152,6 +152,17 @@ const api_web = {
     }
     return obj;
   },
+  async getHomePageFridayBanner(){
+    // GET Banners
+    return fetch(`${config.apiPath()}api/home/banner/mobileweb`)
+      .then(r => r.json())
+      .then(data => {
+        if (data?.code === 1 && data?.payload?.length > 0) {
+            return data.payload[0].banners;
+        }
+        return null
+      })
+  }
 };
 
 export default api_web;

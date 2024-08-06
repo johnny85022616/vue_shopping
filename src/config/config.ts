@@ -25,6 +25,10 @@ export default {
   aiApiPath: VITE_APP_AI_API_DOMAIN,
   aiCloudApiPath: VITE_APP_AI_CLOUD_API_DOMAIN,
   cloudApiPath: `${VITE_APP_FRONT_CLOUD_API_DOMAIN}/frontendapi/`,
+  apiPath: (overwriteRoot='/mobileapi/') => {
+    let apiRoot = overwriteRoot;
+    return VITE_APP_MOBILE_API_DOMAIN + apiRoot;
+  },
   // BSite對應DOMAIN
   ysdtDomain: VITE_APP_YSDT_DOMAIN,
   websiteDomain: () => {

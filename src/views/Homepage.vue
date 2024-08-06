@@ -12,6 +12,7 @@
     </template>
     <template v-else>
       <div class="homepage-top">
+        <banner/>
       </div>
     </template>
   </template>
@@ -22,6 +23,7 @@
   import { ref } from 'vue';
   import navigation from '../components/common/navigation.vue';
   import bsiteBanner from '@/components/homePage/bsiteBanner.vue';
+  import banner from '@/components/homePage/banner.vue';
   import topic from '../components/topic/topic.vue';
   import { useBsiteStore } from '../stores/bsiteStore';
   import { storeToRefs } from 'pinia';
