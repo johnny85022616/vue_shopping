@@ -1,7 +1,7 @@
 <template>
-  <div class="shortcutSlider">
-    <div class="flex-wrapper">
-      <div class="flex-item" v-for="(icon, ii) in items" :key="ii">
+  <div class="shortcutSlider flex mt-1 py-2">
+    <div class="w-full flex flex-wrap">
+      <div class="w-1/5 mb-2" v-for="(icon, ii) in items" :key="ii">
         <a @click="goPage($event, icon.url, icon.targetBlank)">
           <img :src="'https://event.shopping.friday.tw/event/homepage/mobile_icon/' +
             icon.img + '?ver=' + version
