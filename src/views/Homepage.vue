@@ -13,6 +13,7 @@
     <template v-else>
       <div class="homepage-top w-[95%] mx-auto mt-3">
         <banner v-if="!siteData"/>
+        <shortcutSlider></shortcutSlider>
       </div>
     </template>
   </template>
@@ -24,6 +25,7 @@
   import navigation from '../components/common/navigation.vue';
   import bsiteBanner from '@/components/homePage/bsiteBanner.vue';
   import banner from '@/components/homePage/banner.vue';
+  import shortcutSlider from '@/components/homePage/shortcutSlider.vue';
   import topic from '../components/topic/topic.vue';
   import { useBsiteStore } from '../stores/bsiteStore';
   import { storeToRefs } from 'pinia';

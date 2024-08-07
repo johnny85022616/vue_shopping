@@ -14,15 +14,15 @@ const fetchGetHeaders = {
 
 const Url = {
   // public method for url encoding
-  encode: function(string) {
+  encode: function (string) {
     return escape(this._utf8_encode(string));
   },
   // public method for url decoding
-  decode: function(string) {
+  decode: function (string) {
     return this._utf8_decode(unescape(string));
   },
   // private method for UTF-8 encoding
-  _utf8_encode: function(string) {
+  _utf8_encode: function (string) {
     string = string.replace(/\r\n/g, '\n');
     var utftext = '';
     for (var n = 0; n < string.length; n++) {
@@ -41,7 +41,7 @@ const Url = {
     return utftext;
   },
   // private method for UTF-8 decoding
-  _utf8_decode: function(utftext) {
+  _utf8_decode: function (utftext) {
     var string = '';
     var i = 0,
       c2,
@@ -94,7 +94,14 @@ export default {
   version() {
     const versionDate = new Date();
     return (
-      versionDate.getMonth() + '' + versionDate.getDate() + '' + versionDate.getHours() + '' + versionDate.getMinutes()
+      versionDate.getMonth() +
+      1 +
+      '' +
+      versionDate.getDate() +
+      '' +
+      versionDate.getHours() +
+      '' +
+      versionDate.getMinutes()
     );
   },
   checkInAppSessions() {
@@ -123,12 +130,12 @@ export default {
     return /mobi(le)?/i.test(navigator.userAgent);
   },
   stopBack() {
-    window.onhashchange = function() {
+    window.onhashchange = function () {
       window.history.forward();
     };
     if (!document.referrer) {
       window.history.pushState(null, document.title, location.href + '#superapp');
-      setTimeout(function() {
+      setTimeout(function () {
         document.body.click();
       }, 500);
     }
@@ -203,9 +210,7 @@ export default {
       if (pairs[i] === '') continue;
 
       pair = pairs[i].split('=');
-      obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1])
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+      obj[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]).replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
     return obj;
   },

@@ -162,7 +162,22 @@ const api_web = {
         }
         return null
       })
-  }
+  },
+  async getSliderData(version: string) {
+    return fetch(
+      `https://event.shopping.friday.tw/event/homepage/mobile_homepage${
+        /^(ec-m|m)/.test(location.host) ? "" : "_beta"
+      }.json?ver=${version}`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        if (res && res.shortcutImg) {
+          return res.shortcutImg;
+        }else{
+          return null
+        }
+      });
+  },
 };
 
 export default api_web;
