@@ -5,7 +5,7 @@
       <slide class="wrap-item" v-for="(item, index) of items" :key="index">
         <a :href="item.url" :title="item.description" class="ga-event" data-ga-category="首頁A1"
           :data-ga-label="item.title">
-          <img class="rounded-none" :src="item.img" :alt="item.description" />
+          <img class="rounded-xl" :src="item.img" :alt="item.description" />
         </a>
       </slide>
     </Carousel>
@@ -40,5 +40,4 @@ import {Carousel , Slide} from 'vue3-carousel'
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style lang="scss" scoped>
-@import '../../style/color';
 </style>

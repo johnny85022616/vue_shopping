@@ -11,7 +11,7 @@
       </template>
     </template>
     <template v-else>
-      <div class="homepage-top">
+      <div class="homepage-top w-[95%] mx-auto mt-3">
         <banner/>
       </div>
     </template>
