@@ -1,15 +1,15 @@
 <template>
-  <div id="banners-wrap" class="banners-wrap">
-    <Carousel class="custom-carousel" :autoplay="1" :loop="true" :autoplayTimeout="3000" :perPage="1"
+  <div class="banners-wrap relative">
+    <Carousel class="custom-carousel" :autoplay="3000" :loop="true" :autoplayTimeout="3000" :perPage="1"
       :paginationEnabled="false" :navigateTo="navigateTo" @pageChange="pageChange">
       <slide class="wrap-item" v-for="(item, index) of items" :key="index">
         <a :href="item.url" :title="item.description" class="ga-event" data-ga-category="首頁A1"
           :data-ga-label="item.title">
-          <img :src="item.img" :alt="item.description" />
+          <img class="rounded-none" :src="item.img" :alt="item.description" />
         </a>
       </slide>
     </Carousel>
-    <span class="banners-wrap__counter">{{ nowItemPage }}/{{ items.length }}</span>
+    <span class="banners-wrap__counter absolute right-1 bottom-1 box-border py-1 px-2 rounded-lg text-c_white text-xs font-semibold flex justify-center items-center bg-c_black_transparent">{{ nowItemPage }}/{{ items.length }}</span>
   </div>
 </template>
 
@@ -41,33 +41,4 @@ import {Carousel , Slide} from 'vue3-carousel'
 
 <style lang="scss" scoped>
 @import '../../style/color';
-
-.banners-wrap {
-  position: relative;
-  border-radius: 10px;
-
-  .banners-wrap__counter {
-    position: absolute;
-    right: 5px;
-    bottom: 10px;
-    box-sizing: border-box;
-    padding: 1px 5px;
-    border-radius: 10px;
-    color: $white;
-    font-size: 1.2rem;
-    font-weight: 600;
-    line-height: 19px;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.6);
-  }
-
-  img {
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-    margin-bottom: 5px;
-    border-radius: 10px;
-  }
-}
 </style>

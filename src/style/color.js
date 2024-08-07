@@ -52,6 +52,7 @@ export default {
   c_brightblue: '#06C',
   c_turbo: '#EEEE00',
   c_olivine: '#90B772',
+  c_black_transparent: 'rgba(0, 0, 0, 0.6)',
 
   c_special: '#60ba9a',
   c_la_palma: '#339312',
