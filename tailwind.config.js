@@ -1067,5 +1067,18 @@ export default {
       50: '50',
     },
   },
-  plugins: [],
+  //自訂新的utilities
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.line-clamp-2': {
+          display: '-webkit-box',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': '2',
+          overflow: 'hidden',
+          'text-overflow': 'ellipsis',
+        },
+      });
+    },
+  ],
 };
