@@ -1,12 +1,12 @@
 <template>
   <div class="shortcutSlider flex mt-1 py-2">
     <div class="w-full flex flex-wrap">
-      <div class="w-1/5 mb-2" v-for="(icon, ii) in items" :key="ii">
+      <div class="w-1/5 mb-2 text-center text-xs" v-for="(icon, ii) in items" :key="ii">
         <a class="no-underline" @click="goPage($event, icon.url, icon.targetBlank)">
-          <img :src="'https://event.shopping.friday.tw/event/homepage/mobile_icon/' +
+          <img class="w-10 h-10 inline-block mx-auto mb-[2px] object-cover" :src="'https://event.shopping.friday.tw/event/homepage/mobile_icon/' +
             icon.img + '?ver=' + version
             " :alt="icon.description" />
-          <h3 class="text-c_heavy_metal">{{ icon.itemName }}</h3>
+          <h3 class="text-c_heavy_metal whitespace-nowrap overflow-hidden">{{ icon.itemName }}</h3>
         </a>
       </div>
     </div>
