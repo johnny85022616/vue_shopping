@@ -11,10 +11,17 @@
       </template>
     </template>
     <template v-else>
-      <div class="homepage-top w-[95%] mx-auto mt-3">
-        <banner v-if="!siteData"/>
-        <shortcutSlider></shortcutSlider>
-      </div>
+        <div class="homepage-top w-[95%] mx-auto mt-3">
+          <template v-if="!siteData">
+            <banner />
+            <shortcutSlider />
+            <div class="text-sm pt-[10px] pb-[2px]">
+              <a href="https://shopping.friday.tw/ec2/anti_grift" target="_blank"
+                style="color: red; text-decoration: none;">【慎防詐騙】 本公司不會主動聯繫要求您提供個人金融資料，也不會要求您操作ATM轉帳或網銀</a>
+            </div>
+          </template>
+        </div>
+        <discountAndHot v-if="!siteData"/>
     </template>
   </template>
 </template>
@@ -26,6 +33,7 @@
   import bsiteBanner from '@/components/homePage/bsiteBanner.vue';
   import banner from '@/components/homePage/banner.vue';
   import shortcutSlider from '@/components/homePage/shortcutSlider.vue';
+  import discountAndHot from '@/components/homePage/discountAndHot.vue';
   import topic from '../components/topic/topic.vue';
   import { useBsiteStore } from '../stores/bsiteStore';
   import { storeToRefs } from 'pinia';
@@ -40,6 +48,7 @@
   const isShowSimpleHomePage = ref(false) //是否為簡化版本首頁
   const isShowListHomePage = ref(false) //是否為只有list的首頁
   const isNotExposeToMeTag = ref(false)
+  const promoData = ref(null)
   const notIsOthersExposeToMeData = ref<mixProduct[] | aiProduct[] | null>(null)
 
   async function getNotIsOthersExposeToMeData() {

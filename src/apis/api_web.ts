@@ -1,7 +1,9 @@
 import type { anyObject } from '@/types/common';
 import type { siteData } from '@/types/apiWeb';
+import discountAndHot from '@/mockData/discountAndHot';
 import config from '../config/config';
-const { configApiPath, fetchGetHeaders , apiPath} = config;
+import tools from '@/util/tools';
+const { configApiPath, fetchGetHeaders, fetchPostHeaders, apiPath } = config;
 
 const api_web = {
   //判斷是否是friday主站
@@ -32,7 +34,7 @@ const api_web = {
     if (s && s.length > 1) siteCode = s[1];
     return siteCode || '';
   },
-  processSupplier(): Promise<siteData | null>|void {
+  processSupplier(): Promise<siteData | null> | void {
     if (this.determineIsFriday()) {
       this.supplierForFriday();
     } else {
@@ -40,7 +42,7 @@ const api_web = {
     }
   },
   // 取得friday供應商資料
-  async supplierForFriday(){
+  async supplierForFriday() {
     (window as anyObject).fridayData = await this.getSiteData('fridayshoppingmall');
   },
   // 取得B站供應商資料
@@ -63,7 +65,7 @@ const api_web = {
         }
       }
       siteData = supplierData;
-      (window as anyObject).siteData = siteData
+      (window as anyObject).siteData = siteData;
     } else {
       window.location.href = '/entrance/brand'; // 都沒資料轉去品牌牆
     }
@@ -152,31 +154,70 @@ const api_web = {
     }
     return obj;
   },
-  async getHomePageFridayBanner(){
+  async getHomePageFridayBanner() {
     // GET Banners
     return fetch(`${config.apiPath()}api/home/banner/mobileweb`)
-      .then(r => r.json())
-      .then(data => {
+      .then((r) => r.json())
+      .then((data) => {
         if (data?.code === 1 && data?.payload?.length > 0) {
-            return data.payload[0].banners;
+          return data.payload[0].banners;
         }
-        return null
-      })
+        return null;
+      });
   },
   async getSliderData(version: string) {
     return fetch(
       `https://event.shopping.friday.tw/event/homepage/mobile_homepage${
-        /^(ec-m|m)/.test(location.host) ? "" : "_beta"
+        /^(ec-m|m)/.test(location.host) ? '' : '_beta'
       }.json?ver=${version}`
     )
       .then((res) => res.json())
       .then((res) => {
         if (res && res.shortcutImg) {
           return res.shortcutImg;
-        }else{
-          return null
+        } else {
+          return null;
         }
       });
+  },
+  async getPromotionGatherApi(promotionId: string) {
+    return await fetch(`${config.frontApiPath()}ai/promotion/gather/${promotionId}`, fetchGetHeaders)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res && res.resultData) {
+          return res.resultData;
+        }
+        return null;
+      })
+      .catch(() => {
+        return null;
+      });
+  },
+  getProductBatchApi(rawPids: string[]): any {
+    const discountAndHotData = discountAndHot;
+
+    const data = Object.values(discountAndHotData);
+    if (data.length > 0) {
+      return data.map((v: any) => {
+        const { price, list_price, promo_price } = v || {};
+        const cheapest = promo_price ? promo_price : price;
+        const ratio = Math.floor((price / list_price) * Math.pow(10, 2)) / Math.pow(10, 2);
+        const discount = ratio * ((ratio * 100) % 10 === 0 ? 10 : 100);
+        return {
+          pid: v.pid,
+          promotion: v.promotion,
+          name: v.name,
+          img: v.image_url,
+          image_url: v.image_url,
+          price: v.price,
+          list_price: v.list_price,
+          discount: discount === 10 ? null : discount,
+          cheapest: tools.priceFormat(cheapest),
+        };
+      });
+    } else {
+      return [];
+    }
   },
 };
 

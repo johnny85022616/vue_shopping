@@ -9,6 +9,7 @@ const {
   VITE_APP_MOBILE_API_DOMAIN,
   VITE_APP_CONFIG_API_DOMAIN,
   VITE_APP_AI_SEARCH_DOMAIN,
+  VITE_APP_MSERVICE_API_DOMAIN,
 } = import.meta.env;
 
 import tools from '../util/tools';
@@ -42,6 +43,9 @@ export default {
   },
   mobileApiPath: (apiRoot = 'api/') => {
     return `${VITE_APP_MOBILE_API_DOMAIN}/mobileapi/${apiRoot}`;
+  },
+  mserviceApiPath: (overwriteRoot='/api/') => {
+    return VITE_APP_MSERVICE_API_DOMAIN + overwriteRoot;
   },
   aiSearchApiPath: VITE_APP_AI_SEARCH_DOMAIN + '/aisearch',
   configApiPath: VITE_APP_CONFIG_API_DOMAIN + '/frontendapi/',
