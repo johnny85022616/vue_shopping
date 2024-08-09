@@ -11,17 +11,20 @@
       </template>
     </template>
     <template v-else>
-        <div class="homepage-top w-[95%] mx-auto mt-3">
-          <template v-if="!siteData">
-            <banner />
-            <shortcutSlider />
-            <div class="text-sm pt-[10px] pb-[2px]">
-              <a href="https://shopping.friday.tw/ec2/anti_grift" target="_blank"
-                style="color: red; text-decoration: none;">【慎防詐騙】 本公司不會主動聯繫要求您提供個人金融資料，也不會要求您操作ATM轉帳或網銀</a>
-            </div>
-          </template>
-        </div>
-        <discountAndHot v-if="!siteData"/>
+      <div class="homepage-top w-[95%] mx-auto mt-3">
+        <template v-if="!siteData">
+          <banner />
+          <shortcutSlider />
+          <div class="text-sm pt-[10px] pb-[2px]">
+            <a href="https://shopping.friday.tw/ec2/anti_grift" target="_blank"
+              style="color: red; text-decoration: none;">【慎防詐騙】 本公司不會主動聯繫要求您提供個人金融資料，也不會要求您操作ATM轉帳或網銀</a>
+          </div>
+        </template>
+      </div>
+      <discountAndHot v-if="!siteData" />
+      <div class="homepage-bottom">
+        <aiRecProducts :windowY="windowY" />
+      </div>
     </template>
   </template>
 </template>
@@ -34,6 +37,7 @@
   import banner from '@/components/homePage/banner.vue';
   import shortcutSlider from '@/components/homePage/shortcutSlider.vue';
   import discountAndHot from '@/components/homePage/discountAndHot.vue';
+  import aiRecProducts from '@/components/homePage/aiRecProducts.vue';
   import topic from '../components/topic/topic.vue';
   import { useBsiteStore } from '../stores/bsiteStore';
   import { storeToRefs } from 'pinia';
@@ -48,6 +52,8 @@
   const isShowSimpleHomePage = ref(false) //是否為簡化版本首頁
   const isShowListHomePage = ref(false) //是否為只有list的首頁
   const isNotExposeToMeTag = ref(false)
+  const windowY = ref(0)
+  const currentY = ref(0)
   const promoData = ref(null)
   const notIsOthersExposeToMeData = ref<mixProduct[] | aiProduct[] | null>(null)
 
@@ -75,6 +81,19 @@
   }
 
   const init = async () => {
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        const wy = window.scrollY;
+        windowY.value = wy;
+        currentY.value = wy !== 70 && wy !== 0 ? wy : currentY.value;
+      },
+      {
+        passive: true,
+      }
+    );
+
     if (siteData.value) {
       if (siteData.value.urlSuffix === "ysdt") {
         isysdt.value = true
