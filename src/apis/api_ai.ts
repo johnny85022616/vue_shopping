@@ -53,9 +53,8 @@ const api_ai = {
           return res && res[0] ? res[0] : null;
         } else {
           const data = res && res[0] && res[0].pids && res[0].pids.length > 0 ? res[0].pids : null;
-          console.log(data);
           if (!data) return null
-
+          
           const priceData = await api.product.getProducts(data.map((v:aiProduct) => v.pid));
           if(!priceData) return null
           const originData = data.map((e:aiProduct) => {
@@ -68,7 +67,7 @@ const api_ai = {
               return e;
             }
           });
-          return !tools.getCache('supplier_cache') ? originData.filter((e:mixProduct) => e.price && e.price > 0) : originData;
+          return originData.filter((e:mixProduct) => e.price && e.price > 0);
         }
       })
       .catch((err) => {
