@@ -17,9 +17,9 @@
       <div class="prodcut-list grid grid-cols-2 gap-4 px-3">
         <a class="relative min-h-[210px] p-2 rounded-lg no-underline bg-c_white flex flex-col items-center" v-for="(item, index) of prodData" :key="index" href="" @click="e => tools.goProductPage(e, item.pid)">
           <img class="aspect-square" :src="item.image_url" :alt="item.name">
-          <div class="reactive flex justify-end items-baseline px-2 text-right mt-2">
-            <span v-if="item.discount" class="absolute left-[-5px] p-[2px] text-c_white bg-c_fcoin text-sm text-center min-w-10 max-w-[50px] flex items-center justify-center rounded-lg ">
-              {{ item.discount }}<p class="text-xs">折</p>
+          <div class="reactive w-full flex justify-end items-baseline mt-2">
+            <span v-if="item.discount" class="absolute left-[-5px] top-[148px] p-[2px] text-c_white bg-c_fcoin text-sm text-center min-w-10 max-w-[50px] flex items-center justify-center rounded-lg ">
+              {{ formatDiscount(item.discount) }}<p class="text-xs">折</p>
             </span>
             <p class="mr-1 text-c_sliver text-xs line-through">{{ item.list_price }}</p>
             <p class="text-c_red text-xl">{{ item.cheapest }}</p>
@@ -48,6 +48,12 @@ import { reactive, ref } from 'vue';
       if (!data) return [];
       const rawPids =  data.value.split(',').splice(0, 6);
       return api.web.getProductBatchApi(rawPids);
+    }
+    const formatDiscount = (discount:number)=>{
+      if(discount){
+       return Math.floor(discount)
+      }
+      return 0
     }
 
   const init = async()=>{
