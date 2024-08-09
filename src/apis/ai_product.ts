@@ -30,7 +30,7 @@ const api_product = {
         console.error(err);
         return null;
       });
-    if(resultData){
+    if(!resultData){
       return null
     }
     return resultData.reduce((p:productsObj, v:product) => {
