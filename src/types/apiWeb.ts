@@ -32,9 +32,16 @@ export interface siteData {
   unShowCategoryIds?: string[];
   websiteGoogleName?: string;
   websiteGoogleDescription?: string;
+  b2Info:B2Info;
+  b4Info:B4Info;
 }
 
 interface B2Info {
   subSiteName?: string;
   empEmails?: string[];
+}
+interface B4Info {
+  themeType: string;
+  supplierIds: string[];
+  kws: string;
 }
