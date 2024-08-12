@@ -9,42 +9,42 @@
         </li>
       </ul>
     </div>
-    <div class="fourteenShop__products" v-if="fourteenShopData && fourteenShopData.length > 0">
-      <ul class="fourteenShop__products__block-list">
-        <li v-for="item in fourteenShopData" :key="item.main.cateId" ref="productDom">
-          <p :class="['catName', { isMain: !item.mainSub }]">
-          <p>{{ item.main.cateName }}</p>
-          <a v-if="item.main.cateId !== 9999" :href="'/category/' + item.main.cateId + '/list'">看更深</a>
+    <div class="products" v-if="fourteenShopData && fourteenShopData.length > 0">
+      <ul>
+        <li v-for="item in fourteenShopData" :key="item.main.cateId" ref="productDom" class="mb-[10px] last-of-type:mb-[70px]">
+          <p class="flex items-center justify-between mx-2 px-3 py-4 bg-c_swirl">
+            <p class="text-c_mine_shaft font-bold text-base">{{ item.main.cateName }}</p>
+            <a v-if="item.main.cateId !== 9999" class="text-c_blue text-sm no-underline" :href="'/category/' + item.main.cateId + '/list'">看更深</a>
           </p>
-          <div v-if="item.mainSub && item.mainSub.length > 0" class="fourteenShop__products-main">
-            <div class="left" @click="(e) => tools.goProductPage(e, item.main.pid, item.main)">
-              <div class="image">
-                <img :src="item.main.image_url" />
+          <div v-if="item.mainSub && item.mainSub.length > 0" class="main flex justify-between px-2 pb-2 mx-2 bg-c_swirl">
+            <div class="w-3/5 bg-c_white flex flex-col items-center font-bold" @click="(e) => tools.goProductPage(e, item.main.pid, item.main)">
+              <div class="relative w-full h-0 pb-[100%]">
+                <img class="absolute w-full h-full object-cover" :src="item.main.image_url" />
               </div>
-              <p class="name">{{ item.main.name }}</p>
-              <p v-if="item.main.price !== null" class="price mainLeftPrice">
+              <p class="w-[95%] mt-2 line-clamp-2 text-sm text-c_mine_shaft">{{ item.main.name }}</p>
+              <p v-if="item.main.price !== null" class="text-c_red text-xl before:content-['$'] before:mr-[2px] mt-2">
                 {{ tools.priceFormat(item.main.price) }}
               </p>
             </div>
-            <div class="right">
-              <div v-for="p in item.mainSub" :key="p.cateId" @click="(e) => tools.goProductPage(e, p.pid, p)">
-                <div class="image">
-                  <img :src="p.image_url" />
+            <div class="w-[37%] flex flex-col font-bold justify-between">
+              <div class="bg-c_white first-of-type:mb-2" v-for="p in item.mainSub" :key="p.cateId" @click="(e) => tools.goProductPage(e, p.pid, p)">
+                <div class="relative w-full h-0 pb-[100%] mx-auto">
+                  <img class="inline-block absolute w-full h-full object-cover" :src="p.image_url" />
                 </div>
-                <p v-if="p.price !== null" class="price mainRightPrice">
+                <p v-if="p.price !== null" class="text-c_red text-xl before:content-['$'] before:mr-[2px] flex justify-center items-center">
                   {{ tools.priceFormat(p.price) }}
                 </p>
               </div>
             </div>
           </div>
-          <div class="fourteenShop__products-other">
-            <ul>
-              <li v-for="s in item.sub" :key="s.cateId" @click="(e) => tools.goProductPage(e, s.pid, s)">
-                <div class="image">
-                  <img :src="s.image_url" />
+          <div class="other bg-c_white pt-4">
+            <ul class="flex flex-wrap">
+              <li class="w-1/3" v-for="s in item.sub" :key="s.cateId" @click="(e) => tools.goProductPage(e, s.pid, s)">
+                <div class="relative w-[85%] h-0 mx-auto pb-[85%] border border-solid border-c_ghost rounded-lg">
+                  <img class="absolute w-full h-full object-cover rounded-lg" :src="s.image_url" />
                 </div>
-                <p class="name">{{ s.name }}</p>
-                <p v-if="s.price !== null" class="price otherProductPrice">
+                <p class="pt-2 w-[85%] line-clamp-2 mx-auto text-sm">{{ s.name }}</p>
+                <p v-if="s.price !== null" class="text-c_red before:content-['$'] before:mr-[2px] w-[85%] flex items-center mx-auto text-base">
                   {{ tools.priceFormat(s.price) }}
                 </p>
               </li>
@@ -183,7 +183,7 @@ const changeBarActive = (e: any, index: number) => {
   }
 }
 watch(() => props.windowY, (newVal) => {
-  if(!fourteenShopData.value) return 
+  if (!fourteenShopData.value) return
   //scroll時product區塊連動category區塊
   fourteenShopData.value.forEach((item: any, index: number) => {
     if (newVal >= item.productBlockHeight - 115) {
