@@ -16,13 +16,14 @@ import api from '@/apis/api';
 import { useBsiteStore } from '@/stores/bsiteStore';
 import tools from '@/util/tools';
 import { storeToRefs } from 'pinia';
-import { reactive, toRefs } from 'vue';
+import { reactive, ref, toRefs } from 'vue';
 
   const bsiteStore = useBsiteStore()
   const {siteData} = storeToRefs(bsiteStore)
   const props = defineProps<{isBsite: boolean}>()
   const {isBsite} = toRefs(props)
-  const keywords = reactive([])
+  const keywordList = reactive([])
+  const keywordsBlockWidthPixels = ref("0px") // 熱門關鍵字捲軸寬度計算
 
   const getHotkeywords = async()=>{
     let payloadData:any= {
@@ -55,7 +56,14 @@ import { reactive, toRefs } from 'vue';
   }
 
   const parseHotKeywords = (data:any)=>{
+    const keywords = data.kids.slice(0, 30);
+      const keywordsBlockWidth = keywords.reduce((p:any, v:any) => {
+        return p + tools.strlen(v.kcontent);
+      }, 0);
 
+      keywordsBlockWidthPixels.value =
+        (Math.floor(keywordsBlockWidth) * 8.6) / 2 + "px";
+      Object.assign(keywordList, keywords)
   }
 
   const init = ()=>{
