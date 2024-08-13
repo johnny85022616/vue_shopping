@@ -45,12 +45,13 @@ import { reactive, toRefs } from 'vue';
         parseHotKeywords(findCache)
         return;
       }
-      const data = await api.ai.getAiData('getklist', payloadData)
+      const data:any = await api.ai.getAiData('getklist', payloadData)
 
-      // if (data && data.kids) {
-      //   this.parseHotKeywords(data);
-      //   this.tools.setCache(`ai_keywords_${sId}_cache_bSite`, data, 300);
-      // }
+
+      if (data && data.kids) {
+        parseHotKeywords(data);
+        tools.setCache(`ai_keywords_${sId}_cache_bSite`, data, 300);
+      }
   }
 
   const parseHotKeywords = (data:any)=>{
