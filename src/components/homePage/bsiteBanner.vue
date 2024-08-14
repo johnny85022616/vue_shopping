@@ -1,17 +1,11 @@
 <template>
-  <div class="bsiteBanner">
+  <div class="bsiteBanner w-full flex items-center justify-around">
     <carousel class="custom-carousel" :autoplay="3000" :loop="true" :autoplayTimeout="3000">
       <slide :class="['wrap-item',{noPadding: item.img}]" v-for="(item, index) of itemList" :style="[{ 'background-image': item.bgurl ? `url(${item.bgurl})` : '' }]" :key="index">
-        <div v-if="item.img" :class="['a1-mode']">
-          <a v-if="item.link" :href="item.link">
-            <img :src="item.img" />
-          </a>
-          <img v-else :src="item.img" />
-        </div>
-        <div v-else class="banner-item">
-          <a v-for="(v, i) in item.data" :key="i" :href="v.link">
+        <div class="banner-item">
+          <a class="relative w-[48%] flex justify-center" v-for="(v, i) in item.data" :key="i" :href="v.link">
             <img :src="v.image_url" />
-            <div>
+            <div class="absolute flex bottom-0 justify-between w-[90%] h-[35px] items-center bg-c_black_transparent py-[2px] px-2">
               <span>{{ v.name }}</span>
               <span>{{ tools.priceFormat(v.price) }}</span>
             </div>
@@ -30,6 +24,8 @@ import tools from '@/util/tools';
 import { storeToRefs } from 'pinia';
 import type { mixProduct } from '@/types/mixProducts';
 import type { aiProduct } from '@/types/aiProducts';
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide } from 'vue3-carousel'
 const bsiteStore = useBsiteStore();
 const {siteData} = storeToRefs(bsiteStore)
 
