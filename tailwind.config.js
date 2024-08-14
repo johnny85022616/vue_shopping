@@ -1078,6 +1078,9 @@ export default {
           overflow: 'hidden',
           'text-overflow': 'ellipsis',
         },
+        '.writing-rl': {
+          'writing-mode': 'vertical-rl',
+        },
       });
     },
   ],

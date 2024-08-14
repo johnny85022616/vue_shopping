@@ -22,6 +22,7 @@
         </template>
       </div>
       <discountAndHot v-if="!siteData" />
+      <hotKeywords :isBsite="isBsite"/>
       <div class="homepage-bottom">
         <aiRecProducts :windowY="windowY" />
       </div>
@@ -38,6 +39,7 @@
   import shortcutSlider from '@/components/homePage/shortcutSlider.vue';
   import discountAndHot from '@/components/homePage/discountAndHot.vue';
   import aiRecProducts from '@/components/homePage/aiRecProducts.vue';
+  import hotKeywords from '@/components/common/hotKeywords.vue';
   import topic from '../components/topic/topic.vue';
   import { useBsiteStore } from '../stores/bsiteStore';
   import { storeToRefs } from 'pinia';
@@ -47,6 +49,7 @@
 
   const BsiteStore = useBsiteStore()
   const { siteData } = storeToRefs(BsiteStore) //siteData
+  const isBsite = ref(false)
   const isysdt = ref(false) //是否為ysdt
   const isB4 = ref(false) //是否為主題頁面
   const isShowSimpleHomePage = ref(false) //是否為簡化版本首頁
@@ -95,6 +98,7 @@
     );
 
     if (siteData.value) {
+      isBsite.value = true
       if (siteData.value.urlSuffix === "ysdt") {
         isysdt.value = true
       }
