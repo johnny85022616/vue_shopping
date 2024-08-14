@@ -1,9 +1,9 @@
 <template>
   <div v-if="keywordList.length > 0" :class="`hot-keywords py-2 flex ${isBsite?'bg-c_swirl':'bg-c_emperor'}`">
-    <label class="w-5 bg-hotKeyword-bg bg-contain bg-center bg-no-repeat writing-rl inline-block pt-2 pr-3 pb-2 pl-1 text-c_white text-sm">熱門關鍵字</label>
-    <div class="w-full min-h-[85px]">
-      <div class="category-keywords__items" :style="[{ width: keywordsBlockWidthPixels }]">
-        <span v-for="(item, idx) in keywordList" :key="idx" @click="goSearchPage(item.kcontent)">
+    <p class="bg-hotKeyword-bg bg-100% bg-center bg-no-repeat writing-rl text-c_white text-sm flex items-center pl-[5px] pr-3 pt-2">熱門關鍵字</p>
+    <div class="w-full min-h-[85px] my-auto pt-1 pl-1 overflow-x-auto overflow-y-hidden" style="max-height: calc((1.3rem + 18px) * 2);">
+      <div class="relative w-full pr-5 text-sm" :style="[{ width: keywordsBlockWidthPixels }]">
+        <span v-for="(item, idx) in keywordList" class="inline-block leading-[30px] bg-c_white text-c_mine_shaft rounded-3xl mr-1 mb-4 px-2" :key="idx" @click="goSearchPage(item.kcontent)">
           {{ item.kcontent }}
         </span>
       </div>
