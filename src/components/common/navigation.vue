@@ -5,13 +5,19 @@
       <div class="mini-logo flex justify-center items-center" @click="(evt) => openBsiteSite(evt)">
         <img class="w-auto max-h-[35px] mr-4" :src="siteData.logoMobile" />
       </div>
-      <div class="subSiteName flex justify-center items-center w-[20%] text-base" v-if="siteData && siteData.b2Info && siteData.b2Info.subSiteName">
-        <p class="text-c_white bg-[rgba($color: $black, $alpha: 0.2)] leading-[35px] tracking-[1px] border border-solid border-c_white rounded-[5px] px-1 box-border">{{ siteData.b2Info.subSiteName }}</p>
+      <div class="subSiteName flex justify-center items-center w-[20%] text-base"
+        v-if="siteData && siteData.b2Info && siteData.b2Info.subSiteName">
+        <p
+          class="text-c_white bg-[rgba($color: $black, $alpha: 0.2)] leading-[35px] tracking-[1px] border border-solid border-c_white rounded-[5px] px-1 box-border">
+          {{ siteData.b2Info.subSiteName }}</p>
       </div>
       <div class="new-search flex justify-center items-center w-1/2">
         <div class="relative w-[90%]">
-          <input class="border border-solid border-c_gallery inline-flex items-center relative box-border w-full h-10 rounded-lg bg-c_white pl-[10px] text-base" @keydown="goSearchByEnter" ref="searchInput" />
-          <img class="w-5 h-5 absolute right-2 top-1/2 -translate-y-1/2 " src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
+          <input
+            class="border border-solid border-c_gallery inline-flex items-center relative box-border w-full h-10 rounded-lg bg-c_white pl-[10px] text-base"
+            @keydown="goSearchByEnter" ref="searchInput" />
+          <img class="w-5 h-5 absolute right-2 top-1/2 -translate-y-1/2 "
+            src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
         </div>
       </div>
     </div>
@@ -21,14 +27,18 @@
       </div>
       <div class="new-search flex justify-center items-center">
         <div class="relative w-[90%]">
-          <input class="inline-flex items-center relative box-border w-full h-10 border border-solid border-[rgba(255, 0, 0, 0.5)] rounded-lg bg-c_white pl-[10px] text-base" @keydown="goSearchByEnter" ref="searchInput" />
-          <img class="w-5 h-5 absolute right-2 top-1/2 -translate-y-1/2 " src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
+          <input
+            class="inline-flex items-center relative box-border w-full h-10 border border-solid border-[rgba(255, 0, 0, 0.5)] rounded-lg bg-c_white pl-[10px] text-base"
+            @keydown="goSearchByEnter" ref="searchInput" />
+          <img class="w-5 h-5 absolute right-2 top-1/2 -translate-y-1/2 "
+            src="https://event.shopping.friday.tw/event/CP/common/mobile_icon/search-gy.svg" @click="goSearch" />
         </div>
       </div>
     </div>
-    <navigationBottom @openShowMenu="openShowMenu" @showPeopleLinks="showPeopleLinks" @resetAllLinkAreaStatus="resetAllLinkAreaStatus"/>
+    <navigationBottom @openShowMenu="openShowMenu" @showPeopleLinks="showPeopleLinks"
+      @resetAllLinkAreaStatus="resetAllLinkAreaStatus" />
     <transition name="slide">
-      <peoplelinks v-if="isShowPeopleLinks"/>
+      <peoplelinks v-if="isShowPeopleLinks" />
     </transition>
   </div>
 </template>
@@ -42,7 +52,7 @@
   import type { siteData } from '@/types/apiWeb';
 
   import tools from '@/util/tools';
-  
+
   const BsiteStore = useBsiteStore()
   let searchInput: Ref<HTMLInputElement | null> = ref(null) // input值
   const { siteData } = storeToRefs(BsiteStore) //siteData
@@ -101,10 +111,10 @@
   }
 
   function closeShowMenu() {
-      isShowMenu.value = false;
-    }
+    isShowMenu.value = false;
+  }
   // 打開漢堡選單
-  function openShowMenu(evt:Event) {
+  function openShowMenu(evt: Event) {
     if (evt) evt.preventDefault();
     if (!isShowMenu.value) {
       console.log(111);
@@ -112,20 +122,18 @@
       console.log(222);
     }
   }
-  function showPeopleLinks(evt:Event) {
-      if (evt) evt.preventDefault();
-      isShowPeopleLinks.value = !isShowPeopleLinks.value;
-      if (isShowPeopleLinks.value) {
-        // isShowMenu = false;
+  function showPeopleLinks(evt: Event) {
+    if (evt) evt.preventDefault();
+    isShowPeopleLinks.value = !isShowPeopleLinks.value;
+    if (isShowPeopleLinks.value) {
+      // isShowMenu = false;
     }
   }
   //關閉所有navigationBottom展開的區塊
-  function resetAllLinkAreaStatus(){
+  function resetAllLinkAreaStatus() {
     isShowMenu.value = false;
-    isShowPeopleLinks.value = false 
+    isShowPeopleLinks.value = false
   }
 </script>
 
-<style lang='scss' scoped>
-
-</style>
+<style lang='scss' scoped></style>
