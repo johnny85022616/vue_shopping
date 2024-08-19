@@ -1,5 +1,5 @@
 <template>
-  <div :class="[`peoplelinks pt-[60px] relative h-screen`]">
+  <div :class="[`peoplelinks fixed pt-[60px] pb-[80px] left-0 right-0 z-10 h-screen bg-c_white`]">
     <ul>
       <li class="p-3 border-b border-solid border-c_alto text-base">
         <a @click="(e)=>doLogin(e)" class="inline-block w-full"href="">我的帳戶</a>

@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="[`navigation-bottom-bar flex items-center justify-evenly fixed z-[2] left-0 right-0 bottom-0 w-full h-[50px] py-1 px-0`, `${siteData ? `border-t border-solid border-t-c_alto bg-c_white` : 'bg-c_dune'}`]">
+    :class="[`navigation-bottom-bar flex items-center justify-evenly fixed z-20 left-0 right-0 bottom-0 w-full h-[50px] py-1 px-0`, `${siteData ? `border-t border-solid border-t-c_alto bg-c_white` : 'bg-c_dune'}`]">
     <RouterLink
       :class="['text-[10px] w-[50px] h-fit no-underline inline-flex flex-col-reverse items-center relative', `${siteData ? 'text-c_dune' : 'text-c_white'}`]"
       :to="{ path: setHomepageUrl }" @click="resetAllLinkAreaStatus">首頁

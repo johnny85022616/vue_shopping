@@ -1,6 +1,6 @@
 <template>
   <div class="navigation relative  h-[60px] m-0">
-    <div v-if="siteData" class="redBg isBsite w-full h-[60px] flex z-2 fixed px-5"
+    <div v-if="siteData" class="redBg isBsite w-full h-[60px] flex z-20 fixed px-5"
       :style="{ backgroundColor: `${siteData.headerColor ? siteData.headerColor : '#ddd5cc'}` }">
       <div class="mini-logo flex justify-center items-center" @click="(evt) => openBsiteSite(evt)">
         <img class="w-auto max-h-[35px] mr-4" :src="siteData.logoMobile" />
@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <div v-else class="redBg w-full h-[60px] flex z-10 fixed px-5" :style="{ backgroundColor: '#f5281e' }">
+    <div v-else class="redBg w-full h-[60px] flex z-20 fixed px-5" :style="{ backgroundColor: '#f5281e' }">
       <div div class="mini-logo w-[30%] mx-auto my-0 flex justify-center items-center" @click="openFridaySite">
         <img src="../../assets/icons/friday_logo.svg" />
       </div>
