@@ -7,9 +7,11 @@
 import { ref } from 'vue';
 import { useBsiteStore } from '@/stores/bsiteStore';
 import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 
   const bsiteStore = useBsiteStore()
   const {siteData} = storeToRefs(bsiteStore)
+  const router = useRouter()
 
   const isBsite = ref(false)
   const bsiteShopItems = ref(null)
@@ -36,6 +38,13 @@ import { storeToRefs } from 'pinia';
       }
     } else {
       // this.getBsiteCategorys();
+    }
+
+    const goCategoryPage = (url:string, siteType = 1 /* 1 friDay本站 2 bSite本站 */)=> {
+      if (siteData.value && siteType === 1) {
+        url += "?catg=uni";
+      }
+      router.push(url)
     }
 
 
