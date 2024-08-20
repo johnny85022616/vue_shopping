@@ -4,6 +4,7 @@ export default {
   c_pomegranate: '#f5281e',
   c_pomegranateapprox: '#f5281e',
   c_sundown: '#FFB5B5',
+  c_yellow: '#FFFF00',
   c_selective_yellow: '#FFBB00',
   c_red_berry: '#880000',
   c_black: '#000000',

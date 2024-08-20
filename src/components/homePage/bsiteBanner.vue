@@ -1,18 +1,18 @@
 <template>
-  <div class="bsiteBanner w-full flex items-center justify-around">
-    <carousel class="custom-carousel" :autoplay="3000" :loop="true" :autoplayTimeout="3000">
-      <slide :class="['wrap-item',{noPadding: item.img}]" v-for="(item, index) of itemList" :style="[{ 'background-image': item.bgurl ? `url(${item.bgurl})` : '' }]" :key="index">
-        <div class="banner-item">
+  <div class="bsiteBanner w-full flex items-center justify-around py-3">
+    <Carousel class="custom-carousel" :autoplay="3000" :loop="true" :autoplayTimeout="3000">
+      <Slide class="wrap-item bg-c_background py-2" v-for="(item, index) of itemList" :key="index">
+        <div class="banner-item w-full flex justify-around items-center">
           <a class="relative w-[48%] flex justify-center" v-for="(v, i) in item.data" :key="i" :href="v.link">
-            <img :src="v.image_url" />
+            <img class="w-[90%] aspect-square object-cover" :src="v.image_url" />
             <div class="absolute flex bottom-0 justify-between w-[90%] h-[35px] items-center bg-c_black_transparent py-[2px] px-2">
-              <span>{{ v.name }}</span>
-              <span>{{ tools.priceFormat(v.price) }}</span>
+              <span class="leading-4 w-[110px] h-[35px] text-c_white text-xs">{{ v.name }}</span>
+              <span class="w-[32%] text-c_yellow text-sm text-right before:content-['$'] before:text-xs">{{ tools.priceFormat(v.price) }}</span>
             </div>
           </a>
         </div>
-      </slide>
-    </carousel>
+      </Slide>
+    </Carousel>
   </div>
 </template>
 

@@ -15,14 +15,14 @@
         <template v-if="!siteData">
           <banner />
           <shortcutSlider />
-          <div class="text-sm pt-[10px] pb-[2px]">
-            <a href="https://shopping.friday.tw/ec2/anti_grift" target="_blank"
-              style="color: red; text-decoration: none;">【慎防詐騙】 本公司不會主動聯繫要求您提供個人金融資料，也不會要求您操作ATM轉帳或網銀</a>
-          </div>
         </template>
         <template v-else>
           <bsiteBanner />
         </template>
+      </div>
+      <div class="text-sm w-[95%] mx-auto py-2">
+        <a href="https://shopping.friday.tw/ec2/anti_grift" target="_blank"
+          style="color: red; text-decoration: none;">【慎防詐騙】 本公司不會主動聯繫要求您提供個人金融資料，也不會要求您操作ATM轉帳或網銀</a>
       </div>
       <discountAndHot v-if="!siteData" />
       <hotKeywords :isBsite="isBsite"/>
