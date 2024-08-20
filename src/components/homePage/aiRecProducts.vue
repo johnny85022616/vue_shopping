@@ -150,6 +150,7 @@ const parseData = async (data: mixProduct[]) => {
 
   await nextTick()
   fourteenShopData.value = fourteenShopData.value.map((ele: any, index: number) => {
+    if(!productDom.value[index]) return 
     const productBlockHeight =
       productDom.value[index].offsetTop;
     return {
@@ -162,11 +163,9 @@ const parseData = async (data: mixProduct[]) => {
 const changeBarActive = (e: any, index: number) => {
   //點擊的category滾動到bar中間
   if (!e) {
-    console.log(index);
     nowCategoryIndex.value = index;
     const mBar = menuBar.value;
     const catEle = catProductDom.value[index];
-    console.log(catProductDom.value);
     const catEleLeft =
       catEle.offsetLeft - (window.innerWidth - catEle.offsetWidth) / 2;
     mBar.scrollTo({
