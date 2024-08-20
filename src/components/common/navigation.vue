@@ -35,8 +35,7 @@
         </div>
       </div>
     </div>
-    <navigationBottom @openShowMenu="openShowMenu" @showPeopleLinks="showPeopleLinks"
-      @resetAllLinkAreaStatus="resetAllLinkAreaStatus" />
+    <navigationBottom @openShowMenu="openShowMenu" @controlPeopleLinksStatus="controlPeopleLinksStatus" @resetAllLinkAreaStatus="resetAllLinkAreaStatus"/>
     <transition name="slide">
       <peoplelinks v-if="isShowPeopleLinks" />
     </transition>
@@ -109,26 +108,36 @@
         }/aisearch?keyword=${encodeURIComponent(keyword)}&bw=1`;
     }
   }
+  
+  // peoplelinks開合控制
+  function controlPeopleLinksStatus(){
+    if(isShowPeopleLinks.value){
+      console.log(7777);
+      closePeopleLinks()
+      return 
+    }
+    console.log(8888);
+    closeShowMenu()
+    openPeopleLinks()
+  }
 
+  // 打開全分類選單
+  function openShowMenu() {
+    isShowMenu.value = true;
+  }
+  //關閉全分類選單
   function closeShowMenu() {
     isShowMenu.value = false;
   }
-  // 打開漢堡選單
-  function openShowMenu(evt: Event) {
-    if (evt) evt.preventDefault();
-    if (!isShowMenu.value) {
-      console.log(111);
-    } else {
-      console.log(222);
-    }
+  //開啟我的選單
+  function openPeopleLinks() {
+    isShowPeopleLinks.value = true;
   }
-  function showPeopleLinks(evt: Event) {
-    if (evt) evt.preventDefault();
-    isShowPeopleLinks.value = !isShowPeopleLinks.value;
-    if (isShowPeopleLinks.value) {
-      // isShowMenu = false;
-    }
+  //關閉我的選單
+  function closePeopleLinks(){
+    isShowPeopleLinks.value = false;
   }
+
   //關閉所有navigationBottom展開的區塊
   function resetAllLinkAreaStatus() {
     isShowMenu.value = false;

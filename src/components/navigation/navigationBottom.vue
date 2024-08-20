@@ -37,7 +37,7 @@
 
 <script setup lang="ts" name="navigationBottom">
 import api from '@/apis/api';
-import { computed, inject, onMounted, ref } from 'vue';
+import { computed, inject, onMounted, ref, toRefs } from 'vue';
 import { useBsiteStore } from '../../stores/bsiteStore';
 import { storeToRefs } from 'pinia';
 import type { siteData } from '@/types/apiWeb';
@@ -52,7 +52,7 @@ const cartTypeNum = ref(0)
 
 const BsiteStore = useBsiteStore()
 const { siteData } = storeToRefs(BsiteStore)
-const emit = defineEmits(['openShowMenu', "showPeopleLinks", "resetAllLinkAreaStatus"])
+const emit = defineEmits(['controlPeopleLinksStatus' , 'resetAllLinkAreaStatus'])
 
 onMounted(async () => {
   //init 購物車
@@ -90,9 +90,7 @@ const cartUrl = computed<string>(() => {
 
 //打開全分類
 function openMenu(evt: Event) {
-  console.log(evt);
-  emit('resetAllLinkAreaStatus')
-  emit('openShowMenu')
+  
 }
 
 
@@ -101,20 +99,19 @@ function openMyProfile(evt: Event) {
   const b2cUid = $cookies.get('FEEC-B2C-UID');
   const b2cTicket = $cookies.get('FEEC-B2C-TICKET');
   const faToken = $cookies.get('FEEC-FA-TOKEN');
-  emit('resetAllLinkAreaStatus')
   if (b2cUid && b2cTicket && faToken) {
     //登入狀態轉會員中心頁
     router.push('/memberCenter');
     return;
   }
-  //未登入觸發peoplelinks
-  emit('showPeopleLinks', evt);
+  emit('controlPeopleLinksStatus');
 }
 
 //關閉所有navigationBottom展開的區塊
 function resetAllLinkAreaStatus(){
   emit('resetAllLinkAreaStatus')
 }
+
 </script>
 
 <style lang="scss" scoped></style>
