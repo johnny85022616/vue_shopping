@@ -1,7 +1,7 @@
 <template>
-  <div class="bsiteBanner w-full flex items-center justify-around py-3">
+  <div v-if="state.itemList.length>0" class="bsiteBanner w-full flex items-center justify-around py-3">
     <Carousel class="custom-carousel" :autoplay="3000">
-      <Slide class="wrap-item bg-c_background py-2" v-for="(item, index) of itemList" :key="index">
+      <Slide class="wrap-item bg-c_background py-2" v-for="(item, index) of state.itemList" :key="index">
         <div class="banner-item w-full flex justify-around items-center">
           <a class="relative w-[48%] flex justify-center" v-for="(v, i) in item.data" :key="i" :href="v.link">
             <img class="w-[90%] aspect-square object-cover" :src="v.image_url" />
@@ -30,7 +30,7 @@ const bsiteStore = useBsiteStore();
 const {siteData} = storeToRefs(bsiteStore)
 
 
-  const itemList = reactive<any>([])
+  const state = reactive<any>({itemList:[]})
 
   const getData = async()=>{
     if(!siteData.value) return 
@@ -108,7 +108,7 @@ const {siteData} = storeToRefs(bsiteStore)
         });
         items = arr.filter((v) => v.data.length == 2);
       }
-      Object.assign(itemList , items)
+      state.itemList = items
     }
 
   const init = async () => {
