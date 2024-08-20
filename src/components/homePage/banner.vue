@@ -8,9 +8,6 @@
         </a>
       </slide>
     </Carousel>
-    <span
-      class="banners-wrap__counter absolute right-1 bottom-1 box-border py-1 px-2 rounded-lg text-c_white text-xs font-semibold flex justify-center items-center bg-c_black_transparent">{{
-        nowItemPage }}/{{ items.length }}</span>
   </div>
 </template>
 
@@ -22,14 +19,6 @@
 
   let items = ref<any[]>([]);
   const nowItemPage = ref(0);
-
-  const pageChange = (data:any) => {
-    nowItemPage.value = data.currentSlideIndex + 1
-  }
-
-  const navigateTo = computed(() => {
-    return Math.floor(Math.random() * items.value.length)
-  })
 
   const init = async () => {
     const data = await api.web.getHomePageFridayBanner()
