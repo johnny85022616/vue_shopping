@@ -35,7 +35,10 @@
         </div>
       </div>
     </div>
-    <navigationBottom @openShowMenu="openShowMenu" @controlPeopleLinksStatus="controlPeopleLinksStatus" @resetAllLinkAreaStatus="resetAllLinkAreaStatus"/>
+    <navigationBottom @controlPeopleLinksStatus="controlPeopleLinksStatus" @controlMenuStatus="controlMenuStatus" @resetAllLinkAreaStatus="resetAllLinkAreaStatus"/>
+    <transition name="slide">
+      <menutree v-if="isShowMenu" />
+    </transition>
     <transition name="slide">
       <peoplelinks v-if="isShowPeopleLinks" />
     </transition>
@@ -45,6 +48,7 @@
 <script setup lang="ts" name="Homepage">
   import navigationBottom from '../navigation/navigationBottom.vue';
   import peoplelinks from '../navigation/peoplelinks.vue';
+  import menutree from '../navigation/menutree.vue';
   import { ref, type Ref } from 'vue';
   import { useBsiteStore } from '../../stores/bsiteStore';
   import { storeToRefs } from 'pinia';
@@ -112,13 +116,20 @@
   // peoplelinks開合控制
   function controlPeopleLinksStatus(){
     if(isShowPeopleLinks.value){
-      console.log(7777);
       closePeopleLinks()
       return 
     }
-    console.log(8888);
     closeShowMenu()
     openPeopleLinks()
+  }
+
+  function controlMenuStatus(){
+    if(isShowMenu.value){
+      closeShowMenu()
+      return
+    }
+    closePeopleLinks()
+    openShowMenu()
   }
 
   // 打開全分類選單

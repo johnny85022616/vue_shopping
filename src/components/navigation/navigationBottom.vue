@@ -52,7 +52,7 @@ const cartTypeNum = ref(0)
 
 const BsiteStore = useBsiteStore()
 const { siteData } = storeToRefs(BsiteStore)
-const emit = defineEmits(['controlPeopleLinksStatus' , 'resetAllLinkAreaStatus'])
+const emit = defineEmits(['controlMenuStatus', 'controlPeopleLinksStatus' , 'resetAllLinkAreaStatus'])
 
 onMounted(async () => {
   //init 購物車
@@ -90,7 +90,7 @@ const cartUrl = computed<string>(() => {
 
 //打開全分類
 function openMenu(evt: Event) {
-  
+  emit('controlMenuStatus');
 }
 
 
