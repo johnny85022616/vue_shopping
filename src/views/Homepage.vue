@@ -61,7 +61,7 @@
   const windowY = ref(0)
   const currentY = ref(0)
   const promoData = ref(null)
-  const notIsOthersExposeToMeData = ref<mixProduct[] | aiProduct[] | null>(null)
+  const notIsOthersExposeToMeData = ref<mixProduct[]|null>(null)
 
   async function getNotIsOthersExposeToMeData() {
     let postData: any = {
@@ -114,8 +114,8 @@
         siteData.value.isOthersExposeToMe === "N"
       ) {
         isNotExposeToMeTag.value = true
-        const data = await getNotIsOthersExposeToMeData();
-        console.log(data);
+        const d = await getNotIsOthersExposeToMeData();
+        const data = d as mixProduct[]
         if (data) {
           if (data.length >= 50) {
             isShowSimpleHomePage.value = true

@@ -5,6 +5,7 @@ import api from '@/apis/api';
 import type { productsObj } from '@/types/product';
 import type { aiProduct } from '@/types/aiProducts';
 import type { mixProduct } from '@/types/mixProducts';
+import type{ category } from '@/types/category';
 
 const { aiCloudApiPath, aiApiPath, fetchPostHeaders } = config;
 
@@ -32,7 +33,7 @@ const api_ai = {
       [key: string]: any;
     },
     notGetProductsInfoFlag = false
-  ):Promise<mixProduct[]|aiProduct[]|null>{
+  ):Promise<mixProduct[]|aiProduct[]|category|null>{
     payload = excludeUnshown(payload) || payload;
 
     // 部份上雲的AI API判斷
