@@ -1,5 +1,27 @@
 <template>
-  <div class="menutree">
+  <div class="menutree fixed left-0 right-0 z-20 h-screen bg-c_white`">
+    <hotKeywords v-if="(!isBsite)||(isBsite && siteData && !['B4', 'b1'].includes(siteData.siteType))" :isBsite="isBsite" />
+
+    <div class="category-shop bg-c_white text-c_mine_shaft overflow-auto pb-[60px]" :style="[{'height': 'calc(100vh - 50px - 101px)'}]">
+      <div v-if="bsiteShopItems">
+        <label class="inline-block p-4 text-base" for="">{{ bsiteShopItemsTitle }}</label>
+        <ul class="text-sm px-4 grid grid-cols-3 gap-2 list-none">
+          <li class="mb-2" v-for="(item, idx) in bsiteShopItems" :key="idx" @click="goCategoryPage(item.url, 2)">
+            <img class="relative w-3/4 aspect-square mx-auto border border-solid border-c_ghost rounded-md" :src="item.img_url" alt="">
+            <p class="text-c_mine_shaft text-center px-3">{{item.name}}</p>
+          </li>
+        </ul>
+      </div>
+      <template v-if="shopItems && shopItems.length > 0">
+        <label class="inline-block p-4 text-base" for="">{{ shopItemsTitle }}</label>
+        <ul class="text-sm px-4 grid grid-cols-3 gap-2 list-none">
+          <li class="mb-2" v-for="(item, idx) in shopItems" :key="idx" @click="goCategoryPage(item.url, 1)">
+            <img class="relative w-3/4 aspect-square mx-auto border border-solid border-c_ghost rounded-md" :src="item.img_url" alt="">
+            <p class="text-c_mine_shaft text-center px-3">{{item.name}}</p>
+          </li>
+        </ul>
+      </template>
+    </div>
   </div>
 </template>
 
@@ -11,6 +33,7 @@ import { useRouter } from 'vue-router';
 import tools from '@/util/tools';
 import api from '@/apis/api';
 import type { category, catg } from '@/types/category';
+import hotKeywords from '@/components/common/hotKeywords.vue';
 
   const bsiteStore = useBsiteStore()
   const {siteData} = storeToRefs(bsiteStore)
