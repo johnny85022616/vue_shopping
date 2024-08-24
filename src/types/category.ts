@@ -26,12 +26,12 @@ export interface category {
   l_pattern: Lpattern[];
 }
 
-interface group {
+export interface group {
   cid: string;
   name: string;
   list: string[];
   img_url?: string;
-  sub?: group;
+  sub?: catg;
 }
 
 export interface catg {

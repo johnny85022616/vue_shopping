@@ -32,7 +32,7 @@ import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import tools from '@/util/tools';
 import api from '@/apis/api';
-import type { category, catg } from '@/types/category';
+import type { category, catg , group} from '@/types/category';
 import hotKeywords from '@/components/common/hotKeywords.vue';
 
   const bsiteStore = useBsiteStore()
@@ -127,14 +127,17 @@ import hotKeywords from '@/components/common/hotKeywords.vue';
     }
     
     //找到該目錄結構最底層(為了取圖片)
-    const getBottom = (ca:string, tr:any):any=> {
-      if (!tr[ca]?.sub || Object.keys(tr[ca]?.sub).length === 0) {
-        return tr[ca];
+    const getBottom = (ca:string, tr:catg):group|catg=> {
+      //最底
+      if (!tr[ca]?.sub || Object.keys(tr[ca]?.sub as catg).length === 0) {
+        return tr[ca]; // 型態group
       }
-      const newCa = Object.keys(tr[ca]?.sub)[0];
-      const newTr = tr[ca].sub;
-
-      return getBottom(newCa, newTr);
+        const d = tr[ca]?.sub as catg
+        const newCa = Object.keys(d)[0];
+        const newTr = tr[ca].sub as catg;  //型態catg
+        console.log(newTr);
+  
+        return getBottom(newCa, newTr);
     }
 
     const init = async()=>{
