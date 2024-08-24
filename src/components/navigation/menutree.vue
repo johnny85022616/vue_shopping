@@ -127,7 +127,7 @@ import hotKeywords from '@/components/common/hotKeywords.vue';
     }
     
     //找到該目錄結構最底層(為了取圖片)
-    const getBottom = (ca:string, tr:any)=> {
+    const getBottom = (ca:string, tr:any):any=> {
       if (!tr[ca]?.sub || Object.keys(tr[ca]?.sub).length === 0) {
         return tr[ca];
       }
