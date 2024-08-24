@@ -127,7 +127,7 @@ import hotKeywords from '@/components/common/hotKeywords.vue';
     }
     
     //找到該目錄結構最底層(為了取圖片)
-    const getBottom = (ca:string, tr:catg):group|catg=> {
+    const getBottom = (ca:string, tr:catg):group=> {
       //最底
       if (!tr[ca]?.sub || Object.keys(tr[ca]?.sub as catg).length === 0) {
         return tr[ca]; // 型態group
@@ -135,7 +135,6 @@ import hotKeywords from '@/components/common/hotKeywords.vue';
         const d = tr[ca]?.sub as catg
         const newCa = Object.keys(d)[0];
         const newTr = tr[ca].sub as catg;  //型態catg
-        console.log(newTr);
   
         return getBottom(newCa, newTr);
     }
