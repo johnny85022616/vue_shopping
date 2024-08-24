@@ -1,5 +1,5 @@
 <template>
-  <div class="menutree fixed left-0 right-0 z-20 h-screen bg-c_white`">
+  <div class="menutree fixed left-0 right-0 z-20  bg-c_white`" :style="[{'height': 'calc(100vh - 50px)'}]">
     <hotKeywords v-if="(!isBsite)||(isBsite && siteData && !['B4', 'b1'].includes(siteData.siteType))" :isBsite="isBsite" />
 
     <div class="category-shop bg-c_white text-c_mine_shaft overflow-auto pb-[60px]" :style="[{'height': 'calc(100vh - 50px - 101px)'}]">
