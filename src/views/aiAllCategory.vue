@@ -117,6 +117,84 @@ import type { anyObject } from '@/types/common';
       category.value = menu;
     }
 
+    //取得下方商品目錄資料
+    // const getCategoryData = async()=>{
+    //   let arr = [];
+    //   if (category.value) {
+    //     const nowPageArr = category.value.slice(
+    //       page.value * pageSize.value,
+    //       (page.value + 1) * pageSize.value
+    //     );
+    //     for (let cat of nowPageArr) {
+    //       let tempGroups = {};
+    //       const data = await getPrdApi(cat.id);
+
+    //       if (data) {
+    //         let productItemData = data.map((ele) => {
+    //           return {
+    //             ...ele,
+    //             img: ele.image_url,
+    //             name: ele.name,
+    //             pid: ele.pid,
+    //           };
+    //         });
+    //         tempGroups.category = cat;
+    //         tempGroups.products = productItemData;
+    //         arr.push(tempGroups);
+    //       }
+    //     }
+    //     this.bCategoryData = this.bCategoryData.concat(arr);
+    //     this.$nextTick(() => {
+    //       if (this.page < this.totalPage) {
+    //         this.page += 1;
+    //         this.isApiOk = true;
+    //         this.isAtBottom = false;
+    //       }
+    //     });
+    //   }
+    // }
+
+    // //主站、B站(B1)取商品列表
+    // const getPrdApi = (apiCatg:string)=>{
+    //   const data:any = tools.urlSearchToObj();
+    //   const catg = data?.catg
+
+    //   const { siteType, isOthersExposeToMe } = siteData.value
+    //     ? siteData.value
+    //     : {};
+    //   let postData = {
+    //     type: 2,
+    //     q1_x: 0.5,
+    //     supplier_y:
+    //       (siteData && !catg) ||
+    //       ((siteType === "B1" || siteType === "b1") &&
+    //         isOthersExposeToMe === "N")
+    //         ? 1
+    //         : 0, // 若為bSite 且沒有帶 catg=uni 就設定為 1
+    //     list_num: 20,
+    //   };
+    //   let keywords = "";
+
+    //   if (this.siteData && this.siteData.supplierId && !catg) {
+    //     postData.filter = {
+    //       k: "1010",
+    //       v: [this.siteData.supplierId, "", apiCatg, ""],
+    //     };
+    //   } else {
+    //     if (this.isFetnetEstore) {
+    //       keywords = "!!拆封,福利,福利品";
+    //     }
+    //     postData.filter = this.tools.composeaiApiFilter(
+    //       "",
+    //       "",
+    //       apiCatg,
+    //       keywords
+    //     );
+    //   }
+
+    //   return await this.tools.getAiData("getalist", postData);
+    // },
+
     // 取得category快取
     const getCatCache = (id:string): catg[]=>{
       let siteId = "-";
