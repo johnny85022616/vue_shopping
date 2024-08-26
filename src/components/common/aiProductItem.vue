@@ -43,38 +43,106 @@
                     <font class="coin">{{ productPrice(item.rewardPointInfo.lifePartialPoint) }}</font> +
                     <font class="coin_price">{{ productPrice(item.rewardPointInfo.lifePartialPrice) }}</font>
                   </template>
-                  <template v-else-if="item.rewardPointInfo && item.rewardPointInfo.lifeExchangePoint !== undefined">
+<template v-else-if="item.rewardPointInfo && item.rewardPointInfo.lifeExchangePoint !== undefined">
                     <i class="fcoin"></i>
                     <font class="coin">{{ productPrice(item.rewardPointInfo.lifeExchangePoint) }}</font>
                   </template>
-                  <template v-else>
+<template v-else>
                     <template v-if="isFromFetmcPromotion">
                       <i class="fcoin"></i>
                       <font class="coin">{{ productPrice(item.price) }}</font>
                     </template>
-                    <span v-else class="price-box">
-                      <font class="price">{{ productPrice(item.price) }}</font>
-                      <font v-if="item.priceSuffix" class="priceSuffix">{{ item.priceSuffix }}</font>
-                    </span>
-                  </template>
-                  <span v-if="showCampaignQtyIcon && item.campaignQty" class="campaignIcon">折({{item.campaignQty}})</span>
-                </span>
-              </div>
-            </a>
-            <div class="iconArea">
-              <span class="storeIcon" v-if="isShowStoreIcon && item.isStore===1">超</span>
-            </div>
-          </div>
-        </div>
-      </template>
-    </div> -->
+<span v-else class="price-box">
+  <font class="price">{{ productPrice(item.price) }}</font>
+  <font v-if="item.priceSuffix" class="priceSuffix">{{ item.priceSuffix }}</font>
+</span>
+</template>
+<span v-if="showCampaignQtyIcon && item.campaignQty" class="campaignIcon">折({{item.campaignQty}})</span>
+</span>
+</div>
+</a>
+<div class="iconArea">
+  <span class="storeIcon" v-if="isShowStoreIcon && item.isStore===1">超</span>
+</div>
+</div>
+</div>
+</template>
+</div> -->
   </div>
 </template>
 
 <script lang="ts" setup name="aiProductItem">
-import type { mixProduct } from '@/types/mixProducts';
+  import type { mixProduct } from '@/types/mixProducts';
+  import { computed, toRefs } from 'vue';
+  import tools from '@/util/tools';
 
+  const props = withDefaults(
+    defineProps<{
+      itemList: mixProduct[];
+      layoutType: string;
+      isTwoColumn: boolean;
+      isAiData: boolean;
+      aiDataCount: number;
+      bwDataCount: number;
+      noWrap: boolean;
+      hrefTarget: string;
+    }>(),
+    {
+      layoutType: 'two',
+      isTwoColumn: false,
+      searchKeyword: '',
+      isAiData: false,
+      aiDataCount: 0,
+      bwDataCount: 0,
+      noWrap: false,
+      hrefTarget: '_self',
+      isFromFetmcPromotion: false,
+      isShowSoldout: false,
+      isShowStoreIcon: false,
+      showCampaignQtyIcon: false,
+    }
+  );
 
-const props = defineProps<{itemList:mixProduct[], layoutType:string ,isTwoColumn:boolean,isAiData:boolean,aiDataCount:number}>()
+  const {
+    itemList,
+    layoutType,
+    isTwoColumn,
+    isAiData,
+    aiDataCount,
+    bwDataCount,
+    noWrap,
+    hrefTarget,
+    isFromFetmcPromotion,
+    isShowSoldout,
+    isShowStoreIcon,
+    showCampaignQtyIcon,
+    searchKeyword,
+  } = toRefs(props);
 
+  function productPrice(price: number) {
+    return tools.priceFormat(price);
+  }
+
+  const searchDataCount = computed(() => {
+    return aiDataCount.value + bwDataCount.value;
+  });
+
+  const listClass = computed(() => {
+    return {
+      'product-list': true,
+      'two-column': isTwoColumn.value,
+      square: true,
+      noWrap: noWrap.value,
+    };
+  });
+
+  const itemClass = computed(()=>{
+    return {
+      item: true,
+      square: true,
+    }
+  })
+
+  
 </script>
+
