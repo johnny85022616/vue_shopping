@@ -159,6 +159,48 @@ const getCategoryData = async()=>{
   }
 }
 
+//主題頁
+// const getMThemeData=()=> {
+//       let arr = [];
+//       if (category.value) {
+//         const nowPageArr = category.value.slice(
+//           page.value * pageSize.value,
+//           (page.value + 1) * pageSize.value
+//         );
+//         for (let cat of nowPageArr) {
+//           let tempGroups = {};
+//           const data = await tools.getYstdThemeData(
+//             20,
+//             cat.id,
+//             null,
+//             "category"
+//           );
+
+//           if (data && data.length > 0) {
+//             let productItemData = data.map((ele) => {
+//               return {
+//                 ...ele,
+//                 img: ele.image_url,
+//                 name: ele.name,
+//                 pid: ele.pid,
+//               };
+//             });
+//             tempGroups.category = cat;
+//             tempGroups.products = productItemData;
+//             arr.push(tempGroups);
+//           }
+//         }
+//         this.bCategoryData = this.bCategoryData.concat(arr);
+//         this.$nextTick(() => {
+//           if (this.page < this.totalPage) {
+//             this.page += 1;
+//             this.isApiOk = true;
+//             this.isAtBottom = false;
+//           }
+//         });
+//       }
+//     }
+
 //主站、B站(B1)取商品列表
 const getPrdApi = async (apiCatg: string) => {
   const data: any = tools.urlSearchToObj();

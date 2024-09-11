@@ -91,6 +91,113 @@ const api_ai = {
     }
     return aiUserId;
   },
+  async getYsdtThemeData(rows = 400, categoryId = '', siteData = null, apiEndpoint = 'getalist') {
+    const { siteId, b4Info, unShowSupplierIds, productScopeK, productScopeV } = siteData || (window as anyObject).siteData;
+    let keyword = '';
+    let filterObj = null;
+    let supplierIds = '';
+    let prodFlag = '';
+
+    if (b4Info) {
+      if (b4Info?.supplierIds) supplierIds = b4Info.supplierIds;
+      if (b4Info?.prodFlag) prodFlag = b4Info.prodFlag;
+      if (b4Info?.kws) keyword = b4Info.kws;
+    }
+
+    if (productScopeK && productScopeV) {
+      const exObj: {[key:string]: any} = {};
+      if (categoryId) exObj['category'] = categoryId;
+      filterObj = this.composeScopeWithFilter(productScopeK, productScopeV, exObj);
+    } else {
+      const supIds = supplierIds ? supplierIds.toString() : '';
+      const prodType = prodFlag || '';
+      const unshownSupIds = unShowSupplierIds ? unShowSupplierIds.toString() : '';
+      filterObj = this.composeBListFilter(supIds, unshownSupIds, categoryId, keyword, '', '', prodType);
+    }
+    const d = await this.getAiData(
+      apiEndpoint,
+      {
+        target_value: this.aiUserId(),
+        q1_x: 0.5,
+        supplier_y: 1,
+        filter: filterObj,
+        list_num: rows,
+        site_id: siteId,
+        type: 2,
+      },
+      false
+    );
+    
+    const data = d as mixProduct[]
+    if (data && data.length > 0) {
+      return data.map((e) => {
+        const { name, images, price, isStore } = e;
+        return {
+          image_url: images,
+          name: name,
+          price: price ? price : 0,
+          pid: e.pid,
+          lid: e.auto_category_id_L,
+          mid: e.auto_category_id_M,
+          bid: e.auto_category_id,
+          lidName: e.auto_category_id_L_c,
+          midName: e.auto_category_id_M_c,
+          bidName: e.auto_category_id_c,
+          isStore: isStore,
+        };
+      });
+    } else {
+      console.warn('there is no data');
+    }
+  },
+  composeScopeWithFilter(scopeK:string, scopeV:string, filterData:any) {
+    const k: any = scopeK.split('');
+    const v:any = scopeV;
+
+    if (filterData) {
+      const { category, search, prdFlag } = filterData;
+      // 設定category
+      if (category) {
+        k[2] = 1;
+        v[2] = category;
+      }
+      // 設定搜尋
+      if (search) {
+        k[3] = 1;
+        v[3] = search;
+      }
+      //商品旗標(“S“超取， “I“ 虛擬商品 )
+      if (prdFlag) {
+        k[6] = 1;
+        v[6] = prdFlag;
+      }
+    }
+
+    return { k: k.join(''), v: v };
+  },
+  composeBListFilter(...argument:any) {
+    const argLen = argument.length < 4 ? 4 : argument.length;
+    const tag = Array(argLen).fill(0);
+    const tagStr = Array(argLen).fill('');
+
+    tag.forEach((ele, idx) => {
+      if (argument[idx]) {
+        if (/^!!/.test(argument[idx])) {
+          tagStr[idx] = argument[idx].replace(/^!!/, '');
+          tag[idx] = 2;
+        } else {
+          tag[idx] = 1;
+          tagStr[idx] = argument[idx];
+        }
+      }
+    });
+
+    const k = tag.join('');
+    const v = [...tagStr];
+    return { k: k, v: v };
+  },
 };
+
+
 
 export default api_ai;
