@@ -1,5 +1,5 @@
 <template>
-  <div class="aiAllCategory">
+  <!-- <div class="aiAllCategory">
     <navigation :windowY="200" :directShowSearchInput="true" />
     <breadcrumb v-if="breadCrumbData" :breadCrumbData="breadCrumbData" />
     <div v-if="showFetLogoBoldLogo" class="fetLogoBold">
@@ -7,38 +7,28 @@
     </div>
     <categoryMenu v-if="category" :items="category" />
 
-    <div class="aiLCategory-banner">
-      <carousel v-if="isShowBanner" :autoplay="true" :loop="true" :perPage="1" :navigateTo="0" :scrollPerPage="false" :paginationEnabled="false" :navigationEnabled="false" @pageChange="pageChange">
-        <slide v-for="(e, i) of validBanner" :key="i">
-          <a :href="e.link" :title="e.title">
-            <img :src="e.imgSrc" :alt="e.title" />
-          </a>
-        </slide>
-      </carousel>
-      <span v-if="validBanner && validBanner.length>0" class="counter">{{ nowItemPage }}/{{ validBanner.length }}</span>
-    </div>
-
-    <div v-if="hotRankingData.length > 0" class="hotranking-products">
+  
+    <div v-if="hotRankingData && hotRankingData.length > 0" class="hotranking-products">
       <div>
         <img class="hotranking-products__head" src="./images/ai_L_category_fetnetestore_hot_title.png" />
       </div>
       <aiProductItem :itemList="hotRankingData" :noWrap="true" />
     </div>
     <productMenu v-if="bCategoryData && bCategoryData.length>0" :data="bCategoryData" />
-  </div>
+  </div> -->
 </template>
 
 <script lang="ts" setup name="aiAllCategory">
-import { nextTick, ref } from "vue";
+import { computed, nextTick, ref } from "vue";
 import useAtBottom from "@/hooks/useAtBottom";
 import tools from "@/util/tools";
 import { useBsiteStore } from "@/stores/bsiteStore";
 import { storeToRefs } from "pinia";
-import type { catg } from "@/types/category";
+import type { catg, group } from "@/types/category";
 import type { anyObject } from "@/types/common";
 import api from "@/apis/api";
 import type { mixProduct } from "@/types/mixProducts";
-
+import navigation from "../components/common/navigation.vue";
 const bsiteStore = useBsiteStore();
 const { siteData } = storeToRefs(bsiteStore);
 
@@ -95,7 +85,7 @@ const getMenuData = async () => {
     let sub = getSub(catArr, catTree);
 
     if (sub) {
-      menu = Object.values(sub).map((v) => {
+      menu = Object.values(sub).map((v: group) => {
         const vsub = v.sub;
         return {
           id: v.cid,
@@ -255,4 +245,5 @@ const getNowCat = (ca: string[], tr: catg) => {
 const getSub = (ca: string[], tr: catg) => {
   return getNowCat(ca, tr).sub;
 };
+
 </script>
