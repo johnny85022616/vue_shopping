@@ -1,21 +1,10 @@
 <template>
-  <!-- <div class="aiAllCategory">
+  <div class="aiAllCategory">
     <navigation :windowY="200" :directShowSearchInput="true" />
     <breadcrumb v-if="breadCrumbData" :breadCrumbData="breadCrumbData" />
-    <div v-if="showFetLogoBoldLogo" class="fetLogoBold">
-      <img src="./images/icons/fetLogo_bold.svg">
-    </div>
     <categoryMenu v-if="category" :items="category" />
-
-  
-    <div v-if="hotRankingData && hotRankingData.length > 0" class="hotranking-products">
-      <div>
-        <img class="hotranking-products__head" src="./images/ai_L_category_fetnetestore_hot_title.png" />
-      </div>
-      <aiProductItem :itemList="hotRankingData" :noWrap="true" />
-    </div>
     <productMenu v-if="bCategoryData && bCategoryData.length>0" :data="bCategoryData" />
-  </div> -->
+  </div>
 </template>
 
 <script lang="ts" setup name="aiAllCategory">
@@ -32,26 +21,23 @@ import navigation from "../components/common/navigation.vue";
 const bsiteStore = useBsiteStore();
 const { siteData } = storeToRefs(bsiteStore);
 
-const KVBannerFolder = "https://event.shopping.friday.tw/event/20231212/";
-const KVBannerJson =
-  "https://event.shopping.friday.tw/event/20231212/KVBanner.json";
 const { isAtBottom, initScrollEvent } = useAtBottom();
 
 const bCategoryData = ref<mixProduct[] | null>(null); //該目錄下所有商品資料
 const breadCrumbData = ref(null); //麵包屑資料
 const category = ref<null | anyObject>(null); //目錄資料
 const tree = ref<catg | null>(null);
-const hotRankingData = ref(null);
-const KVBanners = ref(null);
 const isApiOk = ref(true);
 const page = ref(0);
 const totalPage = ref(0);
 const pageSize = ref(1);
-const isShowBanner = ref(false);
-const isFetnetEstore = ref(false);
 const catList = ref(false);
-const nowItemPage = ref(false);
-const showFetLogoBoldLogo = ref(false);
+
+
+const init = async()=>{
+  await api.ai.getCategorys();
+  getMenuData();
+}
 
 //組categoryMenu資料
 const getMenuData = async () => {
@@ -245,5 +231,7 @@ const getNowCat = (ca: string[], tr: catg) => {
 const getSub = (ca: string[], tr: catg) => {
   return getNowCat(ca, tr).sub;
 };
+
+init()
 
 </script>
