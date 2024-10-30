@@ -5,7 +5,7 @@ import api from '@/apis/api';
 import type { productsObj } from '@/types/product';
 import type { aiProduct } from '@/types/aiProducts';
 import type { mixProduct } from '@/types/mixProducts';
-import type{ category } from '@/types/category';
+import type { category } from '@/types/category';
 
 const { aiCloudApiPath, aiApiPath, fetchPostHeaders } = config;
 
@@ -33,7 +33,7 @@ const api_ai = {
       [key: string]: any;
     },
     notGetProductsInfoFlag = false
-  ):Promise<mixProduct[]|aiProduct[]|category|null>{
+  ): Promise<mixProduct[] | aiProduct[] | category | null> {
     payload = excludeUnshown(payload) || payload;
 
     // 部份上雲的AI API判斷
@@ -54,11 +54,11 @@ const api_ai = {
           return res && res[0] ? res[0] : null;
         } else {
           const data = res && res[0] && res[0].pids && res[0].pids.length > 0 ? res[0].pids : null;
-          if (!data) return null
-          
-          const priceData = await api.product.getProducts(data.map((v:aiProduct) => v.pid));
-          if(!priceData) return null
-          const originData = data.map((e:aiProduct) => {
+          if (!data) return null;
+
+          const priceData = await api.product.getProducts(data.map((v: aiProduct) => v.pid));
+          if (!priceData) return null;
+          const originData = data.map((e: aiProduct) => {
             if (priceData[e.pid]) {
               return {
                 ...e,
@@ -68,7 +68,7 @@ const api_ai = {
               return e;
             }
           });
-          return originData.filter((e:mixProduct) => e.price && e.price > 0);
+          return originData.filter((e: mixProduct) => e.price && e.price > 0);
         }
       })
       .catch((err) => {
@@ -92,7 +92,8 @@ const api_ai = {
     return aiUserId;
   },
   async getYsdtThemeData(rows = 400, categoryId = '', siteData = null, apiEndpoint = 'getalist') {
-    const { siteId, b4Info, unShowSupplierIds, productScopeK, productScopeV } = siteData || (window as anyObject).siteData;
+    const { siteId, b4Info, unShowSupplierIds, productScopeK, productScopeV } =
+      siteData || (window as anyObject).siteData;
     let keyword = '';
     let filterObj = null;
     let supplierIds = '';
@@ -105,7 +106,7 @@ const api_ai = {
     }
 
     if (productScopeK && productScopeV) {
-      const exObj: {[key:string]: any} = {};
+      const exObj: { [key: string]: any } = {};
       if (categoryId) exObj['category'] = categoryId;
       filterObj = this.composeScopeWithFilter(productScopeK, productScopeV, exObj);
     } else {
@@ -127,8 +128,8 @@ const api_ai = {
       },
       false
     );
-    
-    const data = d as mixProduct[]
+
+    const data = d as mixProduct[];
     if (data && data.length > 0) {
       return data.map((e) => {
         const { name, images, price, isStore } = e;
@@ -150,9 +151,9 @@ const api_ai = {
       console.warn('there is no data');
     }
   },
-  composeScopeWithFilter(scopeK:string, scopeV:string, filterData:any) {
+  composeScopeWithFilter(scopeK: string, scopeV: string, filterData: any) {
     const k: any = scopeK.split('');
-    const v:any = scopeV;
+    const v: any = scopeV;
 
     if (filterData) {
       const { category, search, prdFlag } = filterData;
@@ -175,7 +176,7 @@ const api_ai = {
 
     return { k: k.join(''), v: v };
   },
-  composeBListFilter(...argument:any) {
+  composeBListFilter(...argument: any) {
     const argLen = argument.length < 4 ? 4 : argument.length;
     const tag = Array(argLen).fill(0);
     const tagStr = Array(argLen).fill('');
@@ -196,8 +197,54 @@ const api_ai = {
     const v = [...tagStr];
     return { k: k, v: v };
   },
+  // 取得指定網站的目錄
+  async getCategorys() {
+    const siteData = (window as anyObject)['siteData'];
+    const postData = {
+      target: 'pseudoid',
+      list_fun: 'allCategory',
+      list_args: 'content',
+      list_remote: 'b01',
+      if_bWeb: '1',
+      site_id: '-',
+    };
+    if (siteData) {
+      const siteId = siteData.siteId || '-';
+      postData.site_id = siteId;
+
+      const findCache1 = tools.getCache(`ai_category_${siteId}_cache1`);
+      const findCache2 = tools.getCache(`ai_category_${siteId}_cache2`);
+      const findCache = tools.getCache(`ai_category_${siteId}_cache`);
+      if (findCache1 || findCache2 || findCache) return;
+      const data = await this.getAiData('getvlist', postData);
+      if (!data) return;
+      const { catg1, catg2, groupings } = data as category;
+      // 有供應商所產生的[本站的樹]
+      if (catg1) {
+        console.log('有供應商所產生的[本站的樹]', catg1);
+        tools.setCache(`ai_category_${siteId}_cache1`, catg1, 300);
+      }
+      // 有供應商所產生的[聯合曝光的樹]
+      if (catg2) {
+        console.log('有供應商所產生的[聯合曝光的樹]', catg2);
+        tools.setCache(`ai_category_${siteId}_cache2`, catg2, 300);
+      }
+      if (groupings) {
+        console.log('有供應商 catg1 & catg2 都是null 時,提供給網站使用的default 樹 ', groupings);
+        tools.setCache(`ai_category_${siteId}_cache`, groupings, 300);
+      }
+    } else {
+      const findCache = tools.getCache(`ai_category_-_cache`);
+      if (findCache) return;
+      const data = await this.getAiData('getvlist', postData);
+      const { groupings } = data as category;
+      // 沒有供應商 catg1 & catg2 都是null 時,提供給網站使用的default 樹 (或者是site id 傳入"-")
+      if (groupings) {
+        console.log('沒有供應商 catg1 & catg2 都是null 時,提供給網站使用的default 樹 ', groupings);
+        tools.setCache(`ai_category_-_cache`, groupings, 300);
+      }
+    }
+  },
 };
-
-
 
 export default api_ai;
