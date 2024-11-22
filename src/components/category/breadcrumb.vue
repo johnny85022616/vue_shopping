@@ -1,13 +1,8 @@
 <template>
-  <div v-if="isShow" class="topnav">
+  <div class="topnav">
     <ul>
       <li v-for="(item, index) of breadCrumbData" :key="index">
-        <a
-          href=""
-          @click.prevent="goPage(item.url)"
-          :class="{ last: index === breadCrumbData.length-1}"
-          >{{ item.name }}</a
-        >
+        <RouterLink :class="{ last: index === breadCrumbData.length-1}" :to="{path: '/category/L0006'}">{{ item.name }}</RouterLink>
         <span v-if="index < breadCrumbData.length - 1">
           <i class="arrow"></i>
         </span>
@@ -18,16 +13,10 @@
 
 <script lang="ts" setup name="breadcrumb">
 import { ref } from 'vue';
+import { RouterLink } from "vue-router";
 
-  const init = async()=>{
-    console.log(12345);
-  }
-
-  const isShow = ref(true)
   const props = defineProps<{breadCrumbData: any[]}>()
-
-  const goPage = (url:string)=>{
-      location.href = url
+  const init = async()=>{
   }
 
   init()
