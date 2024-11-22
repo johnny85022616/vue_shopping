@@ -2,8 +2,8 @@
   <div class="aiAllCategory">
     <navigation :windowY="200" :directShowSearchInput="true" />
     <breadcrumb v-if="breadCrumbData" :breadCrumbData="breadCrumbData" />
-    <categoryMenu v-if="category" :items="category" />
-    <productMenu v-if="bCategoryData && bCategoryData.length>0" :data="bCategoryData" />
+    <!-- <categoryMenu v-if="category" :items="category" /> -->
+    <!-- <productMenu v-if="bCategoryData && bCategoryData.length>0" :data="bCategoryData" /> -->
   </div>
 </template>
 
@@ -18,6 +18,7 @@ import type { anyObject } from "@/types/common";
 import api from "@/apis/api";
 import type { mixProduct } from "@/types/mixProducts";
 import navigation from "../components/common/navigation.vue";
+import breadcrumb from '../components/category/breadcrumb.vue';
 const bsiteStore = useBsiteStore();
 const { siteData } = storeToRefs(bsiteStore);
 
@@ -31,7 +32,7 @@ const isApiOk = ref(true);
 const page = ref(0);
 const totalPage = ref(0);
 const pageSize = ref(1);
-const catList = ref(false);
+const catList = ref<any[]|null>(null);
 
 
 const init = async()=>{
@@ -62,14 +63,13 @@ const getMenuData = async () => {
       catTree = getCatCache("2")?.[0];
     }
   }
-
   tree.value = catTree;
   let catArr = tools.getUrlCategoryConstruction(location.pathname);
-  catList.value = catArr;
+  catList.value = JSON.parse(JSON.stringify(catArr))
 
   if (catArr) {
     let sub = getSub(catArr, catTree);
-
+    console.log(222222 , sub, catTree);
     if (sub) {
       menu = Object.values(sub).map((v: group) => {
         const vsub = v.sub;
@@ -217,20 +217,51 @@ const getCatCache = (id: string): catg[] => {
   return tools.getCache(`ai_category_${siteId}_cache${id}`);
 };
 
-//取得傳入categor的最後一層物件
-const getNowCat = (ca: string[], tr: catg) => {
-  let c = ca.shift();
-  const catId = c as string;
-  if (ca.length === 0) {
-    return tr[catId];
-  }
-  tr = tr[catId]?.sub as catg;
-  return getNowCat(ca, tr);
-};
+//取得目前目錄下的資料
+const getNowCat = (ca: string[], tr: catg)=>{
+  return ca.reduce((t: catg|group, c: string , idx: number, arr: string[])=>{
+    const catgTypeT = t as catg
+    if(idx === arr.length-1) return catgTypeT[c]
+    if(catgTypeT[c]?.sub){
+      return catgTypeT[c]?.sub
+    }
+    return catgTypeT[c]
+  } , tr)
+}
 
 const getSub = (ca: string[], tr: catg) => {
   return getNowCat(ca, tr).sub;
 };
+
+// const getBreadcrumb = ()=>{
+//   const { catg } = tools.urlSearchToObj() as any;
+//   const { urlSuffix } = siteData.value || {} 
+//   let list : anyObject[] = [];
+//   let url = "/category";
+//   if (urlSuffix) {
+//     url = `/${urlSuffix}/category`;
+//   }
+//   catList.value.forEach((cat) => {
+//         url = url + `/${cat}`;
+//         let catArr = this.tools.getUrlCategoryConstruction(url);
+//         const nowCat = this.getNowCat(catArr, this.tree);
+//         console.log(nowCat);
+//         const obj = {
+//           name: nowCat.name,
+//           url,
+//         };
+//         list.push(obj);
+//       });
+//       //判斷是否加上cat=uni
+//       if (catg) {
+//         list = list.map((bred) => {
+//           return {
+//             ...bred,
+//             url: bred.url + "?catg=uni",
+//           };
+//         });
+//       }
+// }
 
 init()
 

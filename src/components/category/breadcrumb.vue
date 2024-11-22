@@ -16,11 +16,11 @@
   </div>
 </template>
 
-<script lang="ts" setup name="aiAllCategory">
+<script lang="ts" setup name="breadcrumb">
 import { ref } from 'vue';
 
   const init = async()=>{
-
+    console.log(12345);
   }
 
   const isShow = ref(true)
