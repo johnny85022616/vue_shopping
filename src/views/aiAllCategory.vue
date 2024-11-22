@@ -25,19 +25,20 @@ const { siteData } = storeToRefs(bsiteStore);
 const { isAtBottom, initScrollEvent } = useAtBottom();
 
 const bCategoryData = ref<mixProduct[] | null>(null); //該目錄下所有商品資料
-const breadCrumbData = ref(null); //麵包屑資料
+const breadCrumbData = ref<anyObject[]|null>(null); //麵包屑資料
 const category = ref<null | anyObject>(null); //目錄資料
 const tree = ref<catg | null>(null);
 const isApiOk = ref(true);
 const page = ref(0);
 const totalPage = ref(0);
 const pageSize = ref(1);
-const catList = ref<any[]|null>(null);
+const catList = ref<string[]|null>(null);
 
 
 const init = async()=>{
   await api.ai.getCategorys();
-  getMenuData();
+  await getMenuData();
+  getBreadcrumb();
 }
 
 //組categoryMenu資料
@@ -65,11 +66,10 @@ const getMenuData = async () => {
   }
   tree.value = catTree;
   let catArr = tools.getUrlCategoryConstruction(location.pathname);
-  catList.value = JSON.parse(JSON.stringify(catArr))
+  catList.value = catArr
 
   if (catArr) {
     let sub = getSub(catArr, catTree);
-    console.log(222222 , sub, catTree);
     if (sub) {
       menu = Object.values(sub).map((v: group) => {
         const vsub = v.sub;
@@ -233,35 +233,38 @@ const getSub = (ca: string[], tr: catg) => {
   return getNowCat(ca, tr).sub;
 };
 
-// const getBreadcrumb = ()=>{
-//   const { catg } = tools.urlSearchToObj() as any;
-//   const { urlSuffix } = siteData.value || {} 
-//   let list : anyObject[] = [];
-//   let url = "/category";
-//   if (urlSuffix) {
-//     url = `/${urlSuffix}/category`;
-//   }
-//   catList.value.forEach((cat) => {
-//         url = url + `/${cat}`;
-//         let catArr = this.tools.getUrlCategoryConstruction(url);
-//         const nowCat = this.getNowCat(catArr, this.tree);
-//         console.log(nowCat);
-//         const obj = {
-//           name: nowCat.name,
-//           url,
-//         };
-//         list.push(obj);
-//       });
-//       //判斷是否加上cat=uni
-//       if (catg) {
-//         list = list.map((bred) => {
-//           return {
-//             ...bred,
-//             url: bred.url + "?catg=uni",
-//           };
-//         });
-//       }
-// }
+//取得麵包屑資料
+const getBreadcrumb = ()=>{
+  const { catg } = tools.urlSearchToObj() as any;
+  const { urlSuffix } = siteData.value || {} 
+  let list : anyObject[] = [];
+  let url = "/category";
+  if (urlSuffix) {
+    url = `/${urlSuffix}/category`;
+  }
+  if(!catList.value || !tree.value) return 
+  catList.value?.forEach((cat) => {
+        url = url + `/${cat}`;
+        const catArr = catList.value as string[]
+        const treeObj = tree.value as catg
+        const nowCat = getNowCat(catArr, treeObj);
+        const obj = {
+          name: nowCat?.name,
+          url,
+        };
+        list.push(obj);
+      });
+      //判斷是否加上cat=uni
+      if (catg) {
+        list = list.map((bred) => {
+          return {
+            ...bred,
+            url: bred.url + "?catg=uni",
+          };
+        });
+      }
+      breadCrumbData.value = list
+}
 
 init()
 
