@@ -222,10 +222,7 @@ const getNowCat = (ca: string[], tr: catg)=>{
   return ca.reduce((t: catg|group, c: string , idx: number, arr: string[])=>{
     const catgTypeT = t as catg
     if(idx === arr.length-1) return catgTypeT[c]
-    if(catgTypeT[c]?.sub){
-      return catgTypeT[c]?.sub
-    }
-    return catgTypeT[c]
+    return catgTypeT[c]?.sub || catgTypeT[c];
   } , tr)
 }
 
