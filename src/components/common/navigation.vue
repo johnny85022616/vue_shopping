@@ -37,7 +37,7 @@
     </div>
     <navigationBottom @controlPeopleLinksStatus="controlPeopleLinksStatus" @controlMenuStatus="controlMenuStatus" @resetAllLinkAreaStatus="resetAllLinkAreaStatus"/>
     <transition name="slide">
-      <menutree v-if="isShowMenu" />
+      <menutree v-if="isShowMenu" @controlMenuStatus="controlMenuStatus"/>
     </transition>
     <transition name="slide">
       <peoplelinks v-if="isShowPeopleLinks" />

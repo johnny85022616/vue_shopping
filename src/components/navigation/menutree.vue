@@ -45,11 +45,14 @@ import hotKeywords from '@/components/common/hotKeywords.vue';
   const bsiteShopItemsTitle = ref('全部分類')
   const shopItemsTitle = ref('全部分類')
 
+  const emit = defineEmits(['controlMenuStatus'])
+
 
     const goCategoryPage = (url:string, siteType = 1 /* 1 friDay本站 2 bSite本站 */)=> {
       if (siteData.value && siteType === 1) {
         url += "?catg=uni";
       }
+      emit('controlMenuStatus')
       router.push(url)
     }
 
