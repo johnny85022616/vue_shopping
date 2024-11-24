@@ -52,8 +52,9 @@ const {siteData} = storeToRefs(bsiteStore)
       v: [sid, "", "", ""],
     };
 
-    const data = await api.ai.getAiData("getalist", postData);
+    let data = await api.ai.getAiData("getalist", postData);
     if(data){
+      data = data as aiProduct[]|mixProduct[]
       parseData(data)
     }
   }
