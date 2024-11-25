@@ -11,7 +11,7 @@ import type { catg, group } from "@/types/category";
 import tools from "@/util/tools";
 import api from "@/apis/api";
 import { ref } from "vue";
-import { useRoute } from "vue-router";
+import { onBeforeRouteUpdate, useRoute } from "vue-router";
 import { useBsiteStore } from "@/stores/bsiteStore";
 import { storeToRefs } from "pinia";
 
@@ -78,6 +78,13 @@ const componentTypeFactory = ()=>{
   const sub = getSub(cat, tr)
   if(sub) hasSub.value = true
 }
+
+onBeforeRouteUpdate((to, from)=>{
+  console.log(to.params.catg ,from.params.catg );
+  if(to.params.catg !== from.params.catg){
+    init()
+  }
+})
 
 const init = async () => {
   getCatList()
