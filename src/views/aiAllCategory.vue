@@ -2,7 +2,7 @@
   <div class="aiAllCategory">
     <navigation :windowY="200" :directShowSearchInput="true" />
     <breadcrumb v-if="breadCrumbData" :breadCrumbData="breadCrumbData" />
-    <!-- <categoryMenu v-if="category" :items="category" /> -->
+    <categoryMenu v-if="category" :items="category" />
     <!-- <productMenu v-if="bCategoryData && bCategoryData.length>0" :data="bCategoryData" /> -->
   </div>
 </template>
@@ -19,6 +19,7 @@ import api from "@/apis/api";
 import type { mixProduct } from "@/types/mixProducts";
 import navigation from "../components/common/navigation.vue";
 import breadcrumb from '../components/category/breadcrumb.vue';
+import categoryMenu from '../components/category/categoryMenu.vue';
 const bsiteStore = useBsiteStore();
 const { siteData } = storeToRefs(bsiteStore);
 
@@ -26,7 +27,7 @@ const { isAtBottom, initScrollEvent } = useAtBottom();
 
 const bCategoryData = ref<mixProduct[] | null>(null); //該目錄下所有商品資料
 const breadCrumbData = ref<anyObject[]|null>(null); //麵包屑資料
-const category = ref<null | anyObject>(null); //目錄資料
+const category = ref<null | anyObject[]>(null); //目錄資料
 const tree = ref<catg | null>(null);
 const isApiOk = ref(true);
 const page = ref(0);
