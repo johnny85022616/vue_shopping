@@ -8,21 +8,21 @@
 </template>
 
 <script lang="ts" setup name="aiAllCategory">
-import { computed, nextTick, ref } from "vue";
-import useAtBottom from "@/hooks/useAtBottom";
-import tools from "@/util/tools";
-import { useBsiteStore } from "@/stores/bsiteStore";
-import { storeToRefs } from "pinia";
-import type { catg, group } from "@/types/category";
-import type { anyObject } from "@/types/common";
-import api from "@/apis/api";
-import type { mixProduct } from "@/types/mixProducts";
 import navigation from "../components/common/navigation.vue";
 import breadcrumb from '../components/category/breadcrumb.vue';
 import categoryMenu from '../components/category/categoryMenu.vue';
+import type { catg, group } from "@/types/category";
+import type { anyObject } from "@/types/common";
+import type { mixProduct } from "@/types/mixProducts";
+import { nextTick, ref } from "vue";
+import useAtBottom from "@/hooks/useAtBottom";
+import tools from "@/util/tools";
+import api from "@/apis/api";
+import { useBsiteStore } from "@/stores/bsiteStore";
+import { storeToRefs } from "pinia";
+
 const bsiteStore = useBsiteStore();
 const { siteData } = storeToRefs(bsiteStore);
-
 const { isAtBottom, initScrollEvent } = useAtBottom();
 
 const bCategoryData = ref<mixProduct[] | null>(null); //該目錄下所有商品資料
