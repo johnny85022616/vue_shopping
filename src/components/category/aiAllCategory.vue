@@ -14,7 +14,7 @@ import categoryMenu from '@/components/aiAllCategory/categoryMenu.vue';
 import type { catg, group } from "@/types/category";
 import type { anyObject } from "@/types/common";
 import type { mixProduct } from "@/types/mixProducts";
-import { nextTick, ref } from "vue";
+import { nextTick, ref, toRefs } from "vue";
 import useAtBottom from "@/hooks/useAtBottom";
 import tools from "@/util/tools";
 import api from "@/apis/api";
@@ -28,16 +28,15 @@ const { isAtBottom, initScrollEvent } = useAtBottom();
 const bCategoryData = ref<mixProduct[] | null>(null); //該目錄下所有商品資料
 const breadCrumbData = ref<anyObject[]|null>(null); //麵包屑資料
 const category = ref<null | anyObject[]>(null); //目錄資料
-const tree = ref<catg | null>(null);
 const isApiOk = ref(true);
 const page = ref(0);
 const totalPage = ref(0);
 const pageSize = ref(1);
-const catList = ref<string[]|null>(null);
 
+const props = defineProps<{catList: string[]| null, tree: catg|null,}>()
+const {catList , tree} = toRefs(props)
 
 const init = async()=>{
-  await api.ai.getCategorys();
   await getMenuData();
   getBreadcrumb();
 }
@@ -48,29 +47,9 @@ const getMenuData = async () => {
   const catg = data?.catg;
   const exSearch = catg ? "?catg=" + catg : "";
   let menu;
-  let catTree;
 
-  if (!siteData.value) {
-    //本站
-    catTree = getCatCache("")?.[0];
-  } else {
-    //b站
-    if (!catg) {
-      if (siteData.value.siteType !== "B2") {
-        catTree = getCatCache("1")?.[0];
-      } else {
-        catTree = getCatCache("")?.[0];
-      }
-    } else {
-      catTree = getCatCache("2")?.[0];
-    }
-  }
-  tree.value = catTree;
-  let catArr = tools.getUrlCategoryConstruction(location.pathname);
-  catList.value = catArr
-
-  if (catArr) {
-    let sub = getSub(catArr, catTree);
+  if (catList.value && tree.value) {
+    let sub = getSub(catList.value, tree.value);
     if (sub) {
       menu = Object.values(sub).map((v: group) => {
         const vsub = v.sub;

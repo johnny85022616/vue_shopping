@@ -1,6 +1,6 @@
 <template>
   <div class="category">
-    <aiAllCategory v-if="hasSub"/>
+    <aiAllCategory :catList="catList" :tree="tree" v-if="hasSub"/>
     <div v-else>底層目錄</div>
   </div>
 </template>
