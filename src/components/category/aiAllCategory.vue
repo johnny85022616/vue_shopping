@@ -8,9 +8,9 @@
 </template>
 
 <script lang="ts" setup name="aiAllCategory">
-import navigation from "../components/common/navigation.vue";
-import breadcrumb from '../components/category/breadcrumb.vue';
-import categoryMenu from '../components/category/categoryMenu.vue';
+import navigation from "@/components/common/navigation.vue";
+import breadcrumb from '@/components/aiAllCategory/breadcrumb.vue';
+import categoryMenu from '@/components/aiAllCategory/categoryMenu.vue';
 import type { catg, group } from "@/types/category";
 import type { anyObject } from "@/types/common";
 import type { mixProduct } from "@/types/mixProducts";
