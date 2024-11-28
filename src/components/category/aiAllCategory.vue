@@ -27,7 +27,7 @@ const { siteData } = storeToRefs(bsiteStore);
 const { isAtBottom, initScrollEvent } = useAtBottom();
 
 const bCategoryData = ref<mixProduct[] | null>(null); //該目錄下所有商品資料
-const breadCrumbData = ref<anyObject[]|null>(null); //麵包屑資料
+const breadCrumbData = ref<anyObject[] | null>(null); //麵包屑資料
 const category = ref<null | anyObject[]>(null); //目錄資料
 const isApiOk = ref(true);
 const page = ref(0);
@@ -35,11 +35,11 @@ const totalPage = ref(0);
 const pageSize = ref(1);
 const route = useRoute()
 
-const props = defineProps<{catList: string[]| null, tree: catg|null,}>()
-const {catList , tree} = toRefs(props)
+const props = defineProps<{ catList: string[] | null, tree: catg | null, }>()
+const { catList, tree } = toRefs(props)
 
-const init = async()=>{
-  console.log("!!!!",catList.value);
+const init = async () => {
+  console.log("!!!!", catList.value);
   await getMenuData();
   getBreadcrumb();
 }
@@ -172,7 +172,7 @@ const getPrdApi = async (apiCatg: string) => {
     q1_x: 0.5,
     supplier_y:
       (siteData && !catg) ||
-      ((siteType === "B1" || siteType === "b1") && isOthersExposeToMe === "N")
+        ((siteType === "B1" || siteType === "b1") && isOthersExposeToMe === "N")
         ? 1
         : 0, // 若為bSite 且沒有帶 catg=uni 就設定為 1
     list_num: 20,
@@ -201,12 +201,12 @@ const getCatCache = (id: string): catg[] => {
 };
 
 //取得目前目錄下的資料
-const getNowCat = (ca: string[], tr: catg)=>{
-  return ca.reduce((t: catg|group, c: string , idx: number, arr: string[])=>{
+const getNowCat = (ca: string[], tr: catg) => {
+  return ca.reduce((t: catg | group, c: string, idx: number, arr: string[]) => {
     const catgTypeT = t as catg
-    if(idx === arr.length-1) return catgTypeT[c]
+    if (idx === arr.length - 1) return catgTypeT[c]
     return catgTypeT[c]?.sub || catgTypeT[c];
-  } , tr)
+  }, tr)
 }
 
 const getSub = (ca: string[], tr: catg) => {
@@ -214,45 +214,47 @@ const getSub = (ca: string[], tr: catg) => {
 };
 
 //取得麵包屑資料
-const getBreadcrumb = ()=>{
+const getBreadcrumb = () => {
   const { catg } = tools.urlSearchToObj() as any;
-  const { urlSuffix } = siteData.value || {} 
-  let list : anyObject[] = [];
+  const { urlSuffix } = siteData.value || {}
+  let list: anyObject[] = [];
   let url = "/category";
+  //B站
   if (urlSuffix) {
     url = `/${urlSuffix}/category`;
   }
-  if(!catList.value || !tree.value) return 
-  catList.value?.forEach((cat) => {
-        url = url + `/${cat}`;
-        const catArr = catList.value as string[]
-        const treeObj = tree.value as catg
-        const nowCat = getNowCat(catArr, treeObj);
-        const obj = {
-          name: nowCat?.name,
-          url,
-        };
-        list.push(obj);
-      });
-      //判斷是否加上cat=uni
-      if (catg) {
-        list = list.map((bred) => {
-          return {
-            ...bred,
-            url: bred.url + "?catg=uni",
-          };
-        });
-      }
-      breadCrumbData.value = list
+  if (!catList.value || !tree.value) return
+  catList.value?.reduce((arr: string[], cat: string) => {
+    arr.push(cat)
+    url = url + `/${cat}`;
+    const treeObj = tree.value as catg
+    const nowCat = getNowCat(arr, treeObj);
+    const obj = {
+      name: nowCat?.name,
+      url,
+    };
+    list.push(obj);
+    return arr
+  }, []);
+  //判斷是否加上cat=uni
+  if (catg) {
+    list = list.map((bred) => {
+      return {
+        ...bred,
+        url: bred.url + "?catg=uni",
+      };
+    });
+  }
+  breadCrumbData.value = list
 }
 
 init()
 
 //監視router變化重新執行init方法
-watch(()=> route.path, (newVal,oldVal)=>{
-  if(newVal &&  newVal.length>0 && oldVal && oldVal.length>0 && newVal!==oldVal){
+watch(() => route.path, (newVal, oldVal) => {
+  if (newVal && newVal.length > 0 && oldVal && oldVal.length > 0 && newVal !== oldVal) {
     init()
-  } 
+  }
 })
 
 
