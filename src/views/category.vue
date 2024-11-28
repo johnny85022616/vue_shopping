@@ -22,9 +22,9 @@ const tree = ref<catg | null>(null);
 const catList = ref<string[]|null>(null);
 const hasSub = ref(false)
 
-//取得category後方路淨切成array
+//取得category後方路淨切成array(若catList原本就有表示同為非底層目錄戶轉的結果，catList直接取onBeforeRouteUpdate設定的catList)
 const getCatList=()=>{
-  catList.value = route.params.catg as string[]
+  catList.value = catList.value && catList.value.length>0 ? catList.value : route.params.catg as string[]
 }
 //取得分類樹
 const getCategoryTree = () => {
@@ -79,9 +79,10 @@ const componentTypeFactory = ()=>{
   if(sub) hasSub.value = true
 }
 
+//避免非底層目錄戶轉時組件沒有重新載入問題(此時可以取得舊的路由和新的路由但路由本身還未改變成新的)
 onBeforeRouteUpdate((to, from)=>{
-  console.log(to.params.catg ,from.params.catg );
   if(to.params.catg !== from.params.catg){
+    catList.value = to.params.catg as string[]
     init()
   }
 })

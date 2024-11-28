@@ -14,12 +14,13 @@ import categoryMenu from '@/components/aiAllCategory/categoryMenu.vue';
 import type { catg, group } from "@/types/category";
 import type { anyObject } from "@/types/common";
 import type { mixProduct } from "@/types/mixProducts";
-import { nextTick, ref, toRefs } from "vue";
+import { nextTick, onUpdated, ref, toRefs, watch } from "vue";
 import useAtBottom from "@/hooks/useAtBottom";
 import tools from "@/util/tools";
 import api from "@/apis/api";
 import { useBsiteStore } from "@/stores/bsiteStore";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 
 const bsiteStore = useBsiteStore();
 const { siteData } = storeToRefs(bsiteStore);
@@ -32,11 +33,13 @@ const isApiOk = ref(true);
 const page = ref(0);
 const totalPage = ref(0);
 const pageSize = ref(1);
+const route = useRoute()
 
 const props = defineProps<{catList: string[]| null, tree: catg|null,}>()
 const {catList , tree} = toRefs(props)
 
 const init = async()=>{
+  console.log("!!!!",catList.value);
   await getMenuData();
   getBreadcrumb();
 }
@@ -244,5 +247,14 @@ const getBreadcrumb = ()=>{
 }
 
 init()
+
+//監視router變化重新執行init方法
+watch(()=> route.path, (newVal,oldVal)=>{
+  if(newVal &&  newVal.length>0 && oldVal && oldVal.length>0 && newVal!==oldVal){
+    init()
+  } 
+})
+
+
 
 </script>
