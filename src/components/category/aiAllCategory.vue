@@ -42,6 +42,10 @@ const init = async () => {
   console.log("!!!!", catList.value);
   await getMenuData();
   getBreadcrumb();
+  initScrollEvent()
+  if(!siteData.value){
+    await getCategoryData()
+  }
 }
 
 //組categoryMenu資料
@@ -83,6 +87,7 @@ const getCategoryData = async () => {
     );
     for (let cat of nowPageArr) {
       let tempGroups: any = {};
+      isApiOk.value = false
       const data = await getPrdApi(cat.id);
 
       if (data) {
@@ -115,48 +120,6 @@ const getCategoryData = async () => {
   }
 };
 
-//主題頁
-// const getMThemeData=()=> {
-//       let arr = [];
-//       if (category.value) {
-//         const nowPageArr = category.value.slice(
-//           page.value * pageSize.value,
-//           (page.value + 1) * pageSize.value
-//         );
-//         for (let cat of nowPageArr) {
-//           let tempGroups = {};
-//           const data = await tools.getYstdThemeData(
-//             20,
-//             cat.id,
-//             null,
-//             "category"
-//           );
-
-//           if (data && data.length > 0) {
-//             let productItemData = data.map((ele) => {
-//               return {
-//                 ...ele,
-//                 img: ele.image_url,
-//                 name: ele.name,
-//                 pid: ele.pid,
-//               };
-//             });
-//             tempGroups.category = cat;
-//             tempGroups.products = productItemData;
-//             arr.push(tempGroups);
-//           }
-//         }
-//         this.bCategoryData = this.bCategoryData.concat(arr);
-//         this.$nextTick(() => {
-//           if (this.page < this.totalPage) {
-//             this.page += 1;
-//             this.isApiOk = true;
-//             this.isAtBottom = false;
-//           }
-//         });
-//       }
-//     }
-
 //主站、B站(B1)取商品列表
 const getPrdApi = async (apiCatg: string) => {
   const data: any = tools.urlSearchToObj();
@@ -185,15 +148,6 @@ const getPrdApi = async (apiCatg: string) => {
   }
 
   return await api.ai.getAiData("getalist", postData);
-};
-
-// 取得category快取
-const getCatCache = (id: string): catg[] => {
-  let siteId = "-";
-  if (siteData.value && siteData.value.siteId) {
-    siteId = siteData.value.siteId;
-  }
-  return tools.getCache(`ai_category_${siteId}_cache${id}`);
 };
 
 //取得目前目錄下的資料
@@ -250,6 +204,15 @@ init()
 watch(() => route.path, (newVal, oldVal) => {
   if (newVal && newVal.length > 0 && oldVal && oldVal.length > 0 && newVal !== oldVal) {
     init()
+  }
+})
+watch(isAtBottom, (val)=>{
+  if(bCategoryData.value && bCategoryData.value.length>0 && page.value<totalPage.value && isApiOk.value && val){
+    if(siteData.value && siteData.value.siteType === 'B4'){
+      console.log("getThemeData here");
+      return 
+    }
+    getCategoryData()
   }
 })
 
