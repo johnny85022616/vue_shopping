@@ -4,7 +4,7 @@ import member from './api_member';
 import ai from './api_ai';
 import product from './ai_product';
 import campaign from './api_campaign';
-
+import promotion from './api_promotion';
 export default {
   cart,
   web,
@@ -12,4 +12,5 @@ export default {
   ai,
   product,
   campaign,
+  promotion,
 };
