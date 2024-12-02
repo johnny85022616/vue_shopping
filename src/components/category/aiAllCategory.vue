@@ -3,7 +3,7 @@
     <navigation :windowY="200" :directShowSearchInput="true" />
     <breadcrumb v-if="breadCrumbData" :breadCrumbData="breadCrumbData" />
     <categoryMenu v-if="category" :items="category" />
-    <!-- <productMenu v-if="bCategoryData && bCategoryData.length>0" :data="bCategoryData" /> -->
+    <productMenu v-if="bCategoryData && bCategoryData.length>0" :data="bCategoryData" />
   </div>
 </template>
 
@@ -11,6 +11,7 @@
 import navigation from "@/components/common/navigation.vue";
 import breadcrumb from '@/components/aiAllCategory/breadcrumb.vue';
 import categoryMenu from '@/components/aiAllCategory/categoryMenu.vue';
+import productMenu from '@/components/category/productMenu.vue';
 import type { catg, group } from "@/types/category";
 import type { anyObject } from "@/types/common";
 import type { mixProduct } from "@/types/mixProducts";
@@ -39,7 +40,6 @@ const props = defineProps<{ catList: string[] | null, tree: catg | null, }>()
 const { catList, tree } = toRefs(props)
 
 const init = async () => {
-  console.log("!!!!", catList.value);
   await getMenuData();
   getBreadcrumb();
   initScrollEvent()
