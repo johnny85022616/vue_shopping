@@ -66,14 +66,10 @@ const getMenuData = async () => {
     }
   }
   if (!menu || (menu && menu.length === 0)) {
-    history.go(-1);
+    alert("發生錯誤")
   }
   if (!menu) return;
-  totalPage.value =
-    menu.length % pageSize.value !== 0
-      ? Math.floor(menu.length / pageSize.value + 1)
-      : Math.floor(menu.length / pageSize.value);
-
+  totalPage.value = Math.ceil(menu.length / pageSize.value)
   category.value = menu;
 };
 
