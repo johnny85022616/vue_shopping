@@ -1071,13 +1071,6 @@ export default {
   plugins: [
     function ({ addUtilities }) {
       addUtilities({
-        '.line-clamp-2': {
-          display: '-webkit-box',
-          '-webkit-box-orient': 'vertical',
-          '-webkit-line-clamp': '2',
-          overflow: 'hidden',
-          'text-overflow': 'ellipsis',
-        },
         '.writing-rl': {
           'writing-mode': 'vertical-rl',
         },
