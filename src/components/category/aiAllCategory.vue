@@ -3,7 +3,7 @@
     <navigation :windowY="200" :directShowSearchInput="true" />
     <breadcrumb v-if="breadCrumbData" :breadCrumbData="breadCrumbData" />
     <categoryMenu v-if="category" :items="category" />
-    <productMenu v-if="bCategoryData && bCategoryData.length>0" :data="bCategoryData" />
+    <productMenu v-if="bCategoryData && bCategoryData.length > 0" :data="bCategoryData" />
   </div>
 </template>
 
@@ -43,7 +43,7 @@ const init = async () => {
   await getMenuData();
   getBreadcrumb();
   initScrollEvent()
-  if(!siteData.value){
+  if (!siteData.value) {
     await getCategoryData()
   }
 }
@@ -90,6 +90,11 @@ const getCategoryData = async () => {
       isApiOk.value = false
       const data = await getPrdApi(cat.id);
 
+      // 取得該目錄曝光連結
+      const proLinks = !siteData.value
+        ? await api.promotion.getCategoryPromotionLinks(cat.id)
+        : [];
+
       if (data) {
         const d = data as mixProduct[];
         let productItemData = d.map((ele) => {
@@ -102,6 +107,7 @@ const getCategoryData = async () => {
         });
         tempGroups.category = cat;
         tempGroups.products = productItemData;
+        tempGroups.proLinks = proLinks;
         arr.push(tempGroups);
       }
     }
@@ -206,11 +212,11 @@ watch(() => route.path, (newVal, oldVal) => {
     init()
   }
 })
-watch(isAtBottom, (val)=>{
-  if(bCategoryData.value && bCategoryData.value.length>0 && page.value<totalPage.value && isApiOk.value && val){
-    if(siteData.value && siteData.value.siteType === 'B4'){
+watch(isAtBottom, (val) => {
+  if (bCategoryData.value && bCategoryData.value.length > 0 && page.value < totalPage.value && isApiOk.value && val) {
+    if (siteData.value && siteData.value.siteType === 'B4') {
       console.log("getThemeData here");
-      return 
+      return
     }
     getCategoryData()
   }

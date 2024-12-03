@@ -12,7 +12,7 @@
         <!-- 相關曝光活動 -->
         <div v-if="item.proLinks && item.proLinks.length" class="promotion-links w-full pt-[10px] pr-5 pb-[25px] pl-[25px] text-sm border-t border-dashed border-c_sliver box-border">
           <h3 class="text-sm mb-2">和「{{ item.category.itemName }}」的相關活動</h3>
-          <ul class="flex flex-nowrap">
+          <ul class="flex flex-wrap">
             <li v-for="(obj, k) of item.proLinks" :key="k" class="list-none w-1/2 mb-2">
               <a :href="obj.campUrl" class="inline-block w-full text-c_blue no-underline whitespace-nowrap overflow-hidden text-ellipsis">
                 {{ obj.campaignName }}》
