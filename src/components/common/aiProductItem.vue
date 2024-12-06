@@ -40,12 +40,10 @@
               <div class="items-txt">
                 <span class="pname text-c_mine_shaft text-sm overflow-hidden text-left line-clamp-2 text-ellipsis min-h-10" v-html="item.name"></span>
                 <span v-if="item.price !== null" class="price-box flex justify-between items-center text-sm">
-                  <template>
-                    <span class="price-box relative w-2/3 ">
-                      <p class="price text-c_pomegranate text-xl before:content-['$'] before:text-sm before:text-c_red">{{ productPrice(item.price) }}</p>
+                    <span class="price-box inline-block relative w-2/3 ">
+                      <p class="price text-c_pomegranate text-xl before:content-['$'] before:text-sm before:text-c_red text-left">{{ productPrice(item.price) }}</p>
                       <p v-if="item.priceSuffix" class="priceSuffix absolute bottom-[-10px] left-2 text-c_special text-2">{{ item.priceSuffix }}</p>
                     </span>
-                  </template>
                   <span v-if="showCampaignQtyIcon && item.campaignQty"
                     class="campaignIcon bg-c_red text-c_white rounded-md px-1 text-xs">折({{ item.campaignQty }})</span>
                 </span>

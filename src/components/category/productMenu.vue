@@ -1,5 +1,5 @@
 <template>
-  <div class="productMenu">
+  <div class="productMenu mb-20">
     <ul>
       <li v-for="(item, idx) of processData" :key="idx">
         <div class="header p-2 text-base text-c_black bg-c_mercury">
