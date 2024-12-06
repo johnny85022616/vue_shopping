@@ -7,7 +7,7 @@
           <div class="item-img relative w-1/4 h-0 pb-1/4">
             <img :src="item.img" class="absolute w-full h-full object-cover aspect-square" />
             <span v-if="item.soldout" class="squaremask absolute flex justify-center items-center opacity-95 right-0 left-0 bottom-0 w-full h=5 text-white text-center bg-c_sliver">
-              <font class="inline-block w-1/2 text-xs">補貨中</font>
+              <p class="inline-block w-1/2 text-xs">補貨中</p>
             </span>
           </div>
           <div class="items-info flex flex-col justify-between w-[70%] ">
@@ -18,7 +18,7 @@
             </div>
             <div class="price-box flex items-center justify-between text-sm">
               <div>
-                <font v-if="item.price !== null" class="price text-c_pomegranate text-3xl before:content-['$'] before:text-c_red before:text-sm">{{ productPrice(item.price) }}</font>
+                <p v-if="item.price !== null" class="price text-c_pomegranate text-3xl before:content-['$'] before:text-c_red before:text-sm">{{ productPrice(item.price) }}</p>
               </div>
             </div>
           </div>
@@ -34,7 +34,7 @@
               <div class="items-img relative flex justify-center items-center w-full h-0 pb-[100%] border border-solid border-c_silver1 rounded-lg overflow-hidden">
                 <img :src="item.image_url" class="absolute w-full h-full object-cover aspect-square"/>
                 <span v-if="item.soldout" class="squaremask absolute flex justify-center items-center opacity-95 right-0 left-0 bottom-0 w-full h=5 text-white text-center bg-c_sliver">
-                  <font class="inline-block w-1/2 text-xs">補貨中</font>
+                  <p class="inline-block w-1/2 text-xs">補貨中</p>
                 </span>
               </div>
               <div class="items-txt">
@@ -42,8 +42,8 @@
                 <span v-if="item.price !== null" class="price-box flex justify-between items-center text-sm">
                   <template>
                     <span class="price-box relative w-2/3 ">
-                      <font class="price text-c_pomegranate text-xl before:content-['$'] before:text-sm before:text-c_red">{{ productPrice(item.price) }}</font>
-                      <font v-if="item.priceSuffix" class="priceSuffix absolute bottom-[-10px] left-2 text-c_special text-2">{{ item.priceSuffix }}</font>
+                      <p class="price text-c_pomegranate text-xl before:content-['$'] before:text-sm before:text-c_red">{{ productPrice(item.price) }}</p>
+                      <p v-if="item.priceSuffix" class="priceSuffix absolute bottom-[-10px] left-2 text-c_special text-2">{{ item.priceSuffix }}</p>
                     </span>
                   </template>
                   <span v-if="showCampaignQtyIcon && item.campaignQty"
@@ -69,15 +69,15 @@ import tools from '@/util/tools';
 const props = withDefaults(
   defineProps<{
     itemList: mixProduct[],
-    layoutType: string,
-    isTwoColumn: boolean,
-    isAiData: boolean,
-    aiDataCount: number,
-    bwDataCount: number,
-    noWrap: boolean,
-    hrefTarget: string,
-    isShowStoreIcon: boolean,
-    showCampaignQtyIcon: boolean,
+    layoutType?: string,
+    isTwoColumn?: boolean,
+    isAiData?: boolean,
+    aiDataCount?: number,
+    bwDataCount?: number,
+    noWrap?: boolean,
+    hrefTarget?: string,
+    isShowStoreIcon?: boolean,
+    showCampaignQtyIcon?: boolean,
   }>(),
   {
     layoutType: 'two',
