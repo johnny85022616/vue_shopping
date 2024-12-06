@@ -25,44 +25,34 @@
         </li>
       </ul>
     </div>
-    <div v-else :class="listClass">
+    <div v-else :class="['product-list w-full grid gap-y-6 gap-x-2', `${isTwoColumn? 'grid-cols-2': 'grid-cols-3' }`]">
       <template v-for="(item, index) in itemList">
-        <div v-if="item.image_url && item.price" :class="itemClass" :key="index">
-          <div class="items-wrap">
+        <div v-if="item.image_url && item.price" :key="index">
+          <div class="items-wrap align-top text-right">
             <a href=""
-              @click="(e) => tools.goProductPage(e, item.pid, item, hrefTarget, searchDataCount, (isAiData ? index : aiDataCount + index))">
-              <div class="items-img">
-                <img v-lazy="item.image_url" />
-                <span v-if="item.soldout" class="squaremask">
-                  <font>補貨中</font>
+              @click="(e) => tools.goProductPage(e, item.pid, item, hrefTarget, searchDataCount, (isAiData ? index : aiDataCount + index))" class="block no-underline">
+              <div class="items-img relative flex justify-center items-center w-full h-0 pb-[100%] border border-solid border-c_silver1 rounded-lg overflow-hidden">
+                <img :src="item.image_url" class="absolute w-full h-full object-cover aspect-square"/>
+                <span v-if="item.soldout" class="squaremask absolute flex justify-center items-center opacity-95 right-0 left-0 bottom-0 w-full h=5 text-white text-center bg-c_sliver">
+                  <font class="inline-block w-1/2 text-xs">補貨中</font>
                 </span>
               </div>
               <div class="items-txt">
-                <span class="pname" v-html="item.name"></span>
-                <span v-if="item.price !== null" class="price-box">
-                  <template v-if="item.rewardPointInfo && item.rewardPointInfo.lifePartialPoint !== undefined">
-                    <i class="fcoin"></i>
-                    <font class="coin">{{ productPrice(item.rewardPointInfo.lifePartialPoint) }}</font> +
-                    <font class="coin_price">{{ productPrice(item.rewardPointInfo.lifePartialPrice) }}</font>
-                  </template>
-                  <template v-else-if="item.rewardPointInfo && item.rewardPointInfo.lifeExchangePoint !== undefined">
-                    <i class="fcoin"></i>
-                    <font class="coin">{{ productPrice(item.rewardPointInfo.lifeExchangePoint) }}</font>
-                  </template>
-                  <template v-else>
-
-                    <span class="price-box">
-                      <font class="price">{{ productPrice(item.price) }}</font>
-                      <font v-if="item.priceSuffix" class="priceSuffix">{{ item.priceSuffix }}</font>
+                <span class="pname text-c_mine_shaft text-sm overflow-hidden text-left line-clamp-2 text-ellipsis min-h-10" v-html="item.name"></span>
+                <span v-if="item.price !== null" class="price-box flex justify-between items-center text-sm">
+                  <template>
+                    <span class="price-box relative w-2/3 ">
+                      <font class="price text-c_pomegranate text-xl before:content-['$'] before:text-sm before:text-c_red">{{ productPrice(item.price) }}</font>
+                      <font v-if="item.priceSuffix" class="priceSuffix absolute bottom-[-10px] left-2 text-c_special text-2">{{ item.priceSuffix }}</font>
                     </span>
                   </template>
                   <span v-if="showCampaignQtyIcon && item.campaignQty"
-                    class="campaignIcon">折({{ item.campaignQty }})</span>
+                    class="campaignIcon bg-c_red text-c_white rounded-md px-1 text-xs">折({{ item.campaignQty }})</span>
                 </span>
               </div>
             </a>
-            <div class="iconArea">
-              <span class="storeIcon" v-if="isShowStoreIcon && item.isStore === 1">超</span>
+            <div class="iconArea text-left mt-2">
+              <span class="storeIcon bg-c_olivine text-c_white rounded-md mt-2 mr-2 text-xs" v-if="isShowStoreIcon && item.isStore === 1">超</span>
             </div>
           </div>
         </div>

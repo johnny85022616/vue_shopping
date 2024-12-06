@@ -6,7 +6,7 @@
           <p>{{ item.category.itemName }}</p>
         </div>
         <div class="list p-2">
-          <aiProductItem :itemList="item.products" :showCampaignQtyIcon="true" :layoutType="'one'"/>
+          <aiProductItem :itemList="item.products" :showCampaignQtyIcon="true"/>
           <span class="inline-block w-full mt-4 text-c_brightblue text-sm text-right" v-if="data[idx].products.length >= 10" @click="gotoBPage(item.category.url)">{{item.category.hasSub?'看更深...':'看更多...'}}</span>
         </div>
         <!-- 相關曝光活動 -->
