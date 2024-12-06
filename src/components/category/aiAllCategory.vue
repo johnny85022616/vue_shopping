@@ -65,6 +65,7 @@ const getMenuData = async () => {
           itemName: v.name,
           url: `${location.pathname}/${v.cid}${exSearch ? `${exSearch}` : ""}`,
           hasSub: vsub ? true : false,
+          urlObj: {path: `${location.pathname}/${v.cid}`, query: catg? catg : ""}
         };
       });
     }

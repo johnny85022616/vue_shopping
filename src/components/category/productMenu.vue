@@ -7,7 +7,7 @@
         </div>
         <div class="list p-2">
           <aiProductItem :itemList="item.products" :showCampaignQtyIcon="true"/>
-          <span class="inline-block w-full mt-4 text-c_brightblue text-sm text-right" v-if="data[idx].products.length >= 10" @click="gotoBPage(item.category.url)">{{item.category.hasSub?'看更深...':'看更多...'}}</span>
+          <span class="inline-block w-full mt-4 text-c_brightblue text-sm text-right" v-if="data[idx].products.length >= 10" @click="gotoBPage(item.category.urlObj)">{{item.category.hasSub?'看更深...':'看更多...'}}</span>
         </div>
         <!-- 相關曝光活動 -->
         <div v-if="item.proLinks && item.proLinks.length" class="promotion-links w-full pt-[10px] pr-5 pb-[25px] pl-[25px] text-sm border-t border-dashed border-c_sliver box-border">
@@ -30,13 +30,14 @@
 import aiProductItem from '@/components/common/aiProductItem.vue';
 
 import { computed, toRefs } from 'vue';
-
+import { useRouter } from 'vue-router';
+  const router = useRouter()
 
   const props = defineProps<{data:any[]}>()
   const {data} = toRefs(props)
 
-  const gotoBPage = (url:string) => {
-   console.log(url);
+  const gotoBPage = (urlObj: any) => {
+   router.push(urlObj)
   }
 
   const processData = computed(()=>{
