@@ -207,12 +207,6 @@ const getBreadcrumb = () => {
 
 init()
 
-//監視router變化重新執行init方法
-watch(() => route.path, (newVal, oldVal) => {
-  if (newVal && newVal.length > 0 && oldVal && oldVal.length > 0 && newVal !== oldVal) {
-    init()
-  }
-})
 watch(isAtBottom, (val) => {
   if (bCategoryData.value && bCategoryData.value.length > 0 && page.value < totalPage.value && isApiOk.value && val) {
     if (siteData.value && siteData.value.siteType === 'B4') {
