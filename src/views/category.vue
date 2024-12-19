@@ -1,11 +1,13 @@
 <template>
   <div class="category">
+    <navigation :windowY="200" />
     <aiAllCategory :catList="catList" :tree="tree" v-if="hasSub" :key="route.path"/>
-    <div v-else>底層目錄</div>
+    <div v-else :key="'noSub'+route.path">底層目錄</div>
   </div>
 </template>
 
 <script lang="ts" setup name="category">
+import navigation from '@/components/common/navigation.vue';
 import aiAllCategory from "@/components/category/aiAllCategory.vue";
 import type { catg, group } from "@/types/category";
 import tools from "@/util/tools";

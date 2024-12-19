@@ -1,6 +1,5 @@
 <template>
   <div class="aiAllCategory">
-    <navigation :windowY="200" :directShowSearchInput="true" />
     <breadcrumb v-if="breadCrumbData" :breadCrumbData="breadCrumbData" />
     <categoryMenu v-if="category" :items="category" />
     <productMenu v-if="bCategoryData && bCategoryData.length > 0" :data="bCategoryData" />
@@ -8,7 +7,6 @@
 </template>
 
 <script lang="ts" setup name="aiAllCategory">
-import navigation from "@/components/common/navigation.vue";
 import breadcrumb from '@/components/aiAllCategory/breadcrumb.vue';
 import categoryMenu from '@/components/aiAllCategory/categoryMenu.vue';
 import productMenu from '@/components/category/productMenu.vue';
