@@ -1,8 +1,10 @@
 <template>
   <div class="category">
     <navigation :windowY="200" />
-    <aiAllCategory :catList="catList" :tree="tree" v-if="hasSub" :key="route.path"/>
-    <aiCategoryProduct v-else :key="'noSub'+route.path"></aiCategoryProduct>
+    <template v-if="isInit">   
+      <aiAllCategory :catList="catList" :tree="tree" v-if="hasSub" :key="route.path"/>
+      <aiCategoryProduct v-else :key="'noSub'+route.path" :catList="catList"></aiCategoryProduct>
+    </template>
   </div>
 </template>
 
@@ -24,6 +26,7 @@ const route = useRoute()
 const tree = ref<catg | null>(null);
 const catList = ref<string[]|null>(null);
 const hasSub = ref(false)
+const isInit = ref(false)
 
 //取得category後方路淨切成array(若catList原本就有表示同為非底層目錄戶轉的結果，catList直接取onBeforeRouteUpdate設定的catList)
 const getCatList=()=>{
@@ -79,7 +82,6 @@ const componentTypeFactory = ()=>{
   const cat = catList.value as string[]
   const tr =  tree.value as catg 
   const sub = getSub(cat, tr)
-  console.log(sub);
   if(sub) hasSub.value = true
   else hasSub.value = false
 }
@@ -97,7 +99,10 @@ const init = async () => {
   await api.ai.getCategorys();
   getCategoryTree()
   componentTypeFactory()
+  isInit.value = true
 }
+
 init()
+
 
 </script>
