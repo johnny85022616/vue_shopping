@@ -19,7 +19,6 @@ import tools from "@/util/tools";
 import api from "@/apis/api";
 import { useBsiteStore } from "@/stores/bsiteStore";
 import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
 
 const bsiteStore = useBsiteStore();
 const { siteData } = storeToRefs(bsiteStore);
