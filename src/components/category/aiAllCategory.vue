@@ -32,7 +32,6 @@ const isApiOk = ref(true);
 const page = ref(0);
 const totalPage = ref(0);
 const pageSize = ref(1);
-const route = useRoute()
 
 const props = defineProps<{ catList: string[] | null, tree: catg | null, }>()
 const { catList, tree } = toRefs(props)
