@@ -2,13 +2,14 @@
   <div class="category">
     <navigation :windowY="200" />
     <aiAllCategory :catList="catList" :tree="tree" v-if="hasSub" :key="route.path"/>
-    <div v-else :key="'noSub'+route.path">底層目錄</div>
+    <aiCategoryProduct v-else :key="'noSub'+route.path"></aiCategoryProduct>
   </div>
 </template>
 
 <script lang="ts" setup name="category">
 import navigation from '@/components/common/navigation.vue';
 import aiAllCategory from "@/components/category/aiAllCategory.vue";
+import aiCategoryProduct from '@/components/category/aiCategoryProduct.vue';
 import type { catg, group } from "@/types/category";
 import tools from "@/util/tools";
 import api from "@/apis/api";
@@ -78,7 +79,9 @@ const componentTypeFactory = ()=>{
   const cat = catList.value as string[]
   const tr =  tree.value as catg 
   const sub = getSub(cat, tr)
+  console.log(sub);
   if(sub) hasSub.value = true
+  else hasSub.value = false
 }
 
 //避免非底層目錄戶轉時組件沒有重新載入問題(此時可以取得舊的路由和新的路由但路由本身還未改變成新的)
@@ -94,6 +97,7 @@ const init = async () => {
   await api.ai.getCategorys();
   getCategoryTree()
   componentTypeFactory()
+  console.log(hasSub.value);
 }
 init()
 
