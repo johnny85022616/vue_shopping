@@ -3,7 +3,7 @@
     <navigation :windowY="200" />
     <template v-if="isInit">   
       <aiAllCategory :catList="catList" :tree="tree" v-if="hasSub" :key="route.path"/>
-      <aiCategoryProduct v-else :key="'noSub'+route.path" :catList="catList"></aiCategoryProduct>
+      <aiCategoryProduct v-else :key="'noSub'+route.path" ></aiCategoryProduct>
     </template>
   </div>
 </template>
