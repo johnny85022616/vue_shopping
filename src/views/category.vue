@@ -97,7 +97,6 @@ const init = async () => {
   await api.ai.getCategorys();
   getCategoryTree()
   componentTypeFactory()
-  console.log(hasSub.value);
 }
 init()
 
