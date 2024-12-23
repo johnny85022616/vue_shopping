@@ -28,7 +28,7 @@ export const fridayRoutes = [
     name: 'aisearch',
     component: aiSearch,
     props: (route: any) => ({
-      query: route.query.keyword,
+      query: route.query,
     }),
   },
 ];
