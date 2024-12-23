@@ -1,10 +1,13 @@
 <template>
-  <div class="category">
-    這是小目錄
+  <div class="aiCategoryProduct pt-5 pb-16 px-2">
+    <template v-if="isApiOk">
+      <aiProductItem v-if="productList" :itemList="productList" :showCampaignQtyIcon="true"></aiProductItem>
+      <p v-else>目前無分類商品</p>
+    </template>
   </div>
 </template>
 
-<script lang="ts" setup name="category">
+<script lang="ts" setup name="aiCategoryProduct">
 
 import aiProductItem from '@/components/common/aiProductItem.vue';
 import tools from "@/util/tools";
@@ -22,6 +25,7 @@ const route = useRoute()
 const catList = route.params.catg
 const catg = route.query.catg
 const productList = ref<mixProduct[] | null>(null)
+const isApiOk = ref(false)
 
 const getCategoryProduct = async () => {
   if (!catList || (catList && catList.length === 0)) return
@@ -50,30 +54,26 @@ const getCategoryProduct = async () => {
 
   // 改用帶CACHE機制的 getwlist. only for siteId 帶空
   if (!siteData.value || (siteData.value && !siteData.value.siteId)) {
-        apiEndpoint = "getwlist";
-      }
+    apiEndpoint = "getwlist";
+  }
 
-      let data = await api.ai.getAiData(apiEndpoint, postData);
-    
-      if (data) {
-        data = data as mixProduct[]
-        // productList.value = data.map((ele) => {
-        //   return {
-        //     ...ele,
-        //     img: ele.image_url && ele.image_url.replace("-uat2", ""),
-        //     name: ele.name,
-        //     pid: ele.pid,
-        //     new_date: ele.new_date,
-        //     brand: ele.brand,
-        //     kids: ele.kids_show,
-        //     wishActive: false,
-        //     price: ele.promoPrice || ele.price,
-        //     priceSuffix: ele.promoPrice && "(折扣後)",
-        //   };
-        // });
-      }
+  let data = await api.ai.getAiData(apiEndpoint, postData);
+  isApiOk.value = true
 
-
+  if (data) {
+    productList.value = (data as mixProduct[]).map((ele) => {
+      return {
+        ...ele,
+        image_url: ele.image_url && ele.image_url.replace("-uat2", ""),
+        name: ele.name,
+        new_date: ele.new_date,
+        brand: ele.brand,
+        kids: ele.kids_show,
+        price: ele.promoPrice || ele.price,
+        priceSuffix: ele.promoPrice && "(折扣後)",
+      };
+    });
+  }
 }
 
 const init = async () => {
