@@ -55,10 +55,14 @@
   import type { siteData } from '@/types/apiWeb';
 
   import tools from '@/util/tools';
+import { useRouter } from 'vue-router';
 
   const BsiteStore = useBsiteStore()
   let searchInput: Ref<HTMLInputElement | null> = ref(null) // input值
   const { siteData } = storeToRefs(BsiteStore) //siteData
+  const router = useRouter()
+
+
   const isShowMenu = ref(false)
   const isShowPeopleLinks = ref(false)
 
@@ -108,8 +112,7 @@
       }
     }
     if (keyword !== "") {
-      window.location.href = `${urlSuffix ? `/${urlSuffix}` : ""
-        }/aisearch?keyword=${encodeURIComponent(keyword)}`;
+      router.push({name: 'aisearch' , query: {keyword}})
     }
   }
   
