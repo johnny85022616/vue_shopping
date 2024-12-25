@@ -1,13 +1,13 @@
 <template>
   <div class="aiSearch">
     <navigation :windowY="200"/>
-    搜尋頁
+    <p class="p-3 text-xl"> 搜尋「{{ keyWord }}」的結果...</p>
+    <div class="p-2">
+      <aiProductItem v-if="bwData" :itemList="bwData" :showCampaignQtyIcon="true"></aiProductItem>
+    </div>
+    <div id="aiPromotionBottomLine"></div>
+    <!-- <RouterLink :to="{ name: 'aisearch', query: { keyword: 'iphone' } }">iphone</RouterLink> -->
   </div>
-  <div class="p-2">
-    <aiProductItem v-if="bwData" :itemList="bwData" :showCampaignQtyIcon="true"></aiProductItem>
-  </div>
-  <div id="aiPromotionBottomLine"></div>
-  <!-- <RouterLink :to="{ name: 'aisearch', query: { keyword: 'iphone' } }">iphone</RouterLink> -->
 </template>
 
 <script lang="ts" setup name="aiSearch">
