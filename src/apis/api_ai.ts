@@ -245,6 +245,44 @@ const api_ai = {
       }
     }
   },
+  async getSearchData(payload: any) {
+    const searchData = await fetch(config.aiSearchApiPath, {
+      ...fetchPostHeaders,
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const data = res[0];
+        if (data.status === 'success-end' && data.results && data.results.length > 0) {
+          return data;
+        } else {
+          return null;
+        }
+      });
+    if (!searchData) return null;
+    const productData = await api.product.getProducts(
+      searchData.results.map((v: mixProduct) => v.pid),
+      2
+    );
+    if (!productData) return null;
+
+    return Object.assign(searchData, {
+      results: searchData.results.map((i: mixProduct) => {
+        const p = productData[i.pid];
+        if (p) {
+          return {
+            ...p,
+            pid: i.pid,
+            image_url: i.image_url,
+            name: i.prd_name,
+            brand: i.brand,
+            price: p.promoPrice || p.price,
+            priceSuffix: p.promoPrice && '(折扣後)',
+          };
+        }
+      }),
+    });
+  },
 };
 
 export default api_ai;
