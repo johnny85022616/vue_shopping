@@ -109,7 +109,7 @@
     }
     if (keyword !== "") {
       window.location.href = `${urlSuffix ? `/${urlSuffix}` : ""
-        }/aisearch?keyword=${encodeURIComponent(keyword)}&bw=1`;
+        }/aisearch?keyword=${encodeURIComponent(keyword)}`;
     }
   }
   
