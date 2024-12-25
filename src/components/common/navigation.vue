@@ -22,7 +22,7 @@
       </div>
     </div>
     <div v-else class="redBg w-full h-[60px] flex z-20 fixed px-5" :style="{ backgroundColor: '#f5281e' }">
-      <div div class="mini-logo w-[30%] mx-auto my-0 flex justify-center items-center" @click="openFridaySite">
+      <div div class="mini-logo w-[30%] mx-auto my-0 flex justify-center items-center" @click.prevent="openFridaySite">
         <img src="../../assets/icons/friday_logo.svg" />
       </div>
       <div class="new-search flex justify-center items-center">
@@ -68,15 +68,14 @@ import { useRouter } from 'vue-router';
 
 
   // 打開friDay主站
-  function openFridaySite(evt: MouseEvent) {
-    if (evt) evt.preventDefault();
-    window.location.href = "/";
+  function openFridaySite() {
+    router.push({name:'home'})
   }
   // 打開bSite主站
   function openBsiteSite(evt: Event) {
     if (evt) evt.preventDefault();
     if (siteData.value) {
-      window.location.href = "/" + siteData.value.urlSuffix;
+      router.push({name:"bsiteHome", params:{urlSuffix:siteData.value.urlSuffix}})
     }
   }
   //搜尋框按下enter
