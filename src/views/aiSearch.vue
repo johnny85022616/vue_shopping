@@ -1,12 +1,11 @@
 <template>
   <div class="aiSearch">
-    <navigation :windowY="200"/>
+    <navigation :windowY="200" />
     <p class="p-3 text-xl"> 搜尋「{{ keyWord }}」的結果...</p>
     <div class="p-2">
       <aiProductItem v-if="bwData" :itemList="bwData" :showCampaignQtyIcon="true"></aiProductItem>
     </div>
     <div id="aiPromotionBottomLine"></div>
-    <!-- <RouterLink :to="{ name: 'aisearch', query: { keyword: 'iphone' } }">iphone</RouterLink> -->
   </div>
 </template>
 
@@ -30,7 +29,6 @@ const { isAtBottom, initScrollEvent } = useAtBottom()
 
 const keyWord = ref(query?.value.keyword)
 const bwData = ref<mixProduct[] | null>(null) //搜尋頁的productList
-const isShowBwData = ref(true)
 const isMaxPage = ref(false)
 const apiLoaded = ref(false) // api是否還在loaded
 const type = ref("") //途徑: 空字串為default，若途徑為單品頁導轉過來則為categoryRelated
@@ -72,7 +70,7 @@ const getSearchAPI = async () => {
   }
   await nextTick();
   apiLoaded.value = false
-  apiParams.page +=1
+  apiParams.page += 1
   isAtBottom.value = false;
 }
 
@@ -82,7 +80,6 @@ watch(() => query?.value.keyword, (val) => {
   // init()
 })
 watch(isAtBottom, (val) => {
-  console.log(77777);
   if (val) getSearchAPI()
 })
 
