@@ -77,13 +77,14 @@ const getSearchAPI = async () => {
 //解決props: query若本頁面互轉組件不會更新所以取得不到新的queryString問題
 watch(() => query?.value.keyword, (val) => {
   keyWord.value = val
-  // init()
+  init()
 })
 watch(isAtBottom, (val) => {
   if (val) getSearchAPI()
 })
 
 const init = async () => {
+  bwData.value = null
   console.log(query?.value);
   apiParams.kws = keyWord.value
   apiParams.kws64 = tools.base64Encode(keyWord.value)
