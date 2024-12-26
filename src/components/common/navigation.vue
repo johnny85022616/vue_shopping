@@ -111,7 +111,6 @@ import { useRouter } from 'vue-router';
     }
     if (keyword !== "") {
       if(siteData.value){
-        alert(siteData.value.urlSuffix)
         router.push({name: `bsiteAiSearch` , params:{urlSuffix: siteData.value.urlSuffix}, query: {keyword}})
         return 
       }
