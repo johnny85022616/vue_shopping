@@ -2,7 +2,7 @@
   <div class="navigation relative  h-[60px] m-0">
     <div v-if="siteData" class="redBg isBsite w-full h-[60px] flex z-20 fixed px-5"
       :style="{ backgroundColor: `${siteData.headerColor ? siteData.headerColor : '#ddd5cc'}` }">
-      <div class="mini-logo flex justify-center items-center" @click="(evt) => openBsiteSite(evt)">
+      <div class="mini-logo flex justify-center items-center" @click.prevent="openBsiteSite()">
         <img class="w-auto max-h-[35px] mr-4" :src="siteData.logoMobile" />
       </div>
       <div class="subSiteName flex justify-center items-center w-[20%] text-base"
@@ -72,8 +72,7 @@ import { useRouter } from 'vue-router';
     router.push({name:'home'})
   }
   // 打開bSite主站
-  function openBsiteSite(evt: Event) {
-    if (evt) evt.preventDefault();
+  function openBsiteSite() {
     if (siteData.value) {
       router.push({name:"bsiteHome", params:{urlSuffix:siteData.value.urlSuffix}})
     }
@@ -111,6 +110,11 @@ import { useRouter } from 'vue-router';
       }
     }
     if (keyword !== "") {
+      if(siteData.value){
+        alert(siteData.value.urlSuffix)
+        router.push({name: `bsiteAiSearch` , params:{urlSuffix: siteData.value.urlSuffix}, query: {keyword}})
+        return 
+      }
       router.push({name: 'aisearch' , query: {keyword}})
     }
   }
