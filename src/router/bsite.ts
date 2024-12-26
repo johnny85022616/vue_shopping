@@ -10,7 +10,7 @@ export const bsiteRoutes = [
     component: HomePage,
   },
   {
-    path: `/aiSearch/:urlSuffix${bsitePrefixReg}`,
+    path: `/:urlSuffix${bsitePrefixReg}/aiSearch`,
     name: 'bsiteAiSearch',
     component: AiSearch,
     props: (route: any) => ({ query: route.query }),
