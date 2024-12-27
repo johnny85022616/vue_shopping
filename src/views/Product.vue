@@ -6,9 +6,12 @@
 import { ref } from 'vue';
 import {useBsiteStore} from '@/stores/bsiteStore';
 import { storeToRefs } from 'pinia';
+import { useRoute, useRouter } from 'vue-router';
 
 const bsiteStore = useBsiteStore()
 const {siteData} = storeToRefs(bsiteStore)
+const route = useRoute()
+const router = useRouter()
 
 const isBsite = ref(false); //是否為B網
 const bsiteLogin = ref(false);
@@ -45,6 +48,7 @@ const init = async()=>{
     if(siteData.value.siteType === 'B2'){
       isEmploySite.value = true
     }
+    
   }
 }
 

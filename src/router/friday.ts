@@ -2,6 +2,7 @@ import HomePage from '../views/Homepage.vue';
 import MemberCenter from '../views/MemberCenter.vue';
 import category from '../views/category.vue';
 import aiSearch from '../views/aiSearch.vue';
+import Product from '@/views/Product.vue';
 
 export const fridayRoutes = [
   //首頁路由
@@ -29,6 +30,15 @@ export const fridayRoutes = [
     component: aiSearch,
     props: (route: any) => ({
       query: route.query,
+    }),
+  },
+  //搜尋頁路由(queryString: keyword關鍵字)
+  {
+    path: '/product/productId:[\\d]+',
+    name: 'product',
+    component: Product,
+    props: (route: any) => ({
+      query: route.params,
     }),
   },
 ];
