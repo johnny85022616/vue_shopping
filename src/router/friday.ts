@@ -32,9 +32,9 @@ export const fridayRoutes = [
       query: route.query,
     }),
   },
-  //搜尋頁路由(queryString: keyword關鍵字)
+  //單品頁連結
   {
-    path: '/product/productId:[\\d]+',
+    path: '/product/:productId([\\d]+)',
     name: 'product',
     component: Product,
     props: (route: any) => ({
