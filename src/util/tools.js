@@ -677,7 +677,7 @@ export default {
     if (!keyword) keyword = '';
     keyword = encodeURIComponent(keyword);
 
-    let url = `/product?pid=${pid}${exSearchParams.replace('?', '&')}${keyword ? `&kw=${keyword}` : ''}`;
+    let url = `/product/${pid}${exSearchParams.replace('?', '&')}${keyword ? `&kw=${keyword}` : ''}`;
 
     // BSite商品頁網址不同
     if (window.siteData) {
@@ -691,11 +691,7 @@ export default {
       url += `&kwc=${searchDataCount}&kwi=${searchClickedIndex}&kwts=${Math.round(new Date().getTime() / 1000)}`;
     }
 
-    if (target === '_self') {
-      location.href = url;
-    } else {
-      window.open(url);
-    }
+    window.open(url);
   },
   genProductUrl(pid, extendData) {
     let exSearchParams = '';
