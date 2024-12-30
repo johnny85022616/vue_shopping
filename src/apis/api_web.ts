@@ -116,6 +116,30 @@ const api_web = {
 
     return resultData;
   },
+  //bweb api
+  async getBwebApiData(method: string, urlSuffix: string, payload: any) {
+    const option: any = {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    if (/^(POST|PUT)$/i.test(method) && payload) {
+      option.body = JSON.stringify({
+        payload,
+      });
+    }
+    const data = await fetch(`${configApiPath}bWeb${urlSuffix}`, option)
+      .then((res) => res.json())
+      .then((res) => {
+        return res && res.resultData ? res.resultData : null;
+      })
+      .catch((err) => {
+        console.error(`get bweb ${urlSuffix} faliure.`);
+        console.error(err);
+      });
+    return data;
+  },
   //取得子site資料
   async getSubSiteData(siteId: string) {
     const resultData = await fetch(`${configApiPath}bWeb/config?siteId=${siteId}&version=1`)
