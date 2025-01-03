@@ -38,7 +38,7 @@ export const fridayRoutes = [
     name: 'product',
     component: Product,
     props: (route: any) => ({
-      query: route.params,
+      param: route.params,
     }),
   },
 ];
