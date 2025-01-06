@@ -2,7 +2,6 @@ import type { anyObject } from '@/types/common';
 import config from '@/config/config';
 import tools from '@/util/tools';
 import api from '@/apis/api';
-import type { productsObj } from '@/types/product';
 import type { aiProduct } from '@/types/aiProducts';
 import type { mixProduct } from '@/types/mixProducts';
 import type { category } from '@/types/category';
