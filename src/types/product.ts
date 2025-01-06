@@ -1,3 +1,4 @@
+// product/v2/productinfo取得商品列表api回來的商品型態
 export interface product {
   productId: number;
   name: string;
@@ -15,8 +16,8 @@ export interface product {
   auto_category_id_M_c: string;
   auto_category_id: string;
   auto_category_id_c: string;
-  [key:string]:any //供之後vue添加屬性不報錯
+  [key: string]: any; //供之後vue添加屬性不報錯
 }
-export interface productsObj{
-  [key: number]: product
+export interface productsObj {
+  [key: number]: product;
 }
