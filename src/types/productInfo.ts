@@ -17,6 +17,7 @@ export interface productInfo {
   tags: string[];
   variants: Variant[];
   promotionLabels: any[];
+  [key: string]: any; //供之後vue添加屬性不報錯
 }
 
 interface Variant {
