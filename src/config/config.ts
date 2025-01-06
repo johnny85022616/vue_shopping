@@ -17,16 +17,31 @@ const { getCookie } = tools;
 
 // 登入驗證
 const token = getCookie('FEEC-FA-TOKEN');
-const exHeaders:any = {};
+const exHeaders: any = {};
 if (token) {
   exHeaders['Authorization'] = 'Bearer ' + token;
 }
 
+let isLogin = false;
+let faToken = null;
+
+if (!/ysdt\.com\.tw/i.test(location.host) && !/siteCode=/i.test(location.search)) {
+  faToken = getCookie('FEEC-FA-TOKEN');
+} else {
+  faToken = window.localStorage.getItem('b_token');
+}
+
+// 設定Header
+if (faToken) exHeaders['Authorization'] = 'Bearer ' + faToken;
+// 是否已登入
+if (faToken) isLogin = true;
+
 export default {
+  isLogin,
   aiApiPath: VITE_APP_AI_API_DOMAIN,
   aiCloudApiPath: VITE_APP_AI_CLOUD_API_DOMAIN,
   cloudApiPath: `${VITE_APP_FRONT_CLOUD_API_DOMAIN}/frontendapi/`,
-  apiPath: (overwriteRoot='/mobileapi/') => {
+  apiPath: (overwriteRoot = '/mobileapi/') => {
     let apiRoot = overwriteRoot;
     return VITE_APP_MOBILE_API_DOMAIN + apiRoot;
   },
@@ -44,7 +59,7 @@ export default {
   mobileApiPath: (apiRoot = 'api/') => {
     return `${VITE_APP_MOBILE_API_DOMAIN}/mobileapi/${apiRoot}`;
   },
-  mserviceApiPath: (overwriteRoot='/api/') => {
+  mserviceApiPath: (overwriteRoot = '/api/') => {
     return VITE_APP_MSERVICE_API_DOMAIN + overwriteRoot;
   },
   aiSearchApiPath: VITE_APP_AI_SEARCH_DOMAIN + '/aisearch',
@@ -93,7 +108,7 @@ export default {
   setTicket() {
     const ticket = getCookie('FEEC-B2C-TICKET');
     // 登入驗證
-    const exHeaders:any = {};
+    const exHeaders: any = {};
     if (ticket) {
       exHeaders['headers'] = {
         Authorization: 'Bearer' + ticket,
