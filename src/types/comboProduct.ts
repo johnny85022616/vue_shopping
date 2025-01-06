@@ -20,7 +20,7 @@ interface RefProduct {
   promotionLabels: any[];
 }
 
-interface Variant {
+export interface Variant {
   groupTitle: string;
   name: string;
   id: number;
