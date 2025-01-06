@@ -32,8 +32,9 @@ export interface siteData {
   unShowCategoryIds?: string[];
   websiteGoogleName?: string;
   websiteGoogleDescription?: string;
-  b2Info:B2Info;
-  b4Info:B4Info;
+  b2Info: B2Info;
+  b4Info: B4Info;
+  [key: string]: any;
 }
 
 interface B2Info {
