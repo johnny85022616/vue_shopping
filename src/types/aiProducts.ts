@@ -1,4 +1,5 @@
-export interface aiProduct{
+// getAiData返回的product
+export interface aiProduct {
   auto_category_id_M_c?: string;
   ek?: number;
   image_url?: string;
@@ -16,7 +17,7 @@ export interface aiProduct{
   brand?: string;
   kids_show?: Kidsshow[];
   kids?: Kidsshow[];
-  [key:string]:any //供之後vue添加屬性不報錯
+  [key: string]: any; //供之後vue添加屬性不報錯
 }
 
 interface Kidsshow {
