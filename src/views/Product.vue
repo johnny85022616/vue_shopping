@@ -1,14 +1,16 @@
 <template>
   <div class="product">
     <navigation></navigation>
+    <mainImage v-if="pInfo" :images="pInfo.images" :videos="pInfo.videos"></mainImage>
     <template v-if="isApiRequested">
-      
+
     </template>
   </div>
 </template>
 
 <script lang="ts" setup name="product">
 import navigation from '@/components/common/navigation.vue';
+import mainImage from '@/components/product/mainImage.vue';
 import { ref, toRefs } from 'vue';
 import api from '@/apis/api';
 import tools from '@/util/tools';
