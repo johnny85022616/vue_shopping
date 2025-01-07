@@ -1,14 +1,13 @@
 <template>
-  <div class="dialog" :style="{ top: dialogHeight }">
-    <div v-if="!isFullscreen" class="bg" :style="{ height: bgHeight }"></div>
-    <div class="box" :style="{ height: boxHeight }">
-      <div class="header">
-        <i v-if="!useClose" @click="close" class="angle-left"></i>
+  <div class="dialog fixed left-0 right-0 z-20 bottom-0 top-0 bg-c_white">
+    <div v-if="!isFullscreen" class="opacity-50 bg-c_dune w-full"></div>
+    <div class="box w-full h-full">
+      <div class="header relative flex items-center justify-center text-lg border-b border-c_alto border-solid h-[45px]">
         <slot name="header"></slot>
-        <i v-if="useClose" @click="close" class="close"></i>
+        <i v-if="useClose" @click="close" class="absolute right-0 top-0 block w-11 h-11 bg-close-icon bg-center bg-no-repeat bg-100%"></i>
       </div>
 
-      <div class="body" :style="{ height: bodyHeight, backgroundColor: backgroundColor }">
+      <div class="body relative pt-[10px] pr-[10px] pl-[10px] text-sm overflow-auto" :style="{backgroundColor: backgroundColor, 'height': 'calc(100vh - 45px)'}">
         <slot name="body"></slot>
       </div>
     </div>
