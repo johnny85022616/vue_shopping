@@ -2,6 +2,7 @@
   <div class="product">
     <navigation></navigation>
     <mainImage v-if="pInfo" :images="pInfo.images" :videos="pInfo.videos"></mainImage>
+    <basicInfo v-if="pInfo" :data="pInfo" :friendRecommandation="friendRecommandation"></basicInfo>
     <template v-if="isApiRequested">
 
     </template>
@@ -11,6 +12,7 @@
 <script lang="ts" setup name="product">
 import navigation from '@/components/common/navigation.vue';
 import mainImage from '@/components/product/mainImage.vue';
+import basicInfo from '@/components/product/basicInfo.vue';
 import { ref, toRefs } from 'vue';
 import api from '@/apis/api';
 import tools from '@/util/tools';
