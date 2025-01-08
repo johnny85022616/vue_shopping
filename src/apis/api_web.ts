@@ -140,6 +140,27 @@ const api_web = {
       });
     return data;
   },
+  // 取得供應商基本資料
+  async getSupplierData(supplierId: number | string): Promise<siteData | null> {
+    const cacheName = 'bweb_config_' + supplierId;
+    const cache = tools.getCache(cacheName);
+    if (cache) return cache;
+
+    return await fetch(`${configApiPath}bWeb/config?supplierId=${supplierId}`, fetchGetHeaders)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res && res.resultCode === 0) {
+          if (res.resultData[0]) tools.setCache(cacheName, res.resultData[0], 300);
+          return res.resultData[0];
+        } else {
+          console.error('get bWeb/config no data');
+        }
+      })
+      .catch((err) => {
+        console.error(`get bWeb/config faliure`);
+        console.error(err);
+      });
+  },
   //取得子site資料
   async getSubSiteData(siteId: string) {
     const resultData = await fetch(`${configApiPath}bWeb/config?siteId=${siteId}&version=1`)
