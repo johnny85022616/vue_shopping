@@ -18,7 +18,7 @@
               :src="`https://www.youtube.com/embed/${videoId}?enablejsapi=1&amp;version=3&amp;playerapiid=ytplayer`"
               frameborder="0" :style="youtubeIframeStyle"></iframe>
             <video v-else controls autoplay width="100%" height="100%">
-              <source :src="video" type="video/mp4">
+              <source :src="videos?.[0]||''" type="video/mp4">
             </video>
           </div>
         </template>
@@ -51,7 +51,6 @@ const imagesData = computed(() => {
           : false,
     };
   });
-  console.log("imageObj", imageObj);
   // 判斷是否商品帶影片
   if (videos.value?.[0]) {
     // 是否為Youtube連結。解析iframe
@@ -92,7 +91,6 @@ const youtubeIframeStyle = computed(() => {
     left: "0px",
   };
 })
-const video = ref("") // 被選中的影片
 
 const props = defineProps<{ images?: string[], videos?: string[] }>()
 const { images, videos } = toRefs(props)
