@@ -47,6 +47,13 @@ const apiParams: any = reactive({
 })
 const isShowNoData = ref(false);
 
+const resetState = ()=> {
+  apiParams.page = 1
+  bwData.value = null
+  isMaxPage.value = false
+  apiLoaded.value = false 
+  type.value = ""
+}
 //取得搜尋商品
 const getSearchAPI = async () => {
   if (apiLoaded.value || isMaxPage.value) return
@@ -84,7 +91,7 @@ watch(isAtBottom, (val) => {
 })
 
 const init = async () => {
-  bwData.value = null
+  resetState();
   console.log(query?.value);
   apiParams.kws = keyWord.value
   apiParams.kws64 = tools.base64Encode(keyWord.value)
