@@ -1,9 +1,10 @@
 <template>
-  <div class="aiSearch">
+  <div class="aiSearch mb-20">
     <navigation :windowY="200" />
     <p class="p-3 text-xl"> 搜尋「{{ keyWord }}」的結果...</p>
     <div class="p-2">
       <aiProductItem v-if="bwData" :itemList="bwData" :showCampaignQtyIcon="true"></aiProductItem>
+      <p v-else-if="!bwData && isMaxPage" class="text-xl font-bold text-center mt-[200px]">查無商品</p>
     </div>
     <div id="aiPromotionBottomLine"></div>
   </div>
