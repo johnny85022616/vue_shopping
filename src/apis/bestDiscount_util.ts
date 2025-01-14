@@ -3,7 +3,7 @@ const { aiCloudApiPath, fetchPostHeaders, aiDiscountPath } = config;
 
 export default {
   //取得單品頁供應商活動要送入最佳解api(best_discount)的payload
-  async getProductDiscountInput(payload: any) {
+  async getProductDiscountInput(payload: { productIdList: string[]; campaignId: string; siteId: string }) {
     return await fetch(`${aiCloudApiPath}product/v2/productDiscount`, {
       ...fetchPostHeaders,
       body: JSON.stringify({ param: payload }),
@@ -16,7 +16,7 @@ export default {
           return resultData;
         }
         //其他狀況（999:發生未知的錯誤  1001:pid 必填 1009:超過查詢上限(500筆)）
-        // uiAlert.getFadeAlert(resultMsg); TODO
+        alert(resultMsg);
         return null;
       })
       .catch((err) => {
@@ -25,7 +25,7 @@ export default {
       });
   },
   //取得最佳解api
-  async getBestDiscount(payload: any) {
+  async getBestDiscount(payload: bestDiscountPayload) {
     return await fetch(`${aiDiscountPath}/best_discount`, {
       ...fetchPostHeaders,
       body: JSON.stringify(payload),
@@ -44,3 +44,22 @@ export default {
       });
   },
 };
+
+//types
+
+interface bestDiscountPayload {
+  campaignId: string;
+  discounts: Discounts;
+  items: Item[];
+  isActivated?: string;
+}
+
+interface Item {
+  pid: number;
+  price: number;
+  qty: number;
+}
+
+interface Discounts {
+  A: (number | string | string)[];
+}
