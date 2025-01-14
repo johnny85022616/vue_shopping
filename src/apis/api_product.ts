@@ -5,6 +5,7 @@ import type { anyObject } from '@/types/common';
 import type { product, productsObj } from '@/types/product';
 import type { comboProduct } from '@/types/comboProduct';
 import type { productInfo } from '@/types/productInfo';
+import bestDiscountApi from '@/apis/bestDiscount_util';
 
 const { cloudApiPath, aiApiPath, fetchPostHeaders } = config;
 
@@ -142,6 +143,24 @@ const api_product = {
         isSelected: false, // 是否已選擇
       };
     });
+  },
+  //取單品供應商活動最佳解
+  async querySupplierBestDiscount(pid: number): Promise<number> {
+    if (!pid) return 0;
+    const supplierData = window.fridayData || window.siteData;
+    if (supplierData && supplierData.campaignId.v && supplierData.campaignId.v.length > 0) {
+      const payload = {
+        campaignId: supplierData.campaignId?.v?.[0],
+        productIdList: [`${pid},1`],
+        siteId: supplierData.siteId || '',
+      };
+      //取bestDiscountInput
+      const d = await bestDiscountApi.getProductDiscountInput(payload);
+      //取最佳解
+      const bestDiscount = await bestDiscountApi.getBestDiscount(d);
+      return bestDiscount?.totalDiscount || 0;
+    }
+    return 0;
   },
 };
 
