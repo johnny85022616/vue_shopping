@@ -29,11 +29,11 @@
             <span class="product-payment__list-price block text-c_sliver min-w-10 text-base">網路價</span>
             <span class="product-payment__list-price text-c_sliver min-w-10 text-base line-through">${{
               tools.priceFormat(data.price.memberPrice)
-              }}</span>
+            }}</span>
             <span class="product-payment__currency ml-2 text-c_pomegranate text-sm">$</span>
             <span class="product-payment__red-price text-2xl text-c_pomegranate">{{
               tools.priceFormat(data.price.promoPrice)
-              }}</span>
+            }}</span>
           </div>
           <div v-if="bestDiscount" class="flex items-baseline mr-2">
             <span>(最優再折$<span class="product-payment__more-discount-price text-sm text-c_pomegranate">{{
@@ -66,6 +66,12 @@
               tools.priceFormat(bestDiscount) }}</span>)</span>
           </div>
         </div>
+      </div>
+      <div class="flex">
+        <span class="storeIcon bg-c_olivine h-5 text-c_white rounded-md px-2 mt-2 mr-2" v-if="isStoreIconShow">超商取貨</span>
+        <span v-if="friendRecommandation" class="product-payment__tags mt-2 flex justify-between">
+          <span v-if="friendRecommandation" class="h-5 text-c_SilverChalice mr-1">友商推薦商品</span>
+        </span>
       </div>
     </div>
   </div>
