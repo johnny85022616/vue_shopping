@@ -134,7 +134,6 @@ const getBestDiscount = async () => {
   const supplierBestDiscount =
     await api.product.querySupplierBestDiscount(data.value.pid);
   const bd = data.value?.price?.bestDiscountO || 0;
-  console.log(supplierBestDiscount);
   bestDiscount.value = bd + supplierBestDiscount;
 }
 
