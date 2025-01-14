@@ -1,10 +1,10 @@
 import config from '@/config/config';
-const { aiCloudApiPath, fetchPostHeaders, aiDiscountPath } = config;
+const { cloudApiPath, fetchPostHeaders, aiDiscountPath } = config;
 
 export default {
   //取得單品頁供應商活動要送入最佳解api(best_discount)的payload
   async getProductDiscountInput(payload: { productIdList: string[]; campaignId: string; siteId: string }) {
-    return await fetch(`${aiCloudApiPath}product/v2/productDiscount`, {
+    return await fetch(`${cloudApiPath}product/v2/productDiscount`, {
       ...fetchPostHeaders,
       body: JSON.stringify({ param: payload }),
     })
