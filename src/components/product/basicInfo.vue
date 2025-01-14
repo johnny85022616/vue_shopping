@@ -24,16 +24,16 @@
       <!-- 商品價格 -->
       <div class="price">
         <!-- 有優惠價格 -->
-        <div  v-if="data.payMethodList[0] === 'CASH' && data.price.promoPrice" class="infoPrice">
+        <div v-if="data.payMethodList[0] === 'CASH' && data.price.promoPrice" class="infoPrice">
           <div>
             <span class="product-payment__list-price block text-c_sliver min-w-10 text-base">網路價</span>
             <span class="product-payment__list-price text-c_sliver min-w-10 text-base line-through">${{
               tools.priceFormat(data.price.memberPrice)
-            }}</span>
+              }}</span>
             <span class="product-payment__currency ml-2 text-c_pomegranate text-sm">$</span>
             <span class="product-payment__red-price text-2xl text-c_pomegranate">{{
               tools.priceFormat(data.price.promoPrice)
-            }}</span>
+              }}</span>
           </div>
           <div v-if="bestDiscount" class="flex items-baseline mr-2">
             <span>(最優再折$<span class="product-payment__more-discount-price text-sm text-c_pomegranate">{{
@@ -41,26 +41,31 @@
           </div>
         </div>
         <div class="infoPrice flex items-baseline justify-start">
-                <div v-if="!bestDiscount" class="flex items-baseline mr-2">
-                  <span v-if="data.price.marketPrice" class="product-payment__list-price block text-c_sliver min-w-10 text-base">市價</span>
-                  <span v-if="data.price.marketPrice" class="product-payment__list-price block text-c_sliver min-w-10 text-base line-through">${{
-                    tools.priceFormat(data.price.marketPrice)
-                  }}</span>
-                </div>
-                <div class="flex items-baseline mr-2">
-                  <span>
-                    <span class="product-payment__net-content text-sm mr-1 text-c_black">網路價</span>
-                    <span v-if="data.price.memberPrice !== null" class="product-payment__currency ml-2 text-c_pomegranate text-sm">$</span>
-                    <span v-if="data.price.memberPrice !== null" class="product-payment__red-price text-2xl text-c_pomegranate">{{
-                      tools.priceFormat(data.price.memberPrice)
-                    }}</span>
-                    <span v-else class="noPrice text-c_red text-lg ml-2">暫無價格</span>
-                  </span>
-                </div>
-                <div v-if="bestDiscount" class="flex items-baseline mr-2">
-                  <span>(最優再折$<span class="product-payment__more-discount-price text-sm text-c_pomegranate">{{ tools.priceFormat(bestDiscount) }}</span>)</span>
-                </div>
-              </div>
+          <div v-if="!bestDiscount" class="flex items-baseline mr-2">
+            <span v-if="data.price.marketPrice"
+              class="product-payment__list-price block text-c_sliver min-w-10 text-base">市價</span>
+            <span v-if="data.price.marketPrice"
+              class="product-payment__list-price block text-c_sliver min-w-10 text-base line-through">${{
+                tools.priceFormat(data.price.marketPrice)
+              }}</span>
+          </div>
+          <div class="flex items-baseline mr-2">
+            <span>
+              <span class="product-payment__net-content text-sm mr-1 text-c_black">網路價</span>
+              <span v-if="data.price.memberPrice !== null"
+                class="product-payment__currency ml-2 text-c_pomegranate text-sm">$</span>
+              <span v-if="data.price.memberPrice !== null"
+                class="product-payment__red-price text-2xl text-c_pomegranate">{{
+                  tools.priceFormat(data.price.memberPrice)
+                }}</span>
+              <span v-else class="noPrice text-c_red text-lg ml-2">暫無價格</span>
+            </span>
+          </div>
+          <div v-if="bestDiscount" class="flex items-baseline mr-2">
+            <span>(最優再折$<span class="product-payment__more-discount-price text-sm text-c_pomegranate">{{
+              tools.priceFormat(bestDiscount) }}</span>)</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -118,14 +123,14 @@ const isShowLookBrand = async () => {
   }
 }
 //取得供應商最佳解 + 商品本身最佳解加總
-const getBestDiscount = async()=>{
-      console.log(window.fridayData);
-      const supplierBestDiscount =
-        await api.product.querySupplierBestDiscount(data.value.pid);
-      const bd = data.value?.price?.bestDiscountO || 0;
-      console.log(supplierBestDiscount);
-      bestDiscount.value = bd + supplierBestDiscount;
-    }
+const getBestDiscount = async () => {
+  console.log(window.fridayData);
+  const supplierBestDiscount =
+    await api.product.querySupplierBestDiscount(data.value.pid);
+  const bd = data.value?.price?.bestDiscountO || 0;
+  console.log(supplierBestDiscount);
+  bestDiscount.value = bd + supplierBestDiscount;
+}
 
 const init = async () => {
   await isShowLookBrand();
