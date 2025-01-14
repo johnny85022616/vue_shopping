@@ -34,11 +34,11 @@ const api_web = {
     if (s && s.length > 1) siteCode = s[1];
     return siteCode || '';
   },
-  processSupplier(): Promise<siteData | null> | void {
+  async processSupplier(): Promise<siteData | null | void> {
     if (this.determineIsFriday()) {
-      this.supplierForFriday();
+      await this.supplierForFriday();
     } else {
-      return this.supplierForBsite();
+      return await this.supplierForBsite();
     }
   },
   // 取得friday供應商資料
