@@ -144,6 +144,10 @@ const autoAddCart = (buyItemData: any) => {
 
 }
 
+const getCampaignData = async()=>{
+  const myCampaignIds = await api.campaign.getMyCampaigns();
+}
+
 const init = async () => {
   pid.value = param.productId;
   if (siteData.value) {
