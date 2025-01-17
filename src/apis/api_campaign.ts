@@ -1,6 +1,7 @@
+import type { productInfo } from '@/types/productInfo';
 import config from '../config/config';
 
-const { cloudApiPath, fetchGetHeaders, fetchPostHeaders, setTicket } = config;
+const { isLogin, cloudApiPath, fetchGetHeaders, fetchPostHeaders, frontApiPath } = config;
 
 const api_campaign = {
   // 取活動明細
@@ -22,6 +23,27 @@ const api_campaign = {
     const info = await this.getCampaignDetail(['DO_241007175822515']);
     const pids = info ? info[0].campaignRange.v[9]?.split(',') : [];
     return pids;
+  },
+
+  async getMyCampaigns(returnDetail = false): Promise<string[]> {
+    if (!isLogin) return [];
+    return await fetch(`${frontApiPath()}api/campaign/memCampaign`, {
+      ...fetchPostHeaders,
+      body: JSON.stringify({}),
+    })
+      .then((res) => res.json())
+      .then(async (res) => {
+        const { resultCode, resultData } = res;
+        const ids = resultCode === 0 ? resultData.campaignIds : [];
+        // if (returnDetail && ids.length > 0) {
+        //   let ui = await this.parseCampaignDetail(ids, ids);
+
+        //   if (/print=1/i.test(location.search)) console.log('getMyCampaigns', JSON.parse(JSON.stringify(ui)));
+
+        //   return ui;
+        // }
+        return ids;
+      });
   },
 };
 

@@ -120,7 +120,7 @@ const parseProductDetail = (productInfo: productInfo) => {
   }
 
   isApiRequested.value = true
-  // getCampaignData() //TODO
+  getCampaignData() //TODO
   const buyItemData = tools.getCache("buyItemData");
   if (buyItemData && api.member.isLogin) {
     autoAddCart(buyItemData)
@@ -146,6 +146,10 @@ const autoAddCart = (buyItemData: any) => {
 
 const getCampaignData = async()=>{
   const myCampaignIds = await api.campaign.getMyCampaigns();
+  const newPinfo = await api.product.getProductCampaign(
+        pInfo.value,
+        myCampaignIds
+      );
 }
 
 const init = async () => {

@@ -1,6 +1,8 @@
 import config from '@/config/config';
 import tools from '@/util/tools';
 import product_ui from './product/product_ui';
+import api_campaign from './api_campaign';
+import { getCampaignUI } from './campaign/campaign_util';
 import type { anyObject } from '@/types/common';
 import type { product, productsObj } from '@/types/product';
 import type { comboProduct } from '@/types/comboProduct';
@@ -161,6 +163,68 @@ const api_product = {
       return bestDiscount?.totalDiscount || 0;
     }
     return 0;
+  },
+  /**
+   *  取商品優惠活動 (單品頁顯示用)
+   * ○ 商品頁標籤，顯示 CD、AC、FV、BC、PC 五大類，標籤後方加上活動數量。
+      CD：滿額滿件現折
+      BC：現折券
+      AC：結帳送折價券
+      FV：結帳送購物金
+      PC：折扣碼
+   * */
+  async getProductCampaign(pInfo: productInfo /** 商品資料 */, myOwnCampaignIds: string[] = []) {
+    const { campaignFlags, price } = pInfo;
+    const couponCategory = {
+      CD: { tagTitle: '滿額滿件現折', data: [] },
+      BC: { tagTitle: '現折券', data: [] },
+      AC: { tagTitle: '結帳送折價券', data: [] },
+      FV: { tagTitle: '結帳送購物金', data: [] },
+      PC: { tagTitle: '折扣碼', data: [] },
+      ED: { tagTitle: '每滿N件', data: [] },
+      AED: { tagTitle: '每滿N件折上折', data: [] },
+      ADD: { tagTitle: '超取現折券', data: [] },
+    };
+    const sameKeyObj = {
+      LD: 'ED',
+      ALD: 'AED',
+    };
+
+    if (campaignFlags) {
+      if (/print=1/i.test(location.search)) console.log(campaignFlags);
+      const campaignIds: string[] = [];
+      campaignFlags.v.forEach((v) => {
+        if (v)
+          v.forEach((y) => {
+            // 過濾需要算折扣的資料即可 , campaign_utils.js 要做對應處理
+            if (/^(PD|CD|AC|FV|BC|PC|SC|OC|ED|ASD|AED|LD|ALD|ADD)_/i.test(y)) {
+              campaignIds.push(y);
+            }
+          });
+      });
+      // 取得活動並比對自己有沒有已領取
+      await this.getCampiagn(campaignIds, myOwnCampaignIds);
+    }
+  },
+  async getCampiagn(campaignIds: string[] = [], myOwnCampaignIds: string[] = [] /** 自己有哪些campaignId */) {
+    if (campaignIds.length === 0) {
+      return null;
+    }
+    const resultData = await api_campaign.getCampaignDetail(campaignIds);
+    console.log('resultData', resultData);
+    const newResultObj = {};
+    resultData.forEach((v: campaignInfo) => {
+      let ui = {};
+
+      // 組合UI需要
+      // try {
+      //   ui = getCampaignUI(v, myOwnCampaignIds);
+      // } catch (e) {
+      //   console.error(e);
+      // }
+
+      // newResultObj[v.campaignId] = Object.assign(v, { ui });
+    });
   },
 };
 
