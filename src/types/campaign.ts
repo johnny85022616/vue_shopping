@@ -5,7 +5,7 @@ interface campaignInfo {
   campaignEndTimestamp: string;
   offerCondition: string[];
   offerContents: OfferContents;
-  campaignRange: ProductRange;
+  campaignRange?: ProductRange;
   otherInformation: OtherInformation;
   [key: string]: any;
 }
