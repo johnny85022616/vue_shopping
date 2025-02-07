@@ -175,7 +175,7 @@ const api_product = {
    * */
   async getProductCampaign(pInfo: productInfo /** 商品資料 */, myOwnCampaignIds: string[] = []) {
     const { campaignFlags, price } = pInfo;
-    const couponCategory = {
+    const couponCategory: { [key: string]: { tagTitle: string; data: any[] } } = {
       CD: { tagTitle: '滿額滿件現折', data: [] },
       BC: { tagTitle: '現折券', data: [] },
       AC: { tagTitle: '結帳送折價券', data: [] },
@@ -185,7 +185,7 @@ const api_product = {
       AED: { tagTitle: '每滿N件折上折', data: [] },
       ADD: { tagTitle: '超取現折券', data: [] },
     };
-    const sameKeyObj = {
+    const sameKeyObj: { [key: string]: string } = {
       LD: 'ED',
       ALD: 'AED',
     };
@@ -203,8 +203,91 @@ const api_product = {
           });
       });
       // 取得活動並比對自己有沒有已領取
-      await this.getCampiagn(campaignIds, myOwnCampaignIds);
+      let campaignInfo = await this.getCampiagn(campaignIds, myOwnCampaignIds);
+      if (campaignInfo) {
+        if (/print=1/i.test(location.search)) console.log('campaignInfo', campaignInfo);
+
+        // 過濾只有單品折扣的劵 PD_ 開頭
+        const promoPriceCampaignInfo = campaignInfo.filter((v) => /^PD_/i.test(v.campaignId));
+
+        // D9再折劵 抽出哪寫劵有綁定再折劵
+        const childCampaignMapObj = campaignInfo
+          .filter((v) => /^ASD_/i.test(v.campaignId)) // 取出ASD開頭劵
+          .reduce((map, v) => {
+            const parentCampaignIds = v.offerContents?.v?.productRange?.v2[0]?.split(',') || [];
+            parentCampaignIds.forEach((id: string) => (map[id] = v)); // 將parentCampaignId對應至child campaign
+            return map;
+          }, {});
+
+        if (/print=1/i.test(location.search)) console.log('childCampaignMapObj', childCampaignMapObj);
+
+        // 指定折價卷分類 顯示在頁面
+        campaignInfo.reduce((acc, d) => {
+          if (!d?.campaignId) return acc;
+
+          const code = d.campaignId.match(/(\w+)_/)?.[1];
+          if (!code) return acc;
+
+          const key = couponCategory[code] ? code : sameKeyObj[code];
+          if (key) {
+            // 再折劵對應，塞回母劵
+            if (childCampaignMapObj[d.campaignId]) d.childCampaignInfo = childCampaignMapObj[d.campaignId].ui;
+
+            couponCategory[key].data.push(d);
+          }
+
+          return acc;
+        }, {});
+
+        if (/print=1/i.test(location.search)) console.log('couponCategory', couponCategory);
+
+        // 過濾空ARRAY、重組getTitle、另外取出再折劵 多出一個類
+        const moreDiscountCouponObj: { tagTitle: string; data: any } = {
+          tagTitle: '',
+          data: [],
+        };
+        const filterCouponObj: any = {};
+        let addCampaignData; //活動代號ADD資料
+
+        for (const [key, { data: d, tagTitle: t }] of Object.entries(couponCategory)) {
+          if (d.length === 0) continue;
+
+          // 判斷再折劵
+          const filteredData = d.filter((v) => {
+            if (v?.childCampaignInfo) {
+              moreDiscountCouponObj.data.push(v);
+              // return false; // 過濾掉已經有子劵的
+            }
+            return true;
+          });
+
+          const obj = {
+            tagTitle: `${t}(${filteredData.length})`,
+            data: filteredData,
+          };
+
+          if (key === 'ADD') {
+            addCampaignData = obj;
+          } else if (filteredData.length > 0) {
+            filterCouponObj[key] = obj;
+          }
+        }
+
+        //若有再折劵
+        if (moreDiscountCouponObj.data.length > 0) {
+          moreDiscountCouponObj.tagTitle = `再折劵(${moreDiscountCouponObj.data.length})`;
+          Object.assign(filterCouponObj, { ASD: moreDiscountCouponObj });
+        }
+
+        //若有d16資料則加入到最後面
+        if (addCampaignData) filterCouponObj['ADD'] = addCampaignData;
+        pInfo = Object.assign(pInfo, this.calcProductDiscount(price, promoPriceCampaignInfo), {
+          couponCategory: filterCouponObj,
+        });
+      }
     }
+    if (/print=1/i.test(location.search)) console.log('pInfo', pInfo);
+    return pInfo;
   },
   async getCampiagn(campaignIds: string[] = [], myOwnCampaignIds: string[] = [] /** 自己有哪些campaignId */) {
     if (campaignIds.length === 0) {
@@ -212,19 +295,83 @@ const api_product = {
     }
     const resultData = await api_campaign.getCampaignDetail(campaignIds);
     console.log('resultData', resultData);
-    const newResultObj = {};
+    const newResultObj: any = {};
     resultData.forEach((v: campaignInfo) => {
       let ui = {};
 
       // 組合UI需要
-      // try {
-      //   ui = getCampaignUI(v, myOwnCampaignIds);
-      // } catch (e) {
-      //   console.error(e);
-      // }
+      try {
+        ui = getCampaignUI(v, myOwnCampaignIds);
+      } catch (e) {
+        console.error(e);
+      }
 
-      // newResultObj[v.campaignId] = Object.assign(v, { ui });
+      newResultObj[v.campaignId] = Object.assign(v, { ui });
     });
+    // 過濾掉PD單品折、純展示。 並重新排序，元 > 折 > 送購物金
+    return campaignIds.map((v) => newResultObj[v]).filter((v) => !!v);
+  },
+  /**
+   * 計算單品活動折%折錢結果
+   * @param {Object} priceObj
+   * @param {Array} campaignInfo
+   * return priceObj include promoPrice
+   */
+  calcProductDiscount(priceObj: any, campaignInfo: any) {
+    if (!campaignInfo || campaignInfo.length === 0)
+      return {
+        price: priceObj,
+      };
+
+    let productDiscount = null; // 單品扣抵金額 及 組合結帳要送出的參數
+    let tempProductDiscount: any[] = []; // 收集單品折扣物件
+    let promoPrice: number | null = null;
+
+    // 收集單品折扣
+    campaignInfo.forEach((info: campaignInfo) => {
+      const { campaignId, offerContents } = info;
+      const { discount, digitalSignal } = offerContents;
+
+      let ratio: number | undefined, amount: number | undefined;
+      if (discount) {
+        const disAry = discount.find((v) => v !== '')?.split(',');
+        if (disAry) {
+          if (disAry[0] === 'R') {
+            ratio = Number(disAry[1]);
+          }
+          if (disAry[0] === 'A') {
+            amount = Number(disAry[1]);
+          }
+        }
+      }
+
+      let discreaseAmount = 0; // 可扣去多少錢
+      if (ratio) {
+        promoPrice = Math.floor(priceObj.memberPrice * ratio);
+        discreaseAmount = priceObj.memberPrice - promoPrice;
+      }
+      if (amount) {
+        promoPrice = Math.floor(priceObj.memberPrice - amount);
+        discreaseAmount = amount;
+      }
+
+      tempProductDiscount.push({
+        type: 1,
+        discreaseAmount,
+        digitalSignal,
+        campaignId,
+        promoPrice,
+      });
+    });
+
+    // 重新排序單品折扣，折最多排第一位
+    if (tempProductDiscount.length > 0) {
+      tempProductDiscount = tempProductDiscount.sort((a, b) => a.promoPrice - b.promoPrice);
+      productDiscount = tempProductDiscount[0];
+      promoPrice = productDiscount.promoPrice;
+    }
+
+    return { price: Object.assign(priceObj, { promoPrice }), productDiscount };
   },
 };
 
