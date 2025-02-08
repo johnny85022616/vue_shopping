@@ -150,9 +150,9 @@ const api_product = {
   async querySupplierBestDiscount(pid: number): Promise<number> {
     if (!pid) return 0;
     const supplierData = window.fridayData || window.siteData;
-    if (supplierData && supplierData.campaignId.v && supplierData.campaignId.v.length > 0) {
+    if (supplierData && supplierData.campaignId?.v && supplierData.campaignId.v?.length > 0) {
       const payload = {
-        campaignId: supplierData.campaignId?.v?.[0],
+        campaignId: supplierData.campaignId.v[0],
         productIdList: [`${pid},1`],
         siteId: supplierData.siteId || '',
       };
