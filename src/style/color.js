@@ -1,6 +1,7 @@
 export default {
   c_white: '#ffffff',
   c_red: '#f34f59',
+  c_bean_red: '#e66262',
   c_pomegranate: '#f5281e',
   c_pomegranateapprox: '#f5281e',
   c_sundown: '#FFB5B5',
