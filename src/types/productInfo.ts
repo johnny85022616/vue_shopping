@@ -58,6 +58,7 @@ export interface info {
 export interface couponCategoryData {
   campaignId: string;
   campaignName: string;
+  campaignSiteName?: string;
   campaignStartTimestamp: string;
   campaignEndTimestamp: string;
   offerCondition: string[];
