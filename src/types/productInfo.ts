@@ -32,12 +32,12 @@ interface Variant {
   qtyMax: number;
 }
 
-interface CampaignFlags {
+export interface CampaignFlags {
   k: string;
   v: (string[] | null)[];
 }
 
-interface Price {
+export interface Price {
   memberPrice: number;
   marketPrice: number;
   promoPrice: null;
@@ -46,16 +46,16 @@ interface Price {
   bestDiscountPrice: number;
 }
 
-interface couponCategory {
+export interface couponCategory {
   [key: string]: info;
 }
 
-interface info {
+export interface info {
   tagTitle: string;
   data: couponCategoryData[];
 }
 
-interface couponCategoryData {
+export interface couponCategoryData {
   campaignId: string;
   campaignName: string;
   campaignStartTimestamp: string;
@@ -64,10 +64,11 @@ interface couponCategoryData {
   offerContents: OfferContents;
   campaignRange: ProductRange;
   otherInformation: OtherInformation;
+  couponType?: string; //coupon代號
   ui: Ui;
 }
 
-interface Ui {
+export interface Ui {
   digitalType: string;
   discountAmount: number;
   discountCode: string;
@@ -97,21 +98,6 @@ interface OtherInformation {
 }
 
 interface OfferContents {
-  d5: D5;
+  [key: string]: any;
   digitalSignal: string;
-}
-
-interface D5 {
-  minAmount: string;
-  password: string;
-  quantity: string;
-  d: string;
-  productRange: ProductRange;
-  discount: string[];
-  couponId: number;
-}
-
-interface ProductRange {
-  v: string[];
-  k: string;
 }
