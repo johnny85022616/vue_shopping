@@ -4,7 +4,7 @@
     <mainImage v-if="pInfo" :images="pInfo.images" :videos="pInfo.videos"></mainImage>
     <basicInfo v-if="pInfo" :data="pInfo" :friendRecommandation="friendRecommandation"></basicInfo>
     <template v-if="isApiRequested">
-
+      <campaign v-if="isCampaignDataLoaded" :pInfo="pInfo" :bsiteLogin="bsiteLogin"></campaign>
     </template>
   </div>
 </template>
@@ -13,6 +13,7 @@
 import navigation from '@/components/common/navigation.vue';
 import mainImage from '@/components/product/mainImage.vue';
 import basicInfo from '@/components/product/basicInfo.vue';
+import campaign from '@/components/product/campaign.vue';
 import { ref, toRefs } from 'vue';
 import api from '@/apis/api';
 import tools from '@/util/tools';
@@ -83,7 +84,7 @@ const getProductDetail = async () => {
   }
 }
 
-const parseProductDetail = (productInfo: productInfo) => {
+const parseProductDetail = async (productInfo: productInfo) => {
   console.log(productInfo);
   //初始化付款方式
   productInfo["payMethodList"] = ["CASH"];
@@ -120,7 +121,7 @@ const parseProductDetail = (productInfo: productInfo) => {
   }
 
   isApiRequested.value = true
-  getCampaignData() //TODO
+  await getCampaignData() //TODO
   const buyItemData = tools.getCache("buyItemData");
   if (buyItemData && api.member.isLogin) {
     autoAddCart(buyItemData)
@@ -144,12 +145,16 @@ const autoAddCart = (buyItemData: any) => {
 
 }
 
-const getCampaignData = async()=>{
+const getCampaignData = async () => {
   const myCampaignIds = await api.campaign.getMyCampaigns();
   const newPinfo = await api.product.getProductCampaign(
-        pInfo.value,
-        myCampaignIds
-      );
+    pInfo.value,
+    myCampaignIds
+  );
+  if (newPinfo) {
+    pInfo.value = newPinfo;
+    isCampaignDataLoaded.value = true;
+  }
 }
 
 const init = async () => {
