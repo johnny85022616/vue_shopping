@@ -65,6 +65,7 @@ export interface couponCategoryData {
   campaignRange: ProductRange;
   otherInformation: OtherInformation;
   couponType?: string; //coupon代號
+  childCampaignInfo?: any;
   ui: Ui;
 }
 
