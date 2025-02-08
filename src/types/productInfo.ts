@@ -58,7 +58,6 @@ export interface info {
 export interface couponCategoryData {
   campaignId: string;
   campaignName: string;
-  campaignSiteName?: string;
   campaignStartTimestamp: string;
   campaignEndTimestamp: string;
   offerCondition: string[];
@@ -81,6 +80,7 @@ export interface Ui {
   rule: string;
   campaignId: string;
   campaignName: string;
+  campaignSiteName?: string;
   campaignEndTime: string;
   couponExpireTime: string;
   listCampaignEndTime: string;
