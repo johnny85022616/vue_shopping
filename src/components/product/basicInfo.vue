@@ -24,8 +24,8 @@
       <!-- 商品價格 -->
       <div class="price">
         <!-- 有優惠價格 -->
-        <div v-if="data.payMethodList[0] === 'CASH' && data.price.promoPrice" class="infoPrice">
-          <div>
+        <div v-if="data.payMethodList[0] === 'CASH' && data.price.promoPrice" class="infoPrice flex items-baseline justify-start">
+          <div class="flex items-baseline mr-2">
             <span class="product-payment__list-price block text-c_sliver min-w-10 text-base">網路價</span>
             <span class="product-payment__list-price text-c_sliver min-w-10 text-base line-through">${{
               tools.priceFormat(data.price.memberPrice)
@@ -40,7 +40,7 @@
               tools.priceFormat(bestDiscount) }}</span>)</span>
           </div>
         </div>
-        <div class="infoPrice flex items-baseline justify-start">
+        <div v-else class="infoPrice flex items-baseline justify-start">
           <div v-if="!bestDiscount" class="flex items-baseline mr-2">
             <span v-if="data.price.marketPrice"
               class="product-payment__list-price block text-c_sliver min-w-10 text-base">市價</span>
