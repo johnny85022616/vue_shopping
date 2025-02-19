@@ -77,14 +77,14 @@ const api_campaign = {
 
   async parseCampaignDetail(ids: string[], myCampaignIds = []): Promise<string[]> {
     if (!ids) return [];
-    const detailRes = await this.getCampaignBasicDetail(ids);
+    const detailRes = await this.getCampaignDetail(ids);
 
     // D9再折劵 抽出哪寫劵有綁定再折劵
     const childCampaignMapObj = detailRes
-      .filter((v: campaignInfo) => /^ASD_/i.test(v.campaignId)) // 取出ASD開頭劵
+      .filter((v: campaignInfo) => v.campaignRange?.v2?.[0]) // 取出ASD開頭劵
       .reduce((map: any, v: campaignInfo) => {
-        const parentCampaignIds = v.offerContents?.v?.productRange?.v2[0]?.split(',') || [];
-        parentCampaignIds.forEach((id: string) => (map[id] = v)); // 將parentCampaignId對應至child campaign
+        const parentCampaignId = v.campaignRange?.v2?.[0];
+        map[parentCampaignId as string] = v; // 將parentCampaignId對應至child campaign
         return map;
       }, {});
 
@@ -97,13 +97,9 @@ const api_campaign = {
 
     const output: any[] = [];
     ids.forEach((id) => {
-      //排除母券是ASD的
-      if (/^ASD_/i.test(id)) {
-        return;
-      }
-      if (detailObj[id]) {
-        // const campaignIds = myCampaignIds.length === 0 ? ids : myCampaignIds;
-        output.push(getCampaignUI(detailObj[id], myCampaignIds));
+      const ob = detailObj[id];
+      if (ob && !ob.campaignRange?.v2?.[0]) {
+        output.push(getCampaignUI(ob, myCampaignIds));
       } else if (/print=1/i.test(location.search)) {
         console.log(id + '取不到資料');
       }

@@ -6,8 +6,8 @@ export function getCampaignUI(
   data: campaignInfo /** 活動資料 */,
   myOwnCampaignIds: string[] = [] /** 已領取的CampaignId */
 ) {
-  const couponPrefix = data.campaignId ? data.campaignId.split('_')[0] : '';
-  const { d3, d4, d5, d6, d7, d8, d26 } = data.offerContents;
+  let couponPrefix = data.campaignId ? data.campaignId.split('_')[0] : '';
+  const { d3, d4, d5, d6, d7, d8, d26, cap } = data.offerContents;
   const endTime = data.campaignEndTimestamp.replace(/-/g, '/').substr(5, 5);
   let discount: string[] = [];
   let digitalType = '',
@@ -82,6 +82,11 @@ export function getCampaignUI(
         break;
     }
   }
+  // 判斷娃娃券前綴
+  const mappings = ['CD', 'BC', 'PC'];
+  const match = mappings.find((prefix) => new RegExp(`^A?${prefix}`).test(couponPrefix));
+  if (match) couponPrefix = match;
+
   switch (couponPrefix) {
     case 'CD': // D2 購物車折扣 滿額滿件【CD】
       discount = data.offerContents.discount || [];
@@ -282,5 +287,6 @@ export function getCampaignUI(
     campaignUrl, // 活動連結
     isShowInMyCampaign, // 是否顯示在“我的優惠“清單
     isAdditionalDiscount, // 是否顯示折上折文案
+    cap: cap ? `最多再折${cap}元` : '',
   };
 }

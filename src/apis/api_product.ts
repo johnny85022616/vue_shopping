@@ -197,13 +197,14 @@ const api_product = {
         if (v)
           v.forEach((y) => {
             // 過濾需要算折扣的資料即可 , campaign_utils.js 要做對應處理
-            if (/^(PD|CD|AC|FV|BC|PC|SC|OC|ED|ASD|AED|LD|ALD|ADD)_/i.test(y)) {
-              campaignIds.push(y);
-            }
+            campaignIds.push(y);
           });
       });
       // 取得活動並比對自己有沒有已領取
-      let campaignInfo = await this.getCampiagn(campaignIds, myOwnCampaignIds);
+      let data = await this.getCampiagn(campaignIds, myOwnCampaignIds);
+      const campaignInfo = data?.filter(
+        (v) => /^(PD|CD|AC|FV|BC|PC|SC|OC|ED|AED|LD|ALD|ADD|AWD)_/i.test(v.campaignId) || v.campaignRange?.v2?.[0]
+      );
       if (campaignInfo) {
         if (/print=1/i.test(location.search)) console.log('campaignInfo', campaignInfo);
 
@@ -212,10 +213,10 @@ const api_product = {
 
         // D9再折劵 抽出哪寫劵有綁定再折劵
         const childCampaignMapObj = campaignInfo
-          .filter((v) => /^ASD_/i.test(v.campaignId)) // 取出ASD開頭劵
+          .filter((v) => v.campaignRange?.v2?.[0]) // 取出ASD開頭劵
           .reduce((map, v) => {
-            const parentCampaignIds = v.offerContents?.v?.productRange?.v2[0]?.split(',') || [];
-            parentCampaignIds.forEach((id: string) => (map[id] = v)); // 將parentCampaignId對應至child campaign
+            const parentCampaignId = v.campaignRange?.v2?.[0];
+            map[parentCampaignId] = v; // 將parentCampaignId對應至child campaign
             return map;
           }, {});
 
@@ -276,7 +277,7 @@ const api_product = {
         //若有再折劵
         if (moreDiscountCouponObj.data.length > 0) {
           moreDiscountCouponObj.tagTitle = `再折劵(${moreDiscountCouponObj.data.length})`;
-          Object.assign(filterCouponObj, { ASD: moreDiscountCouponObj });
+          Object.assign(filterCouponObj, { multiCampaign: moreDiscountCouponObj });
         }
 
         //若有d16資料則加入到最後面
