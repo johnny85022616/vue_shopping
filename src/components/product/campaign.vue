@@ -125,6 +125,7 @@
 import type { couponCategoryData, productInfo } from '@/types/productInfo';
 import autoscreendialog from '@/components/common/autoscreendialog.vue';
 import { ref, toRefs } from 'vue';
+import api from '@/apis/api';
 
 const showDialog = ref(false);
 const isCampaignDialogOpen = ref(false);
@@ -303,12 +304,12 @@ const drawDiscount = async (discountCode: string, childCampaignId?: string) => {
 
 //領折價券api
 const doDrawDiscountApi = async (discountCode: string) => {
-  // const drawResult = await this.api.campaign.drawDiscountCode(discountCode);
-  // if (drawResult.status === 0) {
-  //   this.api.ui.alert.getFadeAlert(drawResult.msg);
-  //   return false;
-  // }
-  // return true;
+  const drawResult = await api.campaign.drawDiscountCode(discountCode);
+  if (drawResult.status === 0) {
+    api.ui.alert.getFadeAlert(drawResult.msg);
+    return false;
+  }
+  return true;
 };
 
 //複製折扣碼
