@@ -1,0 +1,22 @@
+// 自訂aler樣式
+.fadeAlert {
+  @apply w-3/5 flex flex-col items-center fixed top-[65px] left-1/2 -translate-x-1/2  z-[999];
+  &__wrap-phone {
+    @apply opacity-0 mb-1 h-auto p-2 w-full flex justify-center bg-c_mine_shaft rounded-md ;
+    p {
+      @apply text-center text-base text-c_white rounded-lg;
+    }
+  }
+  
+  .fade-down {
+    animation: fadeDown 0.4s ease-in-out 1 forwards;
+  }
+}
+@keyframes fadeDown {
+  0% {
+    @apply -translate-y-full opacity-0;
+  }
+  100% {
+    @apply translate-y-0 opacity-100;
+  }
+}
