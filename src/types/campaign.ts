@@ -27,4 +27,6 @@ interface OfferContents {
 interface ProductRange {
   v: string[];
   k: string;
+  v2?: string[];
+  k2?: string;
 }
