@@ -270,18 +270,14 @@ const drawAllCampaign = async () => {
 const drawCampaign = async (campaignId: string, childCampaignId?: string) => {
   const pass = await doDrawCampaingApi([campaignId, childCampaignId]);
   if (!pass) return;
-  console.log("pass",pass);
   let index
   campaignUI.value?.forEach((ele, idx) => {
-    console.log(ele.campaignId, campaignId);
     if (ele.campaignId === campaignId) {
       index = idx;
     }
   });
-  console.log("index",index);
   if (typeof index !== 'number') return
   const nowObj = campaignUI.value?.[index].ui;
-  console.log("nowObj",nowObj);
   if(!nowObj) return 
   setChoseCampaignGetedStatus(nowObj);
   api.ui.alert.getFadeAlert("領取成功");
