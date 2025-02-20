@@ -1,10 +1,15 @@
 <template>
   <div class="product mb-16">
-    <navigation></navigation>
-    <mainImage v-if="pInfo" :images="pInfo.images" :videos="pInfo.videos"></mainImage>
-    <basicInfo v-if="pInfo" :data="pInfo" :friendRecommandation="friendRecommandation"></basicInfo>
     <template v-if="isApiRequested">
+      <navigation></navigation>
+      <!-- 商品圖 -->
+      <mainImage v-if="pInfo" :images="pInfo.images" :videos="pInfo.videos"></mainImage>
+      <!-- 商品價格 -->
+      <basicInfo v-if="pInfo" :data="pInfo" :friendRecommandation="friendRecommandation"></basicInfo>
+      <!-- 活動資訊、折價券 -->
       <campaign v-if="isCampaignDataLoaded" :pInfo="pInfo" :bsiteLogin="bsiteLogin"></campaign>
+      <!-- 商品資訊 -->
+      <basicintro v-if="pInfo.intro && !isSimpleProductCnt" :intro="pInfo.intro" />
     </template>
   </div>
 </template>
@@ -14,6 +19,7 @@ import navigation from '@/components/common/navigation.vue';
 import mainImage from '@/components/product/mainImage.vue';
 import basicInfo from '@/components/product/basicInfo.vue';
 import campaign from '@/components/product/campaign.vue';
+import basicintro from '@/components/product/basicintro.vue';
 import { ref, toRefs } from 'vue';
 import api from '@/apis/api';
 import tools from '@/util/tools';
