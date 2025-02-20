@@ -138,7 +138,7 @@ const api_campaign = {
       });
   },
   // 領取活動
-  async drawCampaign(campaignId: string | string[] | null = null) {
+  async drawCampaign(campaignId: string | (string | undefined)[] | null = null) {
     if (!isLogin) {
       return {
         status: 0,

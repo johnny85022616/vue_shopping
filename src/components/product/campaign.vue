@@ -128,7 +128,7 @@
 </template>
 
 <script lang="ts" setup name="campaign">
-import type { couponCategoryData, productInfo } from '@/types/productInfo';
+import type { couponCategoryData, productInfo, Ui } from '@/types/productInfo';
 import autoscreendialog from '@/components/common/autoscreendialog.vue';
 import { ref, toRefs } from 'vue';
 import api from '@/apis/api';
@@ -236,80 +236,87 @@ const composeCouponUiType = (campaignData: couponCategoryData) => {
 
 //領全部券
 const drawAllCampaign = async () => {
-  // const campaignArr = [];
-  // for (let item of campaignPopupData.value) {
-  //   //一般券
-  //   if (!item.ui.discountCode) {
-  //     campaignArr.push(item.ui.campaignId);
-  //     //娃娃
-  //     if (item.childCampaignInfo) {
-  //       campaignArr.push(item.childCampaignInfo?.campaignId);
-  //     }
-  //   }
-  //   //折扣碼
-  //   else {
-  //     const childPass = await doDrawDiscountApi(item.ui.discountCode);
-  //     if (!childPass) return;
-  //     //有帶娃娃
-  //     if (item.childCampaignInfo) {
-  //       campaignArr.push(item.childCampaignInfo?.campaignId);
-  //     }
-  //   }
-  // }
-  // const pass = await this.doDrawCampaingApi(campaignArr);
-  // if (!pass) return;
-  // //所有券狀態改為已經領
-  // this.campaignUI.forEach((ele) => {
-  //   ele.ui.isGeted = true;
-  // });
-  // this.api.ui.alert.getFadeAlert("領取成功");
+  const campaignArr = [];
+  if(!campaignPopupData.value) return 
+  for (let item of campaignPopupData.value) {
+    //一般券
+    if (!item.ui.discountCode) {
+      campaignArr.push(item.ui.campaignId);
+      //娃娃
+      if (item.childCampaignInfo) {
+        campaignArr.push(item.childCampaignInfo?.campaignId);
+      }
+    }
+    //折扣碼
+    else {
+      const childPass = await doDrawDiscountApi(item.ui.discountCode);
+      if (!childPass) return;
+      //有帶娃娃
+      if (item.childCampaignInfo) {
+        campaignArr.push(item.childCampaignInfo?.campaignId);
+      }
+    }
+  }
+  const pass = await doDrawCampaingApi(campaignArr);
+  if (!pass) return;
+  //所有券狀態改為已經領
+  campaignUI.value?.forEach((ele) => {
+    ele.ui.isGeted = true;
+  });
+  api.ui.alert.getFadeAlert("領取成功");
 };
 
 //領取(有itemCouponType表示點我領優惠途徑)
 const drawCampaign = async (campaignId: string, childCampaignId?: string) => {
-  // const pass = await this.doDrawCampaingApi([campaignId, childCampaignId]);
-  // if (!pass) return;
-
-  // let index;
-  // this.campaignUI.forEach((ele, idx) => {
-  //   if (ele.campaignId === campaignId) {
-  //     index = idx;
-  //   }
-  // });
-  // const nowObj = this.campaignUI[index].ui;
-  // this.setChoseCampaignGetedStatus(nowObj);
-  // this.api.ui.alert.getFadeAlert("領取成功");
+  const pass = await doDrawCampaingApi([campaignId, childCampaignId]);
+  if (!pass) return;
+  console.log("pass",pass);
+  let index
+  campaignUI.value?.forEach((ele, idx) => {
+    console.log(ele.campaignId, campaignId);
+    if (ele.campaignId === campaignId) {
+      index = idx;
+    }
+  });
+  console.log("index",index);
+  if (typeof index !== 'number') return
+  const nowObj = campaignUI.value?.[index].ui;
+  console.log("nowObj",nowObj);
+  if(!nowObj) return 
+  setChoseCampaignGetedStatus(nowObj);
+  api.ui.alert.getFadeAlert("領取成功");
 }
 
 //領取折扣碼(有itemCouponType表示點我領優惠途徑)
 const drawDiscount = async (discountCode: string, childCampaignId?: string) => {
-  // const pass = await this.doDrawDiscountApi(discountCode);
-  // if (!pass) return;
-  // //有帶娃娃
-  // if (childCampaignId) {
-  //   const childPass = await this.doDrawCampaingApi(childCampaignId);
-  //   if (!childPass) return;
-  // }
-  // let index = null;
-  // this.campaignUI.forEach((ele, idx) => {
-  //   if (
-  //     ele.ui &&
-  //     ele.ui.discountCode &&
-  //     ele.ui.discountCode === discountCode
-  //   ) {
-  //     index = idx;
-  //   }
-  // });
-  // if (index) {
-  //   const nowObj = this.campaignUI[index].ui;
-  //   this.setChoseCampaignGetedStatus(nowObj);
-  // }
-  // this.discountCode = "";
-  // this.api.ui.alert.getFadeAlert("領取成功");
-};
+  const pass = await doDrawDiscountApi(discountCode);
+  if (!pass) return;
+  //有帶娃娃
+  if (childCampaignId) {
+    const childPass = await doDrawCampaingApi([childCampaignId]);
+    if (!childPass) return;
+  }
+  let index = null;
+  campaignUI.value?.forEach((ele, idx) => {
+    if (
+      ele.ui &&
+      ele.ui.discountCode &&
+      ele.ui.discountCode === discountCode
+    ) {
+      index = idx;
+    }
+  });
+  if (!index) return 
+    const nowObj = campaignUI.value?.[index].ui;
+    if(!nowObj) return 
+    setChoseCampaignGetedStatus(nowObj);
+    discountCode = "";
+    api.ui.alert.getFadeAlert("領取成功");
+  ;
+  }
 
 //領券api
-const doDrawCampaingApi = async (campaignArr: string[]) => {
+const doDrawCampaingApi = async (campaignArr: (string | undefined)[]) => {
   const result = await api.campaign.drawCampaign(campaignArr);
   if (result && result.status === 0) {
     api.ui.alert.getFadeAlert(result.msg);
@@ -334,6 +341,11 @@ const copyNumber = (content: string) => {
     alert(`已複製${content}至剪貼簿`);
   });
 };
+
+//外層ui選中的折價券geted狀態變更
+const setChoseCampaignGetedStatus = (nowObj:Ui) => {
+  nowObj.isGeted = true;
+}
 
 const init = async () => {
   composeCampaignUI();
