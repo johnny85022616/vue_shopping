@@ -1,5 +1,5 @@
 <template>
-  <div class="product">
+  <div class="product mb-16">
     <navigation></navigation>
     <mainImage v-if="pInfo" :images="pInfo.images" :videos="pInfo.videos"></mainImage>
     <basicInfo v-if="pInfo" :data="pInfo" :friendRecommandation="friendRecommandation"></basicInfo>
