@@ -11,6 +11,9 @@
   .redCount{
     @apply absolute top-[2px] right-[23px] flex items-center w-fit min-w-[14px] h-[15px] py-[1px] px-[5px] rounded-[25px] text-c_white text-xs bg-c_pomegranateapprox
   }
+  .gap-line{
+    @apply h-3 bg-c_background
+  }
   // 自訂aler樣式
   @import './style/component/fadeAlert.scss';
 }
