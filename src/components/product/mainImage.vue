@@ -1,6 +1,6 @@
 <template>
   <div class="productImg relative">
-    <template v-if="imagesData.length > 1">
+    <template v-if="imagesData.length > 0">
       <carousel class="custom-carousel w-full" :loop="false" :autoplayTimeout="5000" :perPage="1"
         :paginationEnabled="false">
         <slide v-for="(item, index) of imagesData" :key="index" class="carousel-slide">
