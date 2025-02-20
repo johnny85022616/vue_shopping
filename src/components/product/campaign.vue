@@ -48,7 +48,8 @@
                         <p class="title text-2xl font-bold text-c_red text-center" v-html="item.ui.title"></p>
                         <div class="middle relative min-h-5 flex items-center mb-2 text-c_dodger_blue">
                           <p class="w-[35%]">{{ item.ui.rule }}</p>
-                          <p class="w-[65%] text-right text-c_red"><a class="campaignUrl text-c_dodger_blue underline text-right block"
+                          <p class="w-[65%] text-right text-c_red"><a
+                              class="campaignUrl text-c_dodger_blue underline text-right block"
                               :href="item.ui.campaignUrl">看全部商品</a></p>
                         </div>
                       </div>
@@ -70,7 +71,8 @@
                         <p class="w-[35%]">{{ item.ui.rule }}</p>
                         <p class="w-[65%] text-right text-c_red">{{ item.ui.couponExpireTime }}</p>
                       </div>
-                      <a v-if="item.ui.digitalType !== 'd24'" class="campaignUrl text-c_dodger_blue underline text-right block"
+                      <a v-if="item.ui.digitalType !== 'd24'"
+                        class="campaignUrl text-c_dodger_blue underline text-right block"
                         :href="item.ui.campaignUrl">看全部商品</a>
                     </template>
                   </div>
@@ -100,16 +102,20 @@
                   class="right w-1/5 flex items-center justify-center flex-col py-2 bg-center bg-100% bg-no-repeat">
                   <div v-if="!item.ui.isGeted && !item.ui.discountCode"
                     @click="drawCampaign(item.ui.campaignId, item.childCampaignInfo?.campaignId)">
-                    <i class="bg-checkbox-icon w-5 h-5 bg-center bg-100% bg-no-repeat inline-block bg-white rounded"></i>
+                    <i
+                      class="bg-checkbox-icon w-5 h-5 bg-center bg-100% bg-no-repeat inline-block bg-white rounded"></i>
                     <p class="writing-rl text-sm font-extrabold tracking-[2px]">打勾領取</p>
                   </div>
                   <div v-else-if="!item.ui.isGeted && item.ui.discountCode"
                     @click="drawDiscount(item.ui.discountCode, item.childCampaignInfo?.campaignId)">
-                    <i class="bg-checkbox-icon w-5 h-5 bg-center bg-100% bg-no-repeat inline-block bg-white rounded"></i>
+                    <i
+                      class="bg-checkbox-icon w-5 h-5 bg-center bg-100% bg-no-repeat inline-block bg-white rounded"></i>
                     <p class="writing-rl text-sm font-extrabold tracking-[2px]">打勾領取</p>
                   </div>
                   <template v-else>
-                    <a v-if="item.ui.campaignUrl" class="link writing-rl no-underline text-sm font-extrabold tracking-[2px]" :href="item.ui.campaignUrl">已領，逛更多</a>
+                    <a v-if="item.ui.campaignUrl"
+                      class="link writing-rl no-underline text-sm font-extrabold tracking-[2px]"
+                      :href="item.ui.campaignUrl">已領，逛更多</a>
                   </template>
                 </div>
               </li>
@@ -301,6 +307,16 @@ const drawDiscount = async (discountCode: string, childCampaignId?: string) => {
   // this.discountCode = "";
   // this.api.ui.alert.getFadeAlert("領取成功");
 };
+
+//領券api
+const doDrawCampaingApi = async (campaignArr: string[]) => {
+  const result = await api.campaign.drawCampaign(campaignArr);
+  if (result && result.status === 0) {
+    api.ui.alert.getFadeAlert(result.msg);
+    return false;
+  }
+  return true;
+}
 
 //領折價券api
 const doDrawDiscountApi = async (discountCode: string) => {

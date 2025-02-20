@@ -137,6 +137,29 @@ const api_campaign = {
         return ids;
       });
   },
+  // 領取活動
+  async drawCampaign(campaignId: string | string[] | null = null) {
+    if (!isLogin) {
+      return {
+        status: 0,
+        msg: '請先登入會員！',
+      };
+    }
+
+    return await fetch(`${frontApiPath()}api/campaign/drawCampaign`, {
+      ...fetchPostHeaders,
+      body: JSON.stringify({
+        param: {
+          campaignIds: typeof campaignId === 'string' ? [campaignId] : campaignId,
+        },
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        window.sessionStorage.removeItem('my_campaign_count');
+        return responseHandler(res);
+      });
+  },
   // 領取折扣碼
   async drawDiscountCode(discountCode = '') {
     if (!isLogin) {
