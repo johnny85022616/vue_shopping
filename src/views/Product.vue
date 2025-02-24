@@ -20,7 +20,7 @@ import mainImage from '@/components/product/mainImage.vue';
 import basicInfo from '@/components/product/basicInfo.vue';
 import campaign from '@/components/product/campaign.vue';
 import basicintro from '@/components/product/basicintro.vue';
-import { ref, toRefs } from 'vue';
+import { ref, resolveComponent, toRefs } from 'vue';
 import api from '@/apis/api';
 import tools from '@/util/tools';
 import { useBsiteStore } from '@/stores/bsiteStore';
@@ -151,6 +151,7 @@ const autoAddCart = (buyItemData: any) => {
 
 }
 
+//取得活動資料
 const getCampaignData = async () => {
   const myCampaignIds = await api.campaign.getMyCampaigns();
   const newPinfo = await api.product.getProductCampaign(
@@ -163,8 +164,25 @@ const getCampaignData = async () => {
   }
 }
 
+// 打相同關鍵字api
+const getSimilarKW = async(pid:string) =>{
+      const res = await api.ai.getAiData("getklist", {
+        target: "pseudoid",
+        list_fun: "PidToKWS",
+        list_args: "content",
+        list_remote: "m",
+        list_pids: pid,
+      });
+      console.log("res" , res);
+      // if (res?.pids?.[0]) {
+      //   const data = res.pids[0];
+      //   this.keywords = data?.kids.map(v => v.kcontent);
+      // }
+    }
+
 const init = async () => {
   pid.value = param.productId;
+  getSimilarKW(param.productId)
   if (siteData.value) {
     isBsite.value = true;
     if (siteData.value.siteType === 'B4') {
