@@ -20,7 +20,7 @@ import mainImage from '@/components/product/mainImage.vue';
 import basicInfo from '@/components/product/basicInfo.vue';
 import campaign from '@/components/product/campaign.vue';
 import basicintro from '@/components/product/basicintro.vue';
-import { ref, resolveComponent, toRefs } from 'vue';
+import { ref } from 'vue';
 import api from '@/apis/api';
 import tools from '@/util/tools';
 import { useBsiteStore } from '@/stores/bsiteStore';
