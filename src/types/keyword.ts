@@ -1,4 +1,4 @@
-interface keyword {
+export interface keyword {
   target: string;
   target_value: string;
   target_ss: string;
