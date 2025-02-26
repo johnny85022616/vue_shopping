@@ -10,6 +10,8 @@
       <campaign v-if="isCampaignDataLoaded" :pInfo="pInfo" :bsiteLogin="bsiteLogin"></campaign>
       <!-- 商品資訊 -->
       <basicintro v-if="pInfo.intro && !isSimpleProductCnt" :intro="pInfo.intro" />
+      <!-- 類似關建字 -->
+      <similarKW v-if="keywords && !isTopic" :keywords="keywords"></similarKW>
     </template>
   </div>
 </template>
@@ -20,6 +22,7 @@ import mainImage from '@/components/product/mainImage.vue';
 import basicInfo from '@/components/product/basicInfo.vue';
 import campaign from '@/components/product/campaign.vue';
 import basicintro from '@/components/product/basicintro.vue';
+import similarKW from '@/components/product/similarKW.vue';
 import { ref } from 'vue';
 import api from '@/apis/api';
 import tools from '@/util/tools';
@@ -27,6 +30,7 @@ import { useBsiteStore } from '@/stores/bsiteStore';
 import { storeToRefs } from 'pinia';
 import type { productInfo } from '@/types/productInfo';
 import type { comboProduct } from '@/types/comboProduct';
+import type { keyword } from '@/types/keyword';
 
 const bsiteStore = useBsiteStore();
 const { siteData } = storeToRefs(bsiteStore);
@@ -165,20 +169,20 @@ const getCampaignData = async () => {
 }
 
 // 打相同關鍵字api
-const getSimilarKW = async(pid:string) =>{
-      const res = await api.ai.getAiData("getklist", {
-        target: "pseudoid",
-        list_fun: "PidToKWS",
-        list_args: "content",
-        list_remote: "m",
-        list_pids: pid,
-      });
-      console.log("res" , res);
-      // if (res?.pids?.[0]) {
-      //   const data = res.pids[0];
-      //   this.keywords = data?.kids.map(v => v.kcontent);
-      // }
-    }
+const getSimilarKW = async (pid: string) => {
+  const res = await api.ai.getAiData("getklist", {
+    target: "pseudoid",
+    list_fun: "PidToKWS",
+    list_args: "content",
+    list_remote: "m",
+    list_pids: pid,
+  });
+  const d = res as keyword
+  if (d?.pids?.[0]) {
+    const data = d.pids[0];
+    keywords.value = data?.kids.map(v => v.kcontent);
+  }
+}
 
 const init = async () => {
   pid.value = param.productId;
