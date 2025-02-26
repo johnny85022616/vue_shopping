@@ -1074,6 +1074,11 @@ export default {
         '.writing-rl': {
           'writing-mode': 'vertical-rl',
         },
+        '.noScrollBar': {
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
       });
     },
   ],
