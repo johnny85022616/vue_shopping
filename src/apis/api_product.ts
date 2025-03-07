@@ -9,7 +9,7 @@ import type { comboProduct } from '@/types/comboProduct';
 import type { productInfo } from '@/types/productInfo';
 import bestDiscountApi from '@/apis/bestDiscount_util';
 
-const { cloudApiPath, aiApiPath, fetchPostHeaders } = config;
+const { cloudApiPath, aiApiPath, fetchPostHeaders, frontCloudApiPath } = config;
 
 const api_product = {
   // 取商品集合資料
@@ -373,6 +373,13 @@ const api_product = {
     }
 
     return { price: Object.assign(priceObj, { promoPrice }), productDiscount };
+  },
+  async getProductDescription(pid: number) {
+    fetch(`${cloudApiPath}product/v2/${pid}/description`)
+      .then((res) => res.json())
+      .then((res) => {
+        return res.resultData.description;
+      });
   },
 };
 
