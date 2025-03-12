@@ -22,7 +22,7 @@
 <script lang="ts" setup name="basicadv">
 import { ref, toRefs } from 'vue';
 
-const props = defineProps<{ pid: number }>()
+const props = defineProps<{ pid?: number }>()
 const { pid } = toRefs(props)
 const productDescription = ref<string | null>(null)
 
