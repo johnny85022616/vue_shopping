@@ -13,6 +13,7 @@
       <!-- 類似關建字 -->
       <similarKW v-if="keywords && !isTopic" :keywords="keywords"></similarKW>
       <basicadv></basicadv>
+      <upload></upload>
     </template>
   </div>
 </template>
@@ -25,6 +26,7 @@ import campaign from '@/components/product/campaign.vue';
 import basicintro from '@/components/product/basicintro.vue';
 import similarKW from '@/components/product/similarKW.vue';
 import basicadv from '@/components/product/basicadv.vue';
+import upload from '@/components/common/upload.vue';
 import { ref } from 'vue';
 import api from '@/apis/api';
 import tools from '@/util/tools';
