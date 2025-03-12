@@ -12,6 +12,7 @@
       <basicintro v-if="pInfo.intro && !isSimpleProductCnt" :intro="pInfo.intro" />
       <!-- 類似關建字 -->
       <similarKW v-if="keywords && !isTopic" :keywords="keywords"></similarKW>
+      <basicadv></basicadv>
     </template>
   </div>
 </template>
@@ -23,6 +24,7 @@ import basicInfo from '@/components/product/basicInfo.vue';
 import campaign from '@/components/product/campaign.vue';
 import basicintro from '@/components/product/basicintro.vue';
 import similarKW from '@/components/product/similarKW.vue';
+import basicadv from '@/components/product/basicadv.vue';
 import { ref } from 'vue';
 import api from '@/apis/api';
 import tools from '@/util/tools';
