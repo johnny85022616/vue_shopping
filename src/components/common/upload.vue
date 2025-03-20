@@ -10,7 +10,10 @@
           <img :src="fileInfo.src" alt="">
         </div>
         <div v-else-if="type === 'video'" class="w-full">
-          <video controls autoplay width="100%" height="100%" :src="fileInfo.src"></video>
+          <div v-if="videoImgUrl">
+            <img :src="videoImgUrl" alt="">
+          </div>
+          <video ref="video" controls autoplay width="100%" height="100%" :src="fileInfo.src"></video>
         </div>
         <div v-else-if="type !== ''">
           <img src="" alt="">
@@ -25,6 +28,8 @@ import { ref } from 'vue';
 
 const type = ref<string>("") //file的
 const fileInfo = ref<any | null>({}) //file資訊
+const video = ref<any>(null)
+const videoImgUrl = ref<string>("")
 
 function inputChange(event: any) {
   // 获取文件输入和预览div
@@ -47,6 +52,15 @@ function inputChange(event: any) {
     // 如果是视频，创建 video 元素
     type.value = fileType
     fileInfo.value.src = URL.createObjectURL(file); // 使用 FileReader 或 ObjectURL 显示图片
+    const videoEle = video.value
+    console.log("videoEle",videoEle);
+    videoEle.onloadeddata = ()=>{
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      context?.drawImage(videoEle, 0, 0, canvas.width, canvas.height);
+      videoImgUrl.value = canvas.toDataURL("image/png");
+    }
+    
     // video.controls = true; // 添加播放控件
   } else {
     // 如果是其他文件，直接显示文件名
