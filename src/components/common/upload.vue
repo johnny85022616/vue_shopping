@@ -10,8 +10,9 @@
           <img :src="fileInfo.src" alt="">
         </div>
         <div v-else-if="type === 'video'" class="w-full">
-          <div v-if="videoImgUrl">
+          <div v-if="videoImgUrl" class="relative">
             <img :src="videoImgUrl" alt="">
+            <i class="product-images__play-icon w-[25px] h-[25px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-mediaPlay-icon bg-center bg-no-repeat bg-100%"></i>
           </div>
           <video v-else ref="video" controls autoplay width="100%" height="100%" :src="fileInfo.src"></video>
         </div>
