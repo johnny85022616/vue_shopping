@@ -14,7 +14,8 @@
             <img :src="videoImgUrl" alt="">
             <i class="product-images__play-icon w-[25px] h-[25px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-mediaPlay-icon bg-center bg-no-repeat bg-100%"></i>
           </div>
-          <video v-else ref="video" controls autoplay width="100%" height="100%" :src="fileInfo.src"></video>
+          <!-- 僅供影片首針截取使用 -->
+          <video v-show="false" ref="video" controls autoplay width="100%" height="100%" :src="fileInfo.src"></video>
         </div>
         <div v-else-if="type !== ''">
           <img src="" alt="">
