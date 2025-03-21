@@ -10,12 +10,12 @@
           <img :src="item.src" class="w-full aspect-square">
         </div>
         <div v-else-if="item.type === 'video'" class="w-full video">
-          <div v-if="videoImgUrl" class="relative">
-            <img :src="videoImgUrl" alt="">
+          <div v-if="item.videoImgUrl" class="relative">
+            <img :src="item.videoImgUrl" alt="">
             <i class="product-images__play-icon w-[25px] h-[25px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-mediaPlay-icon bg-center bg-no-repeat bg-100%"></i>
           </div>
           <!-- 僅供影片首針截取使用 -->
-          <video ref="video" controls autoplay width="100%" height="100%" :src="item.src"></video>
+          <video :ref="`video${item.videoKey}`" controls autoplay width="100%" height="100%" :src="item.src" class="videoArea"></video>
         </div>
       </div>
     </div>
@@ -26,8 +26,8 @@
 import { nextTick, ref } from 'vue';
 
 const uploadList = ref<any[]>([])
-const video = ref<any>(null)
-const videoImgUrl = ref<string>("")
+const video = ref<any>({}) //用來取得video element用
+
 
 async function inputChange(event: any) {
   // 获取文件输入和预览div
@@ -40,28 +40,29 @@ async function inputChange(event: any) {
   // 清空预览div
   previewDiv.innerHTML = '';
 
-  const fileInfo:{type?:string, src?: string, isVideoOpen?: boolean, videoKey?: number} = {}
+  const fileInfo:{type?:string, src?: string, isVideoOpen?: boolean, videoKey?: number, videoImgUrl?: string} = {}
 
   // 检查文件类型
   const fileType = file.type.split('/')[0]; // 获取文件的类型，如 image 或 video
   // 如果是图片，创建 img 元素
   if (fileType === 'image') {
     fileInfo.type = fileType
-    fileInfo.src = URL.createObjectURL(file); // 使用 FileReader 或 ObjectURL 显示图片
+    fileInfo.src = URL.createObjectURL(file); 
   } else if (fileType === 'video') {
     // 如果是视频，创建 video 元素
     fileInfo.type = fileType
-    fileInfo.src = URL.createObjectURL(file); // 使用 FileReader 或 ObjectURL 显示图片
+    fileInfo.src = URL.createObjectURL(file); 
     fileInfo.isVideoOpen = false,
     fileInfo.videoKey = new Date().getTime()
-    // await nextTick()
-    // const videoEle = video.value
-    // console.log("videoEle",videoEle);
+    await nextTick()
+    console.log(9999,video.value ,`video${fileInfo.videoKey}`);
+    const videoEle = video.value[`video${fileInfo.videoKey}`]
+    console.log("videoEle",videoEle);
     // videoEle.onloadeddata = ()=>{
     //   const canvas = document.createElement("canvas");
     //   const context = canvas.getContext("2d");
     //   context?.drawImage(videoEle, 0, 0, canvas.width, canvas.height);
-    //   videoImgUrl.value = canvas.toDataURL("image/png");
+    //   fileInfo.videoImgUrl = canvas.toDataURL("image/png");
     // }
   } 
   // else {
