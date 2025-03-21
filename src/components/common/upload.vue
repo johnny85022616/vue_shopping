@@ -13,7 +13,7 @@
           <div v-if="videoImgUrl">
             <img :src="videoImgUrl" alt="">
           </div>
-          <video ref="video" controls autoplay width="100%" height="100%" :src="fileInfo.src"></video>
+          <video v-else ref="video" controls autoplay width="100%" height="100%" :src="fileInfo.src"></video>
         </div>
         <div v-else-if="type !== ''">
           <img src="" alt="">
@@ -24,14 +24,14 @@
 </template>
 
 <script lang="ts" setup name="upload">
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 
 const type = ref<string>("") //file的
 const fileInfo = ref<any | null>({}) //file資訊
 const video = ref<any>(null)
 const videoImgUrl = ref<string>("")
 
-function inputChange(event: any) {
+async function inputChange(event: any) {
   // 获取文件输入和预览div
   const previewDiv: any = document.getElementById('preview');
   const file = event.target.files[0]; // 获取选择的文件
@@ -52,6 +52,8 @@ function inputChange(event: any) {
     // 如果是视频，创建 video 元素
     type.value = fileType
     fileInfo.value.src = URL.createObjectURL(file); // 使用 FileReader 或 ObjectURL 显示图片
+    
+    await nextTick()
     const videoEle = video.value
     console.log("videoEle",videoEle);
     videoEle.onloadeddata = ()=>{
