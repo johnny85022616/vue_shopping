@@ -3,8 +3,8 @@
     <title>文件上传示例</title>
     <div class="uploadIcon w-5 h-5 p-2 border border-solid border-c_mine_shaft box-content" @click="clickFileInput">
       <i class="inline-block w-full bg-photo-icon bg-100% bg-center bg-no-repeat aspect-square"></i>
-      <!-- <input v-show="false" ref="fileInput" type="file" @change="inputChange" id="fileInput" accept="image/*,video/*,." /> -->
       <input v-show="false" ref="fileInput" type="file" @change="inputChange" id="fileInput" accept="image/*,video/*,.mp4" />
+      <!-- <input v-show="false" ref="fileInput" type="file" @change="inputChange" id="fileInput" accept="image/*,video/*,.pdf,.doc,.docx,.txt,.xlsx" /> -->
     </div>
     <!-- 显示上传的文件 -->
     <div id="preview"></div>
