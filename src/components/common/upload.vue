@@ -11,23 +11,35 @@
         </div>
         <div v-else-if="item.type === 'video'" class="w-full video">
           <div v-if="item.videoImgUrl" class="relative">
-            <img :src="item.videoImgUrl" alt="">
+            <img :src="item.videoImgUrl" alt="" @click="openDialog">
             <i class="product-images__play-icon w-[25px] h-[25px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-mediaPlay-icon bg-center bg-no-repeat bg-100%"></i>
           </div>
           <!-- 僅供影片首針截取使用 -->
-          <video :ref="(el)=>setVideoRefs(el as HTMLElement, item)" controls autoplay width="100%" height="100%" :src="item.src" class="videoArea"></video>
+          <video v-show="false" :ref="(el)=>setVideoRefs(el as HTMLElement, item)" controls autoplay width="100%" height="100%" :src="item.src" class="videoArea"></video>
         </div>
       </div>
     </div>
+    <fullscreenDialog v-if="isDialogShow" @closeDialog="closeDialog">
+      <template v-slot:header>預覽</template>
+      <template v-slot:body>
+        <div class="product-images__youtube-iframe flex items-center h-full bg-c_black">
+          <video controls autoplay width="100%" height="100%" class="videoArea"></video>
+        </div>
+      </template>
+    </fullscreenDialog>
   </div>
 </template>
 
 <script lang="ts" setup name="upload">
-import { nextTick, ref, watch, type ComponentPublicInstance } from 'vue';
+import { ref, type ComponentPublicInstance } from 'vue';
 
 const uploadList = ref<any[]>([])
 const videoRefs = ref<any>({}) //video的dom實體物件
+const isDialogShow = ref(false)
+const previewVideoObj = ref<any>(null)
+interface fileInfo {type?:string, src?: string, isVideoOpen?: boolean, videoKey?: number, videoImgUrl?: string}
 
+//設定每個video的refs
 function setVideoRefs(el: HTMLElement | ComponentPublicInstance  , item : any){
   if(el){
     videoRefs.value[item.videoKey]={
@@ -49,7 +61,7 @@ async function inputChange(event: any) {
   // 清空预览div
   previewDiv.innerHTML = '';
 
-  const fileInfo:{type?:string, src?: string, isVideoOpen?: boolean, videoKey?: number, videoImgUrl?: string} = {}
+  const fileInfo:fileInfo = {}
 
   // 检查文件类型
   const fileType = file.type.split('/')[0]; // 获取文件的类型，如 image 或 video
@@ -63,7 +75,6 @@ async function inputChange(event: any) {
     fileInfo.src = URL.createObjectURL(file); 
     fileInfo.isVideoOpen = false,
     fileInfo.videoKey = new Date().getTime()
-    await nextTick() 
   } 
   // else {
   //   // 如果是其他文件，直接显示文件名
@@ -82,9 +93,10 @@ async function inputChange(event: any) {
   uploadList.value.push(fileInfo)
 }
 
-function getVideoFirstImg(item:any){
-    const videoEle = videoRefs.value[item.videoKey]?.el
-    console.log("videoEle",videoEle);
+
+//取得影片的第一針當封面圖
+function getVideoFirstImg(item:fileInfo){
+    const videoEle = videoRefs.value[item.videoKey as number]?.el
     if(!videoEle) return 
     videoEle.onloadeddata = ()=>{
       const canvas = document.createElement("canvas");
@@ -92,6 +104,16 @@ function getVideoFirstImg(item:any){
       context?.drawImage(videoEle, 0, 0, canvas.width, canvas.height);
       item.videoImgUrl = canvas.toDataURL("image/png");
     }
+}
+
+//開啟預覽dialog
+function openDialog(){
+  isDialogShow.value = true
+}
+
+//關閉預覽dialog
+function closeDialog(){
+  isDialogShow.value = false
 }
 
 </script>
