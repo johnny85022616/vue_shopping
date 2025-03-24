@@ -11,11 +11,11 @@
         </div>
         <div v-else-if="item.type === 'video'" class="w-full video">
           <div v-if="item.videoImgUrl" class="relative">
-            <img :src="item.videoImgUrl" alt="" @click="openDialog">
+            <img :src="item.videoImgUrl" alt="" @click="openDialog(item)">
             <i class="product-images__play-icon w-[25px] h-[25px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-mediaPlay-icon bg-center bg-no-repeat bg-100%"></i>
           </div>
           <!-- 僅供影片首針截取使用 -->
-          <video v-show="false" :ref="(el)=>setVideoRefs(el as HTMLElement, item)" controls autoplay width="100%" height="100%" :src="item.src" class="videoArea"></video>
+          <video v-show="false" :ref="(el)=>setVideoRefs(el as HTMLVideoElement, item)" controls autoplay width="100%" height="100%" :src="item.src" class="videoArea"></video>
         </div>
       </div>
     </div>
@@ -34,15 +34,15 @@
 import { ref, type ComponentPublicInstance } from 'vue';
 
 const uploadList = ref<any[]>([])
-const videoRefs = ref<any>({}) //video的dom實體物件
+const videoRefs = ref<{[key: number]:{id?: number, el?: HTMLVideoElement }}>({}) //video的dom實體物件
 const isDialogShow = ref(false)
-const previewVideoObj = ref<any>(null)
+const previewObj = ref<fileInfo | null>(null) // 要在dialog中預覽的資料
 interface fileInfo {type?:string, src?: string, isVideoOpen?: boolean, videoKey?: number, videoImgUrl?: string}
 
 //設定每個video的refs
-function setVideoRefs(el: HTMLElement | ComponentPublicInstance  , item : any){
+function setVideoRefs(el: HTMLVideoElement , item : fileInfo){
   if(el){
-    videoRefs.value[item.videoKey]={
+    videoRefs.value[item.videoKey as number]={
       id: item.videoKey,
       el
     }
@@ -107,13 +107,19 @@ function getVideoFirstImg(item:fileInfo){
 }
 
 //開啟預覽dialog
-function openDialog(){
+function openDialog(item: fileInfo){
   isDialogShow.value = true
+  setPreviewObject(item)
 }
 
 //關閉預覽dialog
 function closeDialog(){
   isDialogShow.value = false
+}
+
+//設定要預覽的資料
+function setPreviewObject(item: fileInfo){
+  previewObj.value = item
 }
 
 </script>
