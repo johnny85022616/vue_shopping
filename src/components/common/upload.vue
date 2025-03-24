@@ -1,7 +1,11 @@
 <template>
   <div class="upload">
     <title>文件上传示例</title>
-    <input type="file" @change="inputChange" id="fileInput" accept="image/*,video/*,.pdf,.doc,.docx,.txt,.xlsx" />
+    <div class="uploadIcon w-5 h-5 p-2 border border-solid border-c_mine_shaft box-content" @click="clickFileInput">
+      <i class="inline-block w-full bg-photo-icon bg-100% bg-center bg-no-repeat aspect-square"></i>
+      <!-- <input v-show="false" ref="fileInput" type="file" @change="inputChange" id="fileInput" accept="image/*,video/*,." /> -->
+      <input v-show="false" ref="fileInput" type="file" @change="inputChange" id="fileInput" accept="image/*,video/*,.mp4" />
+    </div>
     <!-- 显示上传的文件 -->
     <div id="preview"></div>
     <div class="viewFileBlock flex items-center">
@@ -34,11 +38,17 @@
 import { ref } from 'vue';
 import fullscreenDialog from './fullscreenDialog.vue';
 
+const fileInput = ref<any>(null)
 const uploadList = ref<any[]>([])
 const videoRefs = ref<{[key: number]:{id?: number, el?: HTMLVideoElement }}>({}) //video的dom實體物件
 const isDialogShow = ref(false)
 const previewObj = ref<fileInfo | null>(null) // 要在dialog中預覽的資料
 interface fileInfo {type?:string, src?: string, isVideoOpen?: boolean, videoKey?: number, videoImgUrl?: string}
+
+
+function clickFileInput(){
+  fileInput.value.click()
+}
 
 //設定每個video的refs
 function setVideoRefs(el: HTMLVideoElement , item : fileInfo){
