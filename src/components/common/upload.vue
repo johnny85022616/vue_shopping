@@ -10,8 +10,8 @@
           <img :src="item.src" class="w-full aspect-square">
         </div>
         <div v-else-if="item.type === 'video'" class="w-full video">
-          <div v-if="item.videoImgUrl" class="relative">
-            <img :src="item.videoImgUrl" alt="" @click="openDialog(item)">
+          <div v-if="item.videoImgUrl" class="relative" @click="openDialog(item)">
+            <img :src="item.videoImgUrl" alt="">
             <i class="product-images__play-icon w-[25px] h-[25px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-mediaPlay-icon bg-center bg-no-repeat bg-100%"></i>
           </div>
           <!-- 僅供影片首針截取使用 -->
@@ -19,11 +19,11 @@
         </div>
       </div>
     </div>
-    <fullscreenDialog v-if="isDialogShow" @closeDialog="closeDialog">
+    <fullscreenDialog v-if="isDialogShow && previewObj" @closeDialog="closeDialog">
       <template v-slot:header>預覽</template>
       <template v-slot:body>
         <div class="product-images__youtube-iframe flex items-center h-full bg-c_black">
-          <video controls autoplay width="100%" height="100%" class="videoArea"></video>
+          <video controls autoplay width="100%" height="100%" :src="previewObj?.src" class="videoArea"></video>
         </div>
       </template>
     </fullscreenDialog>
@@ -31,7 +31,8 @@
 </template>
 
 <script lang="ts" setup name="upload">
-import { ref, type ComponentPublicInstance } from 'vue';
+import { ref } from 'vue';
+import fullscreenDialog from './fullscreenDialog.vue';
 
 const uploadList = ref<any[]>([])
 const videoRefs = ref<{[key: number]:{id?: number, el?: HTMLVideoElement }}>({}) //video的dom實體物件
@@ -121,5 +122,4 @@ function closeDialog(){
 function setPreviewObject(item: fileInfo){
   previewObj.value = item
 }
-
 </script>
