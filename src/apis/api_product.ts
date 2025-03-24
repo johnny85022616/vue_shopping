@@ -378,7 +378,12 @@ const api_product = {
     fetch(`${cloudApiPath}product/v2/${pid}/description`)
       .then((res) => res.json())
       .then((res) => {
-        return res.resultData.description;
+        if (res && res.resultData?.description) return res.resultData.description;
+        else return '';
+      })
+      .catch((e) => {
+        console.error(e);
+        return '';
       });
   },
 };

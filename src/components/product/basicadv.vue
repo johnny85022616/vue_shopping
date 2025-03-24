@@ -21,8 +21,9 @@
 
 <script lang="ts" setup name="basicadv">
 import { ref, toRefs } from 'vue';
+import api from '@/apis/api';
 
-const props = defineProps<{ pid?: number }>()
+const props = defineProps<{ pid: number }>()
 const { pid } = toRefs(props)
 const productDescription = ref<string | null>(null)
 
@@ -31,6 +32,12 @@ const copyNumber = (content: string) => {
   navigator.clipboard.writeText(content).then(() => {
     alert(`已複製${content}至剪貼簿`);
   });
+}
+
+// 取得簡介
+const getProductDescription = async()=>{
+  // productDescription.value = await api.product.getProductDescription(pid.value)
+
 }
 
 

@@ -12,7 +12,7 @@
       <basicintro v-if="pInfo.intro && !isSimpleProductCnt" :intro="pInfo.intro" />
       <!-- 類似關建字 -->
       <similarKW v-if="keywords && !isTopic" :keywords="keywords"></similarKW>
-      <basicadv></basicadv>
+      <basicadv v-if="pid" :pid="pid"></basicadv>
       <upload></upload>
     </template>
   </div>
