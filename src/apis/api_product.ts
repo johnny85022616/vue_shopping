@@ -374,11 +374,11 @@ const api_product = {
 
     return { price: Object.assign(priceObj, { promoPrice }), productDiscount };
   },
-  async getProductDescription(pid: number) {
-    fetch(`${cloudApiPath}product/v2/${pid}/description`)
+  async getProductDescription(pid: number): Promise<string> {
+    return await fetch(`${cloudApiPath}product/v2/${pid}/description`)
       .then((res) => res.json())
       .then((res) => {
-        if (res && res.resultData?.description) return res.resultData.description;
+        if (res && res.resultData?.description) return res.resultData.description || '';
         else return '';
       })
       .catch((e) => {

@@ -1,8 +1,8 @@
 <template>
   <div>
-    <!-- <div :class="['product-component-container', { 'no-padding': isSimpleProductCnt }]">
+    <div :class="['product-component-container']">
       <div class="product-detail">
-        <div :class="['product-detail__title', 'tab-section', { 'no-padding': isSimpleProductCnt }]" data-tab="詳情">
+        <div :class="['product-detail__title', 'tab-section']" data-tab="詳情">
           －商品詳情－
         </div>
         <div class="product-detail__content">
@@ -15,13 +15,14 @@
         </div>
       </div>
     </div>
-    <div class="gap-line"></div> -->
+    <div class="gap-line"></div>
   </div>
 </template>
 
 <script lang="ts" setup name="basicadv">
-import { ref, toRefs } from 'vue';
+import { computed, ref, toRefs } from 'vue';
 import api from '@/apis/api';
+import tools from '@/util/tools';
 
 const props = defineProps<{ pid: number }>()
 const { pid } = toRefs(props)
@@ -34,11 +35,30 @@ const copyNumber = (content: string) => {
   });
 }
 
-// 取得簡介
-const getProductDescription = async()=>{
-  // productDescription.value = await api.product.getProductDescription(pid.value)
+const productDescriptionFilters = computed(() => {
+  let content = productDescription.value;
+  if (content) {
+    content = tools.replaceTplImagePath(content);
+    content = tools.replaceWidthAndHeight(content);
+    content = tools.figureToIframe(content);
+  }
+  return content;
+})
 
+const nowBrowserUrl = computed(() => {
+  const isSuperApp = /super-app/i.test(document.cookie);
+  return '【' + window.location.href + '】【' + navigator.userAgent + '】【isSuperApp:' + isSuperApp + '】';
+})
+
+// 取得簡介
+const getProductDescription = async () => {
+  productDescription.value = await api.product.getProductDescription(pid.value)
 }
 
+const init = async()=>{
+  getProductDescription();
+}
+
+init()
 
 </script>
