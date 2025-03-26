@@ -3,6 +3,7 @@ import MemberCenter from '../views/MemberCenter.vue';
 import category from '../views/category.vue';
 import aiSearch from '../views/aiSearch.vue';
 import Product from '@/views/Product.vue';
+import Order from '@/views/Order.vue';
 
 export const fridayRoutes = [
   //首頁路由
@@ -40,5 +41,10 @@ export const fridayRoutes = [
     props: (route: any) => ({
       param: route.params,
     }),
+  },
+  {
+    path: '/order',
+    name: 'order',
+    component: Order,
   },
 ];
