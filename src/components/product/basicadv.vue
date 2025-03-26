@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div :class="['product-component-container']">
-      <div class="product-detail">
-        <div :class="['product-detail__title', 'tab-section']" data-tab="詳情">
+    <div class="basicadv">
+      <div class="">
+        <div class="w-full h-[44px] leading-[44px] text-c_sliver text-center bg-c_background" data-tab="詳情">
           －商品詳情－
         </div>
-        <div class="product-detail__content">
-          <div class="product-detail__sku">
-            <label></label>
+        <div class="px-2">
+          <div class="relative py-2 px-5">
+            <label class="w-1/5 bg-c_sliver"></label>
             <span></span>
-            <span class="url" @click="copyNumber(nowBrowserUrl)">&nbsp;</span>
+            <span class="inline-block absolute right-[10px] w-5 h-5" @click="copyNumber(nowBrowserUrl)">&nbsp;</span>
           </div>
           <div v-html="productDescriptionFilters" ref="productDescriptionFilters" class="html-content"></div>
         </div>
