@@ -80,7 +80,7 @@ const getProducts = async () => {
   };
 
   postData.filter = { k: "0000", v: ["", "", "", ""] };
-  const data = await api.ai.getAiData("getwlist", postData) as mixProduct[]
+  const data = await api.ai.getAiData("getalist", postData) as mixProduct[]
 
   if (data && data.length > 0) {
     parseData(data)
