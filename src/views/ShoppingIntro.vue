@@ -556,6 +556,8 @@ a {
             padding: 5px;
             border: 1px solid $black;
             margin-bottom: 0;
+            margin-left: -1px;
+            margin-top: -1px;
 
             &.span2 {
               grid-row: span 2;
