@@ -56,7 +56,6 @@ import type { product } from '@/types/product';
 
       const pids = campaignInfo[0].campaignRange.v[9].split(',').splice(0, 6);
       const products = await api.product.getProducts(pids);
-      console.log(11111, products);
       prodData.value = pids.map((v:any)=> products?.[v]);
   }
   const formatDiscount = (discount: number) => {
