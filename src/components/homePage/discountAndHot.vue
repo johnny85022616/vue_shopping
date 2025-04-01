@@ -43,16 +43,21 @@
 
 <script setup lang="ts" name="discountAndHot">
   import api from '@/apis/api';
+import type { product } from '@/types/product';
   import tools from '@/util/tools';
   import { reactive, ref } from 'vue';
-  const prodData = reactive<any>([])
+  const prodData = ref<product[] | null>([])
   const promotionId = ref("B23001813")
 
   const getPidsByPromotionId = async () => {
-    const data = await api.web.getPromotionGatherApi(promotionId.value)
-    if (!data) return [];
-    const rawPids = data.value.split(',').splice(0, 6);
-    return api.web.getProductBatchApi(rawPids);
+    const campaignInfo = await api.campaign.getCampaignDetail(['DO_241004094023093']);
+      if (!campaignInfo || !campaignInfo[0]) return [];
+      if (!campaignInfo[0].campaignRange.v[9]) return [];
+
+      const pids = campaignInfo[0].campaignRange.v[9].split(',').splice(0, 6);
+      const products = await api.product.getProducts(pids);
+      console.log(11111, products);
+      prodData.value = pids.map((v:any)=> products?.[v]);
   }
   const formatDiscount = (discount: number) => {
     if (discount) {
