@@ -4,7 +4,7 @@ import category from '../views/category.vue';
 import aiSearch from '../views/aiSearch.vue';
 import Product from '@/views/Product.vue';
 import Order from '@/views/Order.vue';
-
+import ShoppingIntro from '@/views/ShoppingIntro.vue';
 export const fridayRoutes = [
   //首頁路由
   {
@@ -46,5 +46,10 @@ export const fridayRoutes = [
     path: '/order',
     name: 'order',
     component: Order,
+  },
+  {
+    path: '/shoppingIntro',
+    name: 'shoppingIntro',
+    component: ShoppingIntro,
   },
 ];

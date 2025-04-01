@@ -10,7 +10,7 @@ const api_web = {
   determineIsFriday() {
     const siteCode = this.getSiteCode();
     const isFriday =
-      /^(category|aisearch|product|order|brandPromotion|branchPromotion|allBrands|aiPromotion|website|member|onsale|order_otp|login|intro|favorite|discount|crazy|arrive|myhome|happygo|superBrand|fetmcAppBonus|googleAi|memberCenter)$/i.test(
+      /^(category|aisearch|product|order|brandPromotion|branchPromotion|allBrands|aiPromotion|website|member|onsale|order_otp|login|ShoppingIntro|favorite|discount|crazy|arrive|myhome|happygo|superBrand|fetmcAppBonus|googleAi|memberCenter)$/i.test(
         siteCode
       ) || siteCode === '';
     return isFriday;
