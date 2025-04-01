@@ -28,17 +28,17 @@
           </div>
           <div class="qa text-xs">
             <div class="qa__idx">
-              <a href="javascript:void(0);" @click="scrollTo(1)">購物流程</a>
-              <a href="javascript:void(0);" @click="scrollTo(2)">付款方式</a>
-              <a href="javascript:void(0);" @click="scrollTo(3)">商品運送</a>
-              <a href="javascript:void(0);" @click="scrollTo(4)">發票開立</a>
-              <a href="javascript:void(0);" @click="scrollTo(5)">退貨須知</a>
-              <a href="javascript:void(0);" @click="scrollTo(6)">客戶服務</a>
-              <a href="javascript:void(0);" @click="scrollTo(7)">快樂購卡點數使用說明</a>
-              <a href="javascript:void(0);" @click="scrollTo(8)">折價券/折扣碼使用說明</a>
-              <a href="javascript:void(0);" @click="scrollTo(9)">個人資料保護說明</a>
-              <a href="javascript:void(0);" @click="scrollTo(10)">遠傳幣使用說明</a>
-              <a href="javascript:void(0);" @click="scrollTo(11)">購物金使用說明</a>
+              <a href="javascript:void(0);" @click="scrollTo(0)">購物流程</a>
+              <a href="javascript:void(0);" @click="scrollTo(1)">付款方式</a>
+              <a href="javascript:void(0);" @click="scrollTo(2)">商品運送</a>
+              <a href="javascript:void(0);" @click="scrollTo(3)">發票開立</a>
+              <a href="javascript:void(0);" @click="scrollTo(4)">退貨須知</a>
+              <a href="javascript:void(0);" @click="scrollTo(5)">客戶服務</a>
+              <a href="javascript:void(0);" @click="scrollTo(6)">快樂購卡點數使用說明</a>
+              <a href="javascript:void(0);" @click="scrollTo(7)">折價券/折扣碼使用說明</a>
+              <a href="javascript:void(0);" @click="scrollTo(8)">個人資料保護說明</a>
+              <a href="javascript:void(0);" @click="scrollTo(9)">遠傳幣使用說明</a>
+              <a href="javascript:void(0);" @click="scrollTo(10)">購物金使用說明</a>
             </div>
             <div class="qa__content">
               <h3 class="qa__content-head introRefs" name="intro1">購物流程：</h3>
