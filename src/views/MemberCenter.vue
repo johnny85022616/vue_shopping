@@ -58,7 +58,8 @@
           <li class="py-2"><a class="no-underline text-c_tundora text-sm"
               href="/mobileweb/member/creditCardInfo">信用卡綁定</a>
           </li>
-          <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/mobileweb/member/cvsInfo">取貨門市設定</a></li>
+          <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/mobileweb/member/cvsInfo">取貨門市設定</a>
+          </li>
           <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/member/einvoiceInfo">電子發票(手機)載具設定</a>
           </li>
         </ul>
@@ -68,13 +69,19 @@
         <ul class="list-none">
           <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/intro/commonProblem">常見問題 Q&A</a></li>
           <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/intro/service_line">聯絡客服</a></li>
-          <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/mobileweb/member/myQAList">問答記錄</a></li>
+          <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/mobileweb/member/myQAList">問答記錄</a>
+          </li>
         </ul>
       </div>
       <div class="border-b border-solid border-c_swirl py-5">
         <div class="text-c_sliver text-sm mb-[10px]">會員權益</div>
         <ul class="list-none">
-          <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/intro/shopping_intro">購物說明</a></li>
+          <li class="py-2">
+            <RouterLink
+              class="no-underline text-c_tundora text-sm"
+              :to="{name: 'shoppingIntro'}">購物說明
+            </RouterLink>
+          </li>
           <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/intro/privacy-intro">隱私權說明</a></li>
           <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/intro/memterms-intro">服務條款</a></li>
           <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/intro/conditions-intro">購物約定條款</a></li>
@@ -111,7 +118,7 @@
 import { inject, ref } from 'vue';
 import api from '../apis/api';
 import navigation from '@/components/common/navigation.vue';
-import { useRouter } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 
 const $cookie = inject<any>('$cookies');
 const router = useRouter()
@@ -136,22 +143,22 @@ function goOrderPage(e: Event) {
 const getMemberData = async () => {
   const info = await api.member.getMemberData()
   console.log(info);
-  if(!info) return
-  const {maskName , memberType} = info.MaskInfo || {}
-  name.value =  maskName
+  if (!info) return
+  const { maskName, memberType } = info.MaskInfo || {}
+  name.value = maskName
   type.value = memberType
   voucher.value = await api.member.queryVoucherBalance()
   fcoin.value = await api.member.getFetCoins()
 }
 
-const logout = ()=>{
+const logout = () => {
   api.member.logout()
   router.push('/')
 }
 
 const init = async function () {
   const isLogin = api.member.checkLogin()
-  if(isLogin){
+  if (isLogin) {
     checkFetLife();
     getMemberData();
     return
