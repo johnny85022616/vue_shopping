@@ -1,8 +1,9 @@
 import config from '../config/config';
 import tools from '../util/tools';
 import memberInfo from '../mockData/memberInfo';
+import uiAlert from './ui_alert';
 
-const { isLogin, mobileApiPath, frontApiPath, fetchGetHeaders, setTicket } = config;
+const { isLogin, mobileApiPath, frontApiPath, fetchGetHeaders, fetchPostHeaders, setTicket } = config;
 
 const api_member = {
   isLogin,
@@ -86,6 +87,90 @@ const api_member = {
       .catch(() => {
         console.log('queryFcoins api error');
         return 0;
+      });
+  },
+  //取得電子票券
+  async getElectronicTicket(pageNumber = 1, pageRow = 100, singleTicketInfo: any) {
+    let postData: any = {};
+    //若只取單張票券不需頁數相關參數
+    if (!singleTicketInfo) {
+      postData.pageNumber = pageNumber;
+      postData.pageRow = pageRow;
+    }
+    //取單一票券
+    if (singleTicketInfo) {
+      postData = { ...postData, ...singleTicketInfo };
+    }
+    return await fetch(`${frontApiPath}member/ticket`, {
+      ...fetchPostHeaders,
+      body: JSON.stringify(postData),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        let { resultCode, resultData, resultMsg } = res || {};
+        // if(pageNumber === 1){
+        //   resultData = [
+        //     {
+        //       dealId: "20241203297936", // 交易編號
+        //       productId: "8792779", // 商品代碼
+        //       productName: "7-11茶葉蛋10元抵用券", // 品名
+        //       images:
+        //         "https://img.shopping.friday.tw/images/product/293/8792779/8792779_3_1.webp?707554",
+        //       manufacturerCode: "SVN",
+        //       sn: "SQR63CXPJ8K8", // 序號
+        //       barcode: "7500070322391964,44HGFSKY", // 逗點分隔, 最多3個值, 有值的轉碼
+        //       period: "2024/10/01-2024/12/31", // 到期區間, 只要留後面的日期
+        //     },
+        //     {
+        //       dealId: "20241126146969",
+        //       productId: "8901259",
+        //       productName: "全家_維力炸醬麵(碗)23元折價券",
+        //       images:
+        //         "https://img.shopping.friday.tw/images/product/296/8901259/8901259_3_1.webp",
+        //       manufacturerCode: "FAM",
+        //       sn: "DAINTALYOFWWIM28TT8",
+        //       barcode: "DAINTALYOFWWIM28TT8",
+        //       period: "2024/11/12-2024/12/31",
+        //     },
+        //   ]
+        // }
+        // if(pageNumber === 2){
+        //   resultData = [
+        //     {
+        //       dealId: "20241203297937", // 交易編號
+        //       productId: "8792779", // 商品代碼
+        //       productName: "7-11茶葉蛋10元抵用券", // 品名
+        //       images:
+        //         "https://img.shopping.friday.tw/images/product/293/8792779/8792779_3_1.webp?707554",
+        //       manufacturerCode: "SVN",
+        //       sn: "SQR63CXPJ8K8", // 序號
+        //       barcode: "7500070322391964,44HGFSKY", // 逗點分隔, 最多3個值, 有值的轉碼
+        //       period: "2024/10/01-2024/12/31", // 到期區間, 只要留後面的日期
+        //     },
+        //     {
+        //       dealId: "20241126146960",
+        //       productId: "8901259",
+        //       productName: "全家_維力炸醬麵(碗)23元折價券",
+        //       images:
+        //         "https://img.shopping.friday.tw/images/product/296/8901259/8901259_3_1.webp",
+        //       manufacturerCode: "FAM",
+        //       sn: "DAINTALYOFWWIM28TT8",
+        //       barcode: "DAINTALYOFWWIM28TT8",
+        //       period: "2024/11/12-2024/12/31",
+        //     },
+        //   ]
+        // }
+        if (resultCode === 0 && resultData) {
+          return resultData;
+        }
+        if (resultCode === 800) {
+          return [];
+        }
+        uiAlert.getFadeAlert(resultMsg);
+      })
+      .catch(() => {
+        uiAlert.getFadeAlert('取得電子票券發生錯誤');
+        return [];
       });
   },
 };
