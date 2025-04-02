@@ -31,6 +31,7 @@ export interface order {
   isDiscountInfoOpen: boolean;
   discountInfoDetail: null;
   isGetImgAlready: boolean;
+  [key: string]: any;
 }
 
 export interface orderProduct {
@@ -59,17 +60,18 @@ export interface orderProduct {
   delayDate: null;
   sortIdx: number;
   isShowShippingDetail: boolean | null | string;
-  deliverProcess: DeliverProcess[];
+  deliverProcess: (DeliverProcess | null)[];
   images: null | string;
   isTicketOpen: boolean;
   tickets: null;
   urgentText: string;
   proofUrl?: string;
   supplierId?: number;
+  [key: string]: any;
 }
 
 export interface DeliverProcess {
-  text: string;
+  text?: string | null | undefined;
   time?: string;
   active: boolean;
 }
@@ -86,14 +88,14 @@ export interface Timestamp {
   cfConfidenceDate: null | string;
   tranferDate: null | string;
   shipConfirmDate: null | string;
-  handOverDate: null;
-  packageInStoreDate: null;
-  pickupDate: null;
+  handOverDate: null | string;
+  packageInStoreDate: null | string;
+  pickupDate: null | string;
   arrivalDate: null | string;
-  applyReturnDate: string;
-  dispatchPickupDate: null;
+  applyReturnDate: null | string;
+  dispatchPickupDate: null | string;
   confirmNoDefectsDate: null | string;
-  refundedDate: null;
+  refundedDate: null | string;
 }
 
 export interface Payment {
