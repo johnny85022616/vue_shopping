@@ -5,6 +5,7 @@ import ai from './api_ai';
 import product from './api_product';
 import campaign from './api_campaign';
 import promotion from './api_promotion';
+import order from './api_order';
 import ui from './api_ui';
 export default {
   cart,
@@ -15,4 +16,5 @@ export default {
   campaign,
   promotion,
   ui,
+  order,
 };
