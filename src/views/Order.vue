@@ -161,22 +161,45 @@ async function getProductImgData(index: number) {
   }
 }
 
-// async function openTicketArea(order: order, product: orderProduct) {
-//       product.isTicketOpen = true;
-//       const singleTicketInfo = {
-//         dealId: order.dealId,
-//         productId: product.productId,
-//       };
-//       console.log(singleTicketInfo);
-//       let tickets = await this.api.member.getElectronicTicket(
-//         this.page,
-//         10,
-//         singleTicketInfo
-//       );
-//       if (tickets && tickets.length > 0) {
-//         product.tickets = tickets;
-//       }
-//     }
+//開啟電子票券區塊
+async function openTicketArea(order: order, product: orderProduct) {
+  product.isTicketOpen = true;
+  const singleTicketInfo = {
+    dealId: order.dealId,
+    productId: product.productId,
+  };
+  console.log(singleTicketInfo);
+  let tickets = await api.member.getElectronicTicket(
+    page.value,
+    10,
+    singleTicketInfo
+  );
+  if (tickets && tickets.length > 0) {
+    product.tickets = tickets;
+  }
+}
+
+// 購買證明
+function goProofUrl(url: string) {
+  if (/^https/i.test(url)) {
+    window.open(url);
+  } else {
+    api.ui.alert.getFadeAlert(url);
+  }
+}
+
+//複製
+function copyNumber(content: string) {
+  navigator.clipboard.writeText(content).then(() => {
+    alert(`已複製${content}至剪貼簿`);
+  });
+}
+
+//跳轉到貨態頁面(外部頁面)
+function goLogisticUrl(num: string, url: string) {
+  copyNumber(num);
+  window.open(url);
+}
 
 watch(isAtBottom, async (newVal) => {
   if (orderData.value &&
