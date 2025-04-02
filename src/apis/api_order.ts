@@ -328,4 +328,18 @@ export default {
         return [];
       });
   },
+  // 取得訂單購買證明
+  async getOrderProductProof(dealId: number, productId: number, sizeId: number) {
+    return await fetch(
+      `${frontApiPath()}mgmt/order/getFile/2?dealId=${dealId}&productId=${productId}&sizeId=${sizeId}`,
+      {
+        ...fetchGetHeaders,
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultMsg, resultData } = res;
+        return resultData?.fileUrl ? `https://${resultData.fileUrl}` : resultMsg;
+      });
+  },
 };
