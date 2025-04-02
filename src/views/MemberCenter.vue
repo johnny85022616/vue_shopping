@@ -42,10 +42,10 @@
         </div>
       </div>
       <div class="flex pt-6">
-        <a class="w-1/4 text-center no-underline text-xs text-c_tundora" @click="(e) => goOrderPage(e)">
+        <RouterLink class="w-1/4 text-center no-underline text-xs text-c_tundora" :to="{ name: 'order' }">
           <i class="inline-block w-6 h-6 bg-member-order-icon bg-center bg-100% bg-no-repeat"></i>
           <p>訂單記錄</p>
-        </a>
+        </RouterLink>
         <a class="w-1/4 text-center no-underline text-xs text-c_tundora" href="/favorite">
           <i class="inline-block w-6 h-6 bg-member-favorite-icon bg-center bg-100% bg-no-repeat"></i>
           <p>我的最愛</p>
@@ -77,9 +77,7 @@
         <div class="text-c_sliver text-sm mb-[10px]">會員權益</div>
         <ul class="list-none">
           <li class="py-2">
-            <RouterLink
-              class="no-underline text-c_tundora text-sm"
-              :to="{name: 'shoppingIntro'}">購物說明
+            <RouterLink class="no-underline text-c_tundora text-sm" :to="{ name: 'shoppingIntro' }">購物說明
             </RouterLink>
           </li>
           <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/intro/privacy-intro">隱私權說明</a></li>
@@ -134,10 +132,6 @@ function checkFetLife() {
   const feecInfo = $cookie.get("FEEC-B2C-INFO");
   fetLife.value = feecInfo?.data?.fetLife;
   console.log(feecInfo);
-}
-
-function goOrderPage(e: Event) {
-  console.log(e);
 }
 
 const getMemberData = async () => {
