@@ -2,6 +2,7 @@ import tools from '@/util/tools';
 import config from '@/config/config';
 import type { order, orderProduct } from '@/types/order';
 const { fetchGetHeaders, fetchPostHeaders, frontApiPath, websiteDomain } = config;
+import uiAlert from './ui_alert';
 
 //第三方支付代號名稱對應
 const thirdPartyObj: { [key: string]: string } = {
@@ -340,6 +341,98 @@ export default {
       .then((res) => {
         const { resultMsg, resultData } = res;
         return resultData?.fileUrl ? `https://${resultData.fileUrl}` : resultMsg;
+      });
+  },
+  // 取得收件人隱碼解碼資料
+  async getConsigneeDecode(orderId = 0, typeId = 4 /** 4 姓名 6 地址 */) {
+    return await fetch(`${frontApiPath()}decode/personal`, {
+      ...fetchPostHeaders,
+      body: JSON.stringify({
+        param: {
+          orderId,
+          typeId,
+        },
+        requestId: new Date().toLocaleString(),
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultCode, resultData } = res;
+        return resultCode === 0 ? resultData : '';
+      })
+      .catch((err) => {
+        return '';
+      });
+  },
+
+  // 取得訂單折抵明細
+  async getOrderDiscounts(dealId: number, extPayload?: any) {
+    let fetchApi = `${frontApiPath()}v1/order/getorderamountdetail`;
+    let fetchPayload: { body?: string; method: string; headers: any } = {
+      ...fetchPostHeaders,
+      body: JSON.stringify({
+        dealId,
+      }),
+    };
+
+    if (extPayload?.apiPath) {
+      fetchApi = extPayload.apiPath;
+      fetchPayload = {
+        ...fetchGetHeaders,
+      };
+    }
+
+    return await fetch(fetchApi, fetchPayload)
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultCode, resultData } = res;
+        return resultCode === 0 ? resultData : [];
+      });
+  },
+  // 取得退訂訂單折抵明細
+  async getRefundOrderDiscounts(dealId: number) {
+    return await fetch(`${frontApiPath()}v1/order/getrefundamountdetail`, {
+      ...fetchPostHeaders,
+      body: JSON.stringify({
+        dealId,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultCode, resultData } = res;
+        if (resultCode !== 0) uiAlert.getFadeAlert('getRefundOrderDiscounts resultCode');
+        return resultCode === 0 ? resultData : [];
+      })
+      .catch((err) => {
+        return [];
+      });
+  },
+
+  // 取得第3方支付連結
+  async getThirdPartyRePayUrl(payload: any) {
+    return await fetch(`${frontApiPath()}payment/thirdPay/entry`, {
+      ...fetchPostHeaders,
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultCode, resultData } = res;
+        if (resultCode === 0) {
+          let payName = '';
+          for (let i in thirdPartyObj) {
+            if (payload.thirdPayType === thirdPartyObj[i]) payName = i;
+          }
+
+          window.sessionStorage.setItem(
+            'checkoutThirdPayInfo',
+            JSON.stringify({
+              payName,
+              redirectUrl: payload.resultDisplayUrl,
+            })
+          );
+          return resultData;
+        }
+        return null;
       });
   },
 };
