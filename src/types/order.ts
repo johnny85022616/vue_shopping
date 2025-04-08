@@ -29,7 +29,7 @@ export interface order {
   consigneeNameDetail: null;
   consigneeAddrDetail: null;
   isDiscountInfoOpen: boolean;
-  discountInfoDetail: null;
+  discountInfoDetail: any;
   isGetImgAlready: boolean;
   [key: string]: any;
 }
@@ -63,7 +63,7 @@ export interface orderProduct {
   deliverProcess: (DeliverProcess | null)[];
   images: null | string;
   isTicketOpen: boolean;
-  tickets: null;
+  tickets: any;
   urgentText: string;
   proofUrl?: string;
   supplierId?: number;

@@ -1310,4 +1310,11 @@ export default {
       });
     return data;
   },
+  // url前綴判斷
+  parseUrl(url = '/') {
+    if (window.siteData && window.siteData.urlSuffix) {
+      url = '/' + window.siteData.urlSuffix + url;
+    }
+    return url;
+  },
 };

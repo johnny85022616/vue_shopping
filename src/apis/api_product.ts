@@ -13,7 +13,7 @@ const { cloudApiPath, aiApiPath, fetchPostHeaders, frontCloudApiPath } = config;
 
 const api_product = {
   // 取商品集合資料
-  async getProducts(pids: string[], type = 1): Promise<productsObj | null> {
+  async getProducts(pids: string | number[], type = 1): Promise<productsObj | null> {
     const resultData = await fetch(`${cloudApiPath}product/v2/productinfo`, {
       ...fetchPostHeaders,
       body: JSON.stringify({

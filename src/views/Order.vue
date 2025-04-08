@@ -1,27 +1,270 @@
 <template>
-  <div class="order">order</div>
+  <div class="order">
+    <navigation :windowY="200" />
+    <div class="order__notice">
+      <p>提醒您:本公司不會主動打電話告知您任何有關付款修改的問題，若接到可疑電話請拒絕回應。</p>
+    </div>
+    <a v-if="isFridaySite" target="_blank"
+      href="https://go.shopping.friday.tw/event/202307/20230701-promotecard/index.html" class="co_branded_card">
+      <p>【必備神卡】 friDay聯名卡</p>
+      <i class="icon-next"></i>
+    </a>
+    <div class="order__list">
+      <template v-if="orderData && orderData.length > 0">
+        <ul class="bigOrder">
+          <li :class="['bigOrderWrap', { returnOrder: isNegative(order.dealId) }]" v-for="(order, index) of orderData"
+            :key="index">
+            <div class="head">
+              <template v-if="!isNegative(order.dealId)">
+                <p>交易編號：{{ order.dealId }}</p>
+                <p>訂購時間：{{ order.orderDate }} {{ order.orderTime }}</p>
+                <p>配送方式：{{ order.shippingType }}</p>
+                <p>付款方式：{{ order.payType }} ({{ order.payment.status }})</p>
+                <p v-if="order.bankInfo">&emsp;&emsp;&emsp;&emsp;&emsp;{{ order.bankInfo }}</p>
+                <p v-if="order.rePayPayload" class="linePayAgain" @click="linePayAgain(order.rePayPayload)">
+                  &emsp;&emsp;&emsp;&emsp;&emsp;(再次付款)
+                </p>
+                <div class="flex">
+                  <p class="red">實付金額：${{ productPrice(order.dealPayAmount) }}</p>
+                  <div class="detail-link">
+                    <a href=""
+                      @click="(e) => priceInfoSwitch(e, index, order.dealId, isNegative(order.dealId))">折抵明細</a>
+                    <a v-if="order.invoiceUrl" href="#" @click.prevent="seeInvoiceUrl(order.invoiceUrl)">看發票</a>
+                  </div>
+                </div>
+                <div class="showBlock" v-if="order.isDiscountInfoOpen">
+                  <p class="box-title">折抵明細</p>
+                  <p v-for="(detail, index) in order.discountInfoDetail" :key="index">
+                    {{ detail.amountItem }}：{{ detail.amount }}
+                  </p>
+                </div>
+                <div class="mb10">
+                  <div class="flex">
+                    <p>收件人資訊：</p>
+                    (<a href="" @click="(e) => consigneeInfoSwitch(e, index, order.productData[0].orderId)">詳</a>)
+                  </div>
+                  <div v-if="order.isCoinsigneeInfoOpen">
+                    <template v-if="order.pickupStoreName">
+                      <p v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
+                      <p v-if="order.pickupStoreName">門市名稱：{{ order.pickupStoreName }}</p>
+                      <p v-if="order.pickupStoreAdress">門市地址：{{ order.pickupStoreAdress }}</p>
+                    </template>
+                    <template v-else>
+                      <p v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
+                      <p v-if="order.consigneeAddrDetail">收貨人地址：{{ order.consigneeAddrDetail }}</p>
+                    </template>
+                  </div>
+                </div>
+                <div class="switch">
+                  <div @click="openDetailBlock(Number(index))">
+                    <p v-if="!order.isDetilOpen">展合明細</p>
+                    <span :class="['next_arrow', { active: order.isDetilOpen }]"></span>
+                    <span v-if="order.hasUrgent" class="urgent">( ! )</span>
+                  </div>
+                  <div>
+                    <a v-if="order.canReturn" href=""
+                      @click="(e) => openRefundDialog(e, order.productData, order.dealId, order.memberId, order)">退訂</a>
+                    <a href="" @click="(e) => openQaDialog(e, null, order)">交易提問</a>
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <p>退訂編號：{{ order.dealId }}</p>
+                <p>退訂時間：{{ order.orderDate }} {{ order.orderTime }}</p>
+                <p>退訂方式：{{ order.shippingType }}</p>
+                <div class="flex">
+                  <p>退款方式：{{ order.payType }}</p>
+                  <p v-if="order.payment.status" class="gray">({{ order.payment.status }})</p>
+                </div>
+                <div class="mb10 flex">
+                  <p class="mb10 red">退款金額：${{ productPrice(order.dealPayAmount) }}</p>
+                  <div class="detail-link">
+                    <a href=""
+                      @click="(e) => priceInfoSwitch(e, index, order.dealId, isNegative(order.dealId))">退款明細</a>
+                  </div>
+                </div>
+                <div class="showBlock mb10" v-if="order.isDiscountInfoOpen">
+                  <p class="box-title">退款明細</p>
+                  <p v-for="(detail, index) in order.discountInfoDetail" :key="index">
+                    {{ detail.amountItem }}：{{ detail.amount }}
+                  </p>
+                </div>
+                <div class="mb10">
+                  <div class="flex">
+                    <p>收件人資訊：</p>
+                    (<a href="" @click="(e) => consigneeInfoSwitch(e, index, order.productData[0].orderId)">詳</a>)
+                  </div>
+                  <div v-if="order.isCoinsigneeInfoOpen">
+                    <template v-if="order.pickupStoreName">
+                      <p v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
+                      <p v-if="order.pickupStoreName">門市名稱：{{ order.pickupStoreName }}</p>
+                      <p v-if="order.pickupStoreAdress">門市地址：{{ order.pickupStoreAdress }}</p>
+                    </template>
+                    <template v-else>
+                      <p v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
+                      <p v-if="order.consigneeAddrDetail">收貨人地址：{{ order.consigneeAddrDetail }}</p>
+                    </template>
+                  </div>
+                </div>
+                <div class="switch">
+                  <div @click="openDetailBlock(index)">
+                    <p v-if="!order.isDetilOpen">展合明細</p>
+                    <span :class="['next_arrow', { active: order.isDetilOpen }]"></span>
+                  </div>
+                  <div><a href="" @click="(e) => openQaDialog(e, null, order)">交易提問</a></div>
+                </div>
+              </template>
+            </div>
+            <div class="body" v-if="order.isDetilOpen">
+              <ul class="smallOrder">
+                <li class="smallOrderWrap" v-for="(product, idx) of order.productData" :key="idx">
+                  <div :class="['productArea']">
+                    <div class="mainPrd flex flex-space-between flex-align-center">
+                      <a class="flex" :href="`/product/${product.productId}`">
+                        <img :src="product.images|| ''" alt="" />
+                      </a>
+                      <div class="info">
+                        <div class="top flex flex-space-between mb5">
+                          <p>
+                            <a class="flex" :href="`/product/${product.productId}`">
+                              {{ product.productName }}
+                            </a>
+                          </p>
+                          <a v-if="!siteData" href="" @click="(e) => openQaDialog(e, product, order)">問問題</a>
+                        </div>
+                        <div class="flex flex-space-between">
+                          <p v-if="product.colorName">規格： {{ product.colorName }}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <template v-if="product.giftdata">
+                      <p class="giftBox" v-for="(item, idx) in product.giftdata" :key="idx">
+                        <span class="giftTag">贈品</span>{{ item.productName }}
+                      </p>
+                    </template>
+                    <template v-if="product.combodata && product.combodata.length > 0">
+                      <p class="comboText">-組合商品-</p>
+                      <div class="comboPrd flex flex-space-between flex-align-center mb10"
+                        v-for="(comboPrd, idx) in product.combodata" :key="idx">
+                        <a class="flex" :href="`/product/${comboPrd.productId}`">
+                          <img :src="comboPrd.images" alt="" />
+                        </a>
+                        <div class="info">
+                          <div class="top flex flex-space-between">
+                            <p>{{ comboPrd.productName }}</p>
+                          </div>
+                          <div class="flex flex-space-between">
+                            <p v-if="comboPrd.colorName">規格： {{ comboPrd.colorName }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                  <div class="detail-bar">
+                    <a v-if="!isNegative(order.dealId)" href="#" @click.prevent="goProofUrl(product.proofUrl || '')">購買證明</a>
+                    <div v-if="product.productDiscount">
+                      <p>單價：{{ tools.priceFormat(product.productDiscountedPrice) }}</p>
+                      <p class="gray">(折扣後)</p>
+                    </div>
+                    <p v-else>單價：{{ tools.priceFormat(product.price) }}</p>
+                    <p>
+                      數量：{{ tools.priceFormat(product.quantity) }} &nbsp;<a
+                        :href="'javascript:window.Android.openChat(' + product.productId + ', ' + order.dealId + ');'"
+                        style="color: white">&nbsp;</a>
+                    </p>
+                  </div>
+                  <!-- <div class="iconArea">
+                  <span class="storeIcon">超商取貨</span>
+                </div> -->
+                  <template v-if="order.isShowProcessStatusBar && product.deliverProcess">
+                    <statusBar :order="order" :product="product" :needLookShippingDetail="true"
+                      @lookShippingDetail="lookShippingDetail"></statusBar>
+                  </template>
+                  <div class="urgentText">
+                    <div v-if="product.shipDelay === '2'" class="circle"></div>
+                    <div v-if="product.shipDelay === '1'" class="cross"></div>
+                    <p>{{ product.urgentText }}</p>
+                  </div>
+                  <!-- <div v-if="!isNegative(order.dealId) && product.isShowShippingDetail && product.isIntangible === '0'" class="bottom-bar">
+                    <div class="flex flex-space-between">
+                      <p>運貨單：</p>
+                      <template v-if="product.logisticName">
+                        <p>{{product.logisticName}}</p>
+                      </template>
+                      <div v-if="product.logisticUrl">
+                        <a v-if="product.logisticUrl" @click="e => goLogisticUrl(e ,product.deliveryNo ,product.logisticUrl)" href="" target="_blank">{{product.deliveryNo}}配送詳情>></a>
+                        <p class="gray">(點擊連結複製貨運單號)</p>
+                      </div>
+                      <p v-else>{{product.deliveryNo}}</p>
+                    </div>
+                  </div> -->
+                  <!-- 電子序號區塊(咖啡券不顯示) -->
+                  <div v-if="
+                    !isNegative(order.dealId) &&
+                    product.isIntangible === '1' &&
+                    ![7863457, 7863324, 7863465].includes(product.productId)
+                  " class="elecTicket-bar">
+                    <template v-if="product.isTicketOpen">
+                      <p class="label">序號：</p>
+                      <ul v-if="product.tickets">
+                        <li v-for="(ticket, idx) of product.tickets" :key="idx">
+                          <a :href="tools.parseUrl(
+                            `/member/tickets?dealId=${order.dealId}&productId=${product.productId}&sn=${ticket.sn}`
+                          )
+                            ">{{ ticket.sn }}</a>
+                        </li>
+                      </ul>
+                      <p v-else>查無序號</p>
+                    </template>
+                    <a v-else href="" @click.prevent="openTicketArea(order, product)">查看序號</a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+        <refundDialog v-if="isRefundDialogOpen" @closeRefundDialog="closeRefundDialog" :products="choseRefundProduct"
+          :dealId="choseDealId" :memberId="choseMemberId" :order="choseOrder" @refreshOrder="refreshOrder">
+        </refundDialog>
+        <qaDialog v-if="isQaRecordDialogOpen" @closeQaDialog="closeQaDialog" :choseProduct="choseProduct"
+          :choseOrder="choseOrder"></qaDialog>
+        <shippingDetailDialog v-if="isShippingDetailDialogOpen" :product="shippingDetailInfo"
+          @closeShippingDetailDialog="closeShippingDetailDialog"></shippingDetailDialog>
+        <p class="bottomText" v-if="isBottomTextShow">- 已經到底摟 -</p>
+        <div id="aiPromotionBottomLine"></div>
+      </template>
+      <p v-else-if="orderData && orderData.length === 0" class="noDataMessage">查無訂單資料</p>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup name="order">
+import tools from '@/util/tools';
 import type { order, orderProduct } from '@/types/order';
 import api from '@/apis/api';
 import useAtBottom from '@/hooks/useAtBottom';
-import { nextTick, ref, watch } from 'vue';
+import { useBsiteStore } from '@/stores/bsiteStore';
+import { computed, nextTick, ref, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 const { isAtBottom, initScrollEvent } = useAtBottom();
 
-const orderData = ref<order | null>(null); //訂單資料
+const orderData = ref<order[] | null>(null); //訂單資料
 const isApiOk = ref(true); //api是否已完成
 const page = ref(0); //order page 頁數
 const isBottomTextShow = ref(false); //是否出現「已經到底部摟」
 const isRefundDialogOpen = ref(false); //退訂popup
 const choseOrder = ref<order | null>(null); //供退訂popup使用
-const choseProduct = ref<orderProduct | null>(null); //選擇的商品(供問答、退訂...popup使用)
+const choseProduct = ref<orderProduct | null>(null); //選擇的商品(供問答popup使用)
+const choseRefundProduct = ref<orderProduct[] | null>(null) //選擇的商品(供退訂popup使用)
 const choseDealId = ref<string | null>(null);
 const choseMemberId = ref<string | null>(null);
-
 const isQaRecordDialogOpen = ref(false); //是否開啟問答紀錄popup
 const isShippingDetailDialogOpen = ref(false); //是否開啟貨態明細
 const shippingDetailInfo = ref<orderProduct | null>(null) //貨態明細所需商品資料(productData)
+
+const bsiteStore = useBsiteStore()
+const { siteData } = storeToRefs(bsiteStore)
+const isFridaySite = computed(() => !siteData.value) //是否為主站
 
 const init = async () => {
   //未登入轉登入
@@ -152,9 +395,9 @@ async function openDetailBlock(index: number) {
 }
 
 //開啟退訂popup
-function openRefundDialog(e: any, products: orderProduct, dealId: string, memberId: string, order: order) {
+function openRefundDialog(e: any, products: orderProduct[], dealId: string, memberId: string, order: order) {
   e.preventDefault();
-  setChoseProduct(products);
+  setChoseRefundProduct(products);
   setChoseDealId(dealId, memberId);
   setChoseOrder(order);
   isRefundDialogOpen.value = true;
@@ -165,9 +408,14 @@ function closeRefundDialog() {
   isRefundDialogOpen.value = false;
 }
 
-//選取product設值
-function setChoseProduct(products: orderProduct) {
+//設定問答紀錄product
+function setChoseProduct(products: orderProduct | null) {
   choseProduct.value = products;
+}
+
+//設定退訂product
+function setChoseRefundProduct(products: orderProduct[] | null) {
+  choseRefundProduct.value = products;
 }
 
 //選取資料dealOd & memberId
@@ -182,7 +430,7 @@ function setChoseOrder(order: order) {
 }
 
 //開啟問答紀錄
-function openQaDialog(e: any, choseProduct: orderProduct, order: order) {
+function openQaDialog(e: any, choseProduct: orderProduct | null, order: order) {
   e.preventDefault();
   setChoseOrder(order);
   setChoseProduct(choseProduct);
@@ -204,12 +452,12 @@ function closeShippingDetailDialog() {
 //取得商品圖片
 async function getProductImgData(index: number) {
   const order = orderData.value?.[index];
-  if (!order.isGetImgAlready) {
+  if (order && !order.isGetImgAlready) {
     for (let mainPrd of order.productData) {
       const prdInfo = await api.product.getProducts([mainPrd.productId]);
       mainPrd.proofUrl = await api.order.getOrderProductProof(order.dealId, mainPrd.productId, mainPrd.sizeId);
       if (prdInfo && prdInfo[mainPrd.productId]) {
-        mainPrd.images = prdInfo[mainPrd.productId].images;
+        mainPrd.images = prdInfo[mainPrd.productId].images || "";
         mainPrd.supplierId = prdInfo[mainPrd.productId].supplierId;
       }
       if (mainPrd.combodata) {
@@ -226,9 +474,10 @@ async function getProductImgData(index: number) {
 }
 
 //收貨人姓名詳
-async function consigneeInfoSwitch(e: any, idx: number, orderId: number) {
+async function consigneeInfoSwitch(e: any, idx: number, orderId: string) {
   e.preventDefault();
   const order = orderData.value?.[idx];
+  if (!order) return
   order.isCoinsigneeInfoOpen = true;
   //姓名
   if (!order.consigneeNameDetail) {
@@ -244,9 +493,10 @@ async function consigneeInfoSwitch(e: any, idx: number, orderId: number) {
 }
 
 //折抵＆退款明細詳
-async function priceInfoSwitch(e: any, idx: number, dealId: number, isNegative: boolean) {
+async function priceInfoSwitch(e: any, idx: number, dealId: string, isNegative: boolean) {
   e.preventDefault();
   const order = orderData.value?.[idx];
+  if (!order) return
   order.isDiscountInfoOpen = true;
   let discountInfo = order.discountInfoDetail;
   if (!discountInfo && !isNegative) {

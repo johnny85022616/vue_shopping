@@ -330,7 +330,7 @@ export default {
       });
   },
   // 取得訂單購買證明
-  async getOrderProductProof(dealId: number, productId: number, sizeId: number) {
+  async getOrderProductProof(dealId: string, productId: number, sizeId: number) {
     return await fetch(
       `${frontApiPath()}mgmt/order/getFile/2?dealId=${dealId}&productId=${productId}&sizeId=${sizeId}`,
       {
@@ -344,7 +344,7 @@ export default {
       });
   },
   // 取得收件人隱碼解碼資料
-  async getConsigneeDecode(orderId = 0, typeId = 4 /** 4 姓名 6 地址 */) {
+  async getConsigneeDecode(orderId = '0', typeId = 4 /** 4 姓名 6 地址 */) {
     return await fetch(`${frontApiPath()}decode/personal`, {
       ...fetchPostHeaders,
       body: JSON.stringify({
@@ -366,7 +366,7 @@ export default {
   },
 
   // 取得訂單折抵明細
-  async getOrderDiscounts(dealId: number, extPayload?: any) {
+  async getOrderDiscounts(dealId: string, extPayload?: any) {
     let fetchApi = `${frontApiPath()}v1/order/getorderamountdetail`;
     let fetchPayload: { body?: string; method: string; headers: any } = {
       ...fetchPostHeaders,
@@ -390,7 +390,7 @@ export default {
       });
   },
   // 取得退訂訂單折抵明細
-  async getRefundOrderDiscounts(dealId: number) {
+  async getRefundOrderDiscounts(dealId: string) {
     return await fetch(`${frontApiPath()}v1/order/getrefundamountdetail`, {
       ...fetchPostHeaders,
       body: JSON.stringify({
