@@ -50,7 +50,7 @@ export interface orderProduct {
   logisticName: null | string;
   deliveryNo: null | string;
   logisticUrl: string;
-  canReturn: boolean;
+  canReturn: boolean | string;
   returnFlag: null;
   timestamp: Timestamp;
   isIntangible: string;

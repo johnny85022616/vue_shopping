@@ -261,7 +261,7 @@ export default {
             }
 
             // 是否可以退貨
-            c['canReturn'] = c.canReturn && c.returnFlag === null;
+            c['canReturn'] = c.canReturn === 'Y' && c.returnFlag === null;
 
             //處理貨態進度條
             c['deliverProcess'] = [step1, step2, step3, step4, step5, step6].filter((x) => x);
