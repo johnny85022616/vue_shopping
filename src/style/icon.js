@@ -37,4 +37,5 @@ export default {
   'checkbox-icon':
     "url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAYAAACM/rhtAAAAAXNSR0IArs4c6QAAAd5JREFUWAntWEFOAjEUbQkhwRDYewPdw2DYGDOXUFeyUPZeA7ciG1mpl5gYNkSZA+gN3EMmkhDD97/SKiGs+FBYtMn0T6f9fW9efzdPqT1vepEfEekoiq5JU1Mrfczj0uL8tt611hkp+uDYG74NuxzJYf0RbDQah9Of6ZMideomdxK16hfyhcvBYPAF/Dw6KFer15bJ4S8mmPfQiowxF4sFglDM6QxKmo9MrkUz6lgi3zqnb8ul8kuSJCMP5FQcx5VRNrpQM9VmvANgcom10jTtOgWvHBGQS9/TBzf2Ea0QnWq9qpjkPTBxDzh0cxjgQiByIyg3f/XfV0qVZ3AAsuNkCC7c1omvY131+xbb1L3jZAiuWrwv3wJB6UkEBYOCUgWk+aEGg4JSBaT5oQaDglIFpPmhBoOCUgWk+aEGg4JSBaT5oQY3oiD8ObtREUaOdNN18y02nC7lOJkjZpvh026qx9n4fF0AaZ7FNo4bDE3sZ9wtdrQe2X5ja4mdmxndsR2nfNtvIAdscEBjBXsmomMFYWC+LrmruzEw56z6bAEaA9McMZxM2K7sefUxbxukhpno4zHHanCtBQxOGP9P8ABKRifRDUvd5AVHzgIziVvsGCvDPUCpLZvoW4TdzNa/Qc6sLEovLNcAAAAASUVORK5CYII=')",
   'photo-icon': "url('@/assets/icons/photo.png')",
+  'nextArrow-icon': "url('@/assets/icons/next_arrow.png')",
 };
