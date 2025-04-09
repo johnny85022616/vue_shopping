@@ -16,6 +16,7 @@ export default {
       ping: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
       pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       bounce: 'bounce 1s infinite',
+      blink: 'blink 1.5s infinite',
     },
     aria: {
       busy: 'busy="true"',
@@ -600,6 +601,17 @@ export default {
         '50%': {
           transform: 'none',
           animationTimingFunction: 'cubic-bezier(0,0,0.2,1)',
+        },
+      },
+      blink: {
+        '0%': {
+          opacity: 1,
+        },
+        '50%': {
+          opacity: 0,
+        },
+        '100%': {
+          opacity: 1,
         },
       },
     },

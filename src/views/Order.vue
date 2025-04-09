@@ -55,7 +55,7 @@
                   <div class="flex items-center" @click="openDetailBlock(Number(index))">
                     <p class="text-c_sliver mb-0" v-if="!order.isDetilOpen">展合明細</p>
                     <span :class="['next_arrow inline-block w-[14px] h-[14px] bg-nextArrow-icon bg-center bg-100% bg-no-repeat', { 'rotate-90': order.isDetilOpen }]"></span>
-                    <span v-if="order.hasUrgent" class="urgent font-bold ml-2 ">( ! )</span>
+                    <span v-if="order.hasUrgent" class="urgent font-bold ml-2 text-c_red animate-blink">( ! )</span>
                   </div>
                   <div class="flex items-center">
                     <a v-if="order.canReturn" href="" class="underline text-c_dodger_blue"
