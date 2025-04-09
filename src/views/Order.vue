@@ -1,117 +1,113 @@
 <template>
-  <div class="order">
+  <div class="order text-[15px] mb-[80px]">
     <navigation :windowY="200" />
-    <div class="order__notice">
-      <p>提醒您:本公司不會主動打電話告知您任何有關付款修改的問題，若接到可疑電話請拒絕回應。</p>
+    <div class="order__notice inline-flex justify-center items-center py-1 px-3 mt-5">
+      <p class="text-c_red text-xs">提醒您:本公司不會主動打電話告知您任何有關付款修改的問題，若接到可疑電話請拒絕回應。</p>
     </div>
-    <a v-if="isFridaySite" target="_blank"
-      href="https://go.shopping.friday.tw/event/202307/20230701-promotecard/index.html" class="co_branded_card">
-      <p>【必備神卡】 friDay聯名卡</p>
-      <i class="icon-next"></i>
-    </a>
-    <div class="order__list">
+    <div class="order__list bg-c_background mt-5">
       <template v-if="orderData && orderData.length > 0">
         <ul class="bigOrder">
-          <li :class="['bigOrderWrap', { returnOrder: isNegative(order.dealId) }]" v-for="(order, index) of orderData"
+          <li class="bigOrderWrap bg-c_white my-4 mx-2 rounded-[10px] shadow-[0_0_8px_0_rgba(0,0,0,0.3)] first-of-type:mt-0"
+          v-for="(order, index) of orderData"
             :key="index">
-            <div class="head">
+            <div class="head p-4 text-c_heavy_metal">
               <template v-if="!isNegative(order.dealId)">
-                <p>交易編號：{{ order.dealId }}</p>
-                <p>訂購時間：{{ order.orderDate }} {{ order.orderTime }}</p>
-                <p>配送方式：{{ order.shippingType }}</p>
-                <p>付款方式：{{ order.payType }} ({{ order.payment.status }})</p>
-                <p v-if="order.bankInfo">&emsp;&emsp;&emsp;&emsp;&emsp;{{ order.bankInfo }}</p>
-                <p v-if="order.rePayPayload" class="linePayAgain" @click="linePayAgain(order.rePayPayload)">
+                <p class="mb-1">交易編號：{{ order.dealId }}</p>
+                <p class="mb-1">訂購時間：{{ order.orderDate }} {{ order.orderTime }}</p>
+                <p class="mb-1">配送方式：{{ order.shippingType }}</p>
+                <p class="mb-1">付款方式：{{ order.payType }} ({{ order.payment.status }})</p>
+                <p v-if="order.bankInfo" class="mb-1">&emsp;&emsp;&emsp;&emsp;&emsp;{{ order.bankInfo }}</p>
+                <p v-if="order.rePayPayload" class="linePayAgain text-c_dodger_blue mb-1" @click="linePayAgain(order.rePayPayload)">
                   &emsp;&emsp;&emsp;&emsp;&emsp;(再次付款)
                 </p>
-                <div class="flex">
+                <div class="flex mb-1">
                   <p class="red">實付金額：${{ productPrice(order.dealPayAmount) }}</p>
-                  <div class="detail-link">
-                    <a href=""
+                  <div class="detail-link ml-2">
+                    <a href="#" class="mr-2 underline text-c_dodger_blue"
                       @click="(e) => priceInfoSwitch(e, index, order.dealId, isNegative(order.dealId))">折抵明細</a>
-                    <a v-if="order.invoiceUrl" href="#" @click.prevent="seeInvoiceUrl(order.invoiceUrl)">看發票</a>
+                    <a v-if="order.invoiceUrl" href="#" class="underline text-c_dodger_blue" @click.prevent="seeInvoiceUrl(order.invoiceUrl)">看發票</a>
                   </div>
                 </div>
-                <div class="showBlock" v-if="order.isDiscountInfoOpen">
-                  <p class="box-title">折抵明細</p>
+                <div class="arrowBorder" v-if="order.isDiscountInfoOpen">
+                  <p class="box-title font-bold">折抵明細</p>
                   <p v-for="(detail, index) in order.discountInfoDetail" :key="index">
                     {{ detail.amountItem }}：{{ detail.amount }}
                   </p>
                 </div>
-                <div class="mb10">
-                  <div class="flex">
+                <div>
+                  <div class="flex mb-1">
                     <p>收件人資訊：</p>
-                    (<a href="" @click="(e) => consigneeInfoSwitch(e, index, order.productData[0].orderId)">詳</a>)
+                    (<a href="" class="underline text-c_dodger_blue" @click="(e) => consigneeInfoSwitch(e, index, order.productData[0].orderId)">詳</a>)
                   </div>
                   <div v-if="order.isCoinsigneeInfoOpen">
                     <template v-if="order.pickupStoreName">
-                      <p v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
-                      <p v-if="order.pickupStoreName">門市名稱：{{ order.pickupStoreName }}</p>
-                      <p v-if="order.pickupStoreAdress">門市地址：{{ order.pickupStoreAdress }}</p>
+                      <p class="mb-1" v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
+                      <p class="mb-1" v-if="order.pickupStoreName">門市名稱：{{ order.pickupStoreName }}</p>
+                      <p class="mb-1" v-if="order.pickupStoreAdress">門市地址：{{ order.pickupStoreAdress }}</p>
                     </template>
                     <template v-else>
-                      <p v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
-                      <p v-if="order.consigneeAddrDetail">收貨人地址：{{ order.consigneeAddrDetail }}</p>
-                    </template>
+                      <p class="mb-1" v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
+                      <p class="mb-1" v-if="order.consigneeAddrDetail">收貨人地址：{{ order.consigneeAddrDetail }}</p>
+                    </template> 
                   </div>
                 </div>
-                <div class="switch">
-                  <div @click="openDetailBlock(Number(index))">
-                    <p v-if="!order.isDetilOpen">展合明細</p>
-                    <span :class="['next_arrow', { active: order.isDetilOpen }]"></span>
-                    <span v-if="order.hasUrgent" class="urgent">( ! )</span>
+                <div class="switch flex justify-between items-center mt-5">
+                  <div class="flex items-center" @click="openDetailBlock(Number(index))">
+                    <p class="text-c_sliver mb-0" v-if="!order.isDetilOpen">展合明細</p>
+                    <span :class="['next_arrow inline-block w-[14px] h-[14px] bg-nextArrow-icon bg-center bg-100% bg-no-repeat', { active: order.isDetilOpen }]"></span>
+                    <span v-if="order.hasUrgent" class="urgent font-bold ml-2 ">( ! )</span>
                   </div>
-                  <div>
-                    <a v-if="order.canReturn" href=""
+                  <div class="flex items-center">
+                    <a v-if="order.canReturn" href="" class="underline text-c_dodger_blue"
                       @click="(e) => openRefundDialog(e, order.productData, order.dealId, order.memberId, order)">退訂</a>
-                    <a href="" @click="(e) => openQaDialog(e, null, order)">交易提問</a>
+                    <a class="underline text-c_dodger_blue" href="" @click="(e) => openQaDialog(e, null, order)">交易提問</a>
                   </div>
                 </div>
               </template>
               <template v-else>
-                <p>退訂編號：{{ order.dealId }}</p>
-                <p>退訂時間：{{ order.orderDate }} {{ order.orderTime }}</p>
-                <p>退訂方式：{{ order.shippingType }}</p>
+                <p class="mb-1">退訂編號：{{ order.dealId }}</p>
+                <p class="mb-1">退訂時間：{{ order.orderDate }} {{ order.orderTime }}</p>
+                <p class="mb-1">退訂方式：{{ order.shippingType }}</p>
                 <div class="flex">
                   <p>退款方式：{{ order.payType }}</p>
                   <p v-if="order.payment.status" class="gray">({{ order.payment.status }})</p>
                 </div>
-                <div class="mb10 flex">
-                  <p class="mb10 red">退款金額：${{ productPrice(order.dealPayAmount) }}</p>
-                  <div class="detail-link">
-                    <a href=""
+                <div class="flex">
+                  <p class="mb10 text-c_red">退款金額：${{ productPrice(order.dealPayAmount) }}</p>
+                  <div class="detail-link ml-2">
+                    <a href="" class="underline text-c_dodger_blue"
                       @click="(e) => priceInfoSwitch(e, index, order.dealId, isNegative(order.dealId))">退款明細</a>
                   </div>
                 </div>
-                <div class="showBlock mb10" v-if="order.isDiscountInfoOpen">
-                  <p class="box-title">退款明細</p>
+                <div class="arrowBorder" v-if="order.isDiscountInfoOpen">
+                  <p class="box-title font-bold">退款明細</p>
                   <p v-for="(detail, index) in order.discountInfoDetail" :key="index">
                     {{ detail.amountItem }}：{{ detail.amount }}
                   </p>
                 </div>
-                <div class="mb10">
-                  <div class="flex">
+                <div>
+                  <div class="flex mb-1">
                     <p>收件人資訊：</p>
-                    (<a href="" @click="(e) => consigneeInfoSwitch(e, index, order.productData[0].orderId)">詳</a>)
+                    (<a href="" class="underline text-c_dodger_blue" @click="(e) => consigneeInfoSwitch(e, index, order.productData[0].orderId)">詳</a>)
                   </div>
                   <div v-if="order.isCoinsigneeInfoOpen">
                     <template v-if="order.pickupStoreName">
-                      <p v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
-                      <p v-if="order.pickupStoreName">門市名稱：{{ order.pickupStoreName }}</p>
-                      <p v-if="order.pickupStoreAdress">門市地址：{{ order.pickupStoreAdress }}</p>
+                      <p class="mb-1" v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
+                      <p class="mb-1" v-if="order.pickupStoreName">門市名稱：{{ order.pickupStoreName }}</p>
+                      <p class="mb-1" v-if="order.pickupStoreAdress">門市地址：{{ order.pickupStoreAdress }}</p>
                     </template>
                     <template v-else>
-                      <p v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
-                      <p v-if="order.consigneeAddrDetail">收貨人地址：{{ order.consigneeAddrDetail }}</p>
+                      <p class="mb-1" v-if="order.consigneeNameDetail">收貨人：{{ order.consigneeNameDetail }}</p>
+                      <p class="mb-1" v-if="order.consigneeAddrDetail">收貨人地址：{{ order.consigneeAddrDetail }}</p>
                     </template>
                   </div>
                 </div>
-                <div class="switch">
-                  <div @click="openDetailBlock(index)">
-                    <p v-if="!order.isDetilOpen">展合明細</p>
-                    <span :class="['next_arrow', { active: order.isDetilOpen }]"></span>
+                <div class="switch flex justify-between items-center mt-5">
+                  <div class="flex items-center" @click="openDetailBlock(index)">
+                    <p v-if="!order.isDetilOpen" class="text-c_sliver mb-0">展合明細</p>
+                    <span :class="['next_arrow inline-block w-[14px] h-[14px] bg-nextArrow-icon bg-center bg-100% bg-no-repeat', { active: order.isDetilOpen }]"></span>
                   </div>
-                  <div><a href="" @click="(e) => openQaDialog(e, null, order)">交易提問</a></div>
+                  <div><a href="" class="underline text-c_dodger_blue" @click="(e) => openQaDialog(e, null, order)">交易提問</a></div>
                 </div>
               </template>
             </div>
@@ -239,6 +235,7 @@
 </template>
 
 <script lang="ts" setup name="order">
+import navigation from '@/components/common/navigation.vue';
 import tools from '@/util/tools';
 import type { order, orderProduct } from '@/types/order';
 import api from '@/apis/api';
