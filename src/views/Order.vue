@@ -54,7 +54,7 @@
                 <div class="switch flex justify-between items-center mt-5">
                   <div class="flex items-center" @click="openDetailBlock(Number(index))">
                     <p class="text-c_sliver mb-0" v-if="!order.isDetilOpen">展合明細</p>
-                    <span :class="['next_arrow inline-block w-[14px] h-[14px] bg-nextArrow-icon bg-center bg-100% bg-no-repeat', { active: order.isDetilOpen }]"></span>
+                    <span :class="['next_arrow inline-block w-[14px] h-[14px] bg-nextArrow-icon bg-center bg-100% bg-no-repeat', { 'rotate-90': order.isDetilOpen }]"></span>
                     <span v-if="order.hasUrgent" class="urgent font-bold ml-2 ">( ! )</span>
                   </div>
                   <div class="flex items-center">
@@ -105,7 +105,7 @@
                 <div class="switch flex justify-between items-center mt-5">
                   <div class="flex items-center" @click="openDetailBlock(index)">
                     <p v-if="!order.isDetilOpen" class="text-c_sliver mb-0">展合明細</p>
-                    <span :class="['next_arrow inline-block w-[14px] h-[14px] bg-nextArrow-icon bg-center bg-100% bg-no-repeat', { active: order.isDetilOpen }]"></span>
+                    <span :class="['next_arrow inline-block w-[14px] h-[14px] bg-nextArrow-icon bg-center bg-100% bg-no-repeat', { 'rotate-90': order.isDetilOpen }]"></span>
                   </div>
                   <div><a href="" class="underline text-c_dodger_blue" @click="(e) => openQaDialog(e, null, order)">交易提問</a></div>
                 </div>
