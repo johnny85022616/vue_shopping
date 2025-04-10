@@ -181,19 +181,6 @@
                     <div v-if="product.shipDelay === '1'" class="cross w-5 h-5 mr-1 bg-close-icon bg-100% bg-center bg-no-repeat invert-[75%] sepia-[100%] saturate-[500%] hue-rotate-[-55deg] flex-shrink-0 animate-blink"></div>
                     <p>{{ product.urgentText }}</p>
                   </div>
-                  <!-- <div v-if="!isNegative(order.dealId) && product.isShowShippingDetail && product.isIntangible === '0'" class="bottom-bar">
-                    <div class="flex flex-space-between">
-                      <p>運貨單：</p>
-                      <template v-if="product.logisticName">
-                        <p>{{product.logisticName}}</p>
-                      </template>
-                      <div v-if="product.logisticUrl">
-                        <a v-if="product.logisticUrl" @click="e => goLogisticUrl(e ,product.deliveryNo ,product.logisticUrl)" href="" target="_blank">{{product.deliveryNo}}配送詳情>></a>
-                        <p class="gray">(點擊連結複製貨運單號)</p>
-                      </div>
-                      <p v-else>{{product.deliveryNo}}</p>
-                    </div>
-                  </div> -->
                   <!-- 電子序號區塊(咖啡券不顯示) -->
                   <div v-if="
                     !isNegative(order.dealId) &&
@@ -219,9 +206,9 @@
             </div>
           </li>
         </ul>
-        <refundDialog v-if="isRefundDialogOpen" @closeRefundDialog="closeRefundDialog" :products="choseRefundProduct"
+        <!-- <refundDialog v-if="isRefundDialogOpen" @closeRefundDialog="closeRefundDialog" :products="choseRefundProduct"
           :dealId="choseDealId" :memberId="choseMemberId" :order="choseOrder" @refreshOrder="refreshOrder">
-        </refundDialog>
+        </refundDialog> -->
         <qaDialog v-if="isQaRecordDialogOpen" @closeQaDialog="closeQaDialog" :choseProduct="choseProduct"
           :choseOrder="choseOrder"></qaDialog>
         <shippingDetailDialog v-if="isShippingDetailDialogOpen" :product="shippingDetailInfo"
