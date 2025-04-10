@@ -236,6 +236,7 @@
 
 <script lang="ts" setup name="order">
 import navigation from '@/components/common/navigation.vue';
+import statusBar from '@/components/order/statusBar.vue';
 import tools from '@/util/tools';
 import type { order, orderProduct } from '@/types/order';
 import api from '@/apis/api';
