@@ -176,9 +176,9 @@
                     <statusBar :order="order" :product="product" :needLookShippingDetail="true"
                       @lookShippingDetail="lookShippingDetail"></statusBar>
                   </template>
-                  <div class="urgentText">
-                    <div v-if="product.shipDelay === '2'" class="circle"></div>
-                    <div v-if="product.shipDelay === '1'" class="cross"></div>
+                  <div class="urgentText flex items-start py-2 px-4 text-c_heavy_metal text-sm">
+                    <div v-if="product.shipDelay === '2'" class="circle w-3 h-3 rounded-[50%] bg-c_red mr-2 flex-shrink-0 mt-1 animate-blink"></div>
+                    <div v-if="product.shipDelay === '1'" class="cross w-5 h-5 mr-1 bg-close-icon bg-100% bg-center bg-no-repeat invert-[75%] sepia-[100%] saturate-[500%] hue-rotate-[-55deg] flex-shrink-0 animate-blink"></div>
                     <p>{{ product.urgentText }}</p>
                   </div>
                   <!-- <div v-if="!isNegative(order.dealId) && product.isShowShippingDetail && product.isIntangible === '0'" class="bottom-bar">
