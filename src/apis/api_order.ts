@@ -1,6 +1,6 @@
 import tools from '@/util/tools';
 import config from '@/config/config';
-import type { order, orderProduct, deliverTrack } from '@/types/order';
+import type { order, orderProduct, deliverTrack, History } from '@/types/order';
 const { fetchGetHeaders, fetchPostHeaders, logistichermesPath, frontApiPath, websiteDomain } = config;
 import uiAlert from './ui_alert';
 
@@ -437,15 +437,10 @@ export default {
   },
   //取得貨態明細
   async getDeliverTrack(
-    deliveryNo: string,
-    logisticName: string,
-    shipConfirmDate: string
-  ): Promise<deliverTrack[] | never[]> {
-    interface deliverTrack {
-      status: string;
-      date_time: string;
-      formatDate?: string;
-    }
+    deliveryNo: string | null,
+    logisticName: string | null,
+    shipConfirmDate: string | null
+  ): Promise<deliverTrack | null> {
     return await fetch(`${logistichermesPath}/deliver_track_json`, {
       ...fetchPostHeaders,
       body: JSON.stringify({
@@ -458,7 +453,7 @@ export default {
         if (res) {
           let history = res.history || [];
           history.push({ status: '商家已寄件', date_time: shipConfirmDate });
-          history = history?.map((ele: deliverTrack) => {
+          history = history?.map((ele: History) => {
             return {
               ...ele,
               formatDate: new Date(ele.date_time).toLocaleString('zh-TW', { hour12: false }).replace(/[\w:]{3}$/, ''),
@@ -468,12 +463,12 @@ export default {
           return res;
         } else {
           uiAlert.getFadeAlert('貨態明細資料有誤');
-          return [];
+          return null;
         }
       })
       .catch(() => {
         uiAlert.getFadeAlert('取得貨態明細資料發生錯誤');
-        return [];
+        return null;
       });
   },
 };

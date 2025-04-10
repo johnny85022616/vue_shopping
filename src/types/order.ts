@@ -107,3 +107,18 @@ export interface AtmPaymentData {
   bank: null;
   account: null;
 }
+
+// ------------------- 貨態明細資料 -------------------
+
+export interface deliverTrack {
+  timestamp: string;
+  delivery_no: string;
+  logistics: string;
+  history: History[];
+}
+
+export interface History {
+  status: string;
+  date_time: string;
+  formatDate?: string;
+}
