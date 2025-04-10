@@ -11,6 +11,7 @@ const {
   VITE_APP_AI_SEARCH_DOMAIN,
   VITE_APP_MSERVICE_API_DOMAIN,
   VITE_APP_AIDISCOUNT_API_DOMAIN,
+  VITE_APP_LOGISTICHERMES_API_DOMAIN,
 } = import.meta.env;
 
 import tools from '../util/tools';
@@ -43,6 +44,7 @@ export default {
   aiCloudApiPath: VITE_APP_AI_CLOUD_API_DOMAIN,
   cloudApiPath: `${VITE_APP_FRONT_CLOUD_API_DOMAIN}/frontendapi/`,
   aiDiscountPath: VITE_APP_AIDISCOUNT_API_DOMAIN,
+  logistichermesPath: VITE_APP_LOGISTICHERMES_API_DOMAIN,
   apiPath: (overwriteRoot = '/mobileapi/') => {
     let apiRoot = overwriteRoot;
     return VITE_APP_MOBILE_API_DOMAIN + apiRoot;
