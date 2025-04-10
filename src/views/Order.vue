@@ -25,7 +25,7 @@
                   <div class="detail-link ml-2">
                     <a href="#" class="mr-2 underline text-c_dodger_blue"
                       @click="(e) => priceInfoSwitch(e, index, order.dealId, isNegative(order.dealId))">折抵明細</a>
-                    <a v-if="order.invoiceUrl" href="#" class="underline text-c_dodger_blue" @click.prevent="seeInvoiceUrl(order.invoiceUrl)">看發票</a>
+                    <!-- <a v-if="order.invoiceUrl" href="#" class="underline text-c_dodger_blue" @click.prevent="seeInvoiceUrl(order.invoiceUrl)">看發票</a> -->
                   </div>
                 </div>
                 <div class="arrowBorder" v-if="order.isDiscountInfoOpen">
@@ -72,7 +72,7 @@
                   <p>退款方式：{{ order.payType }}</p>
                   <p v-if="order.payment.status" class="gray">({{ order.payment.status }})</p>
                 </div>
-                <div class="flex">
+                <div class="flex mb-1">
                   <p class="mb10 text-c_red">退款金額：${{ productPrice(order.dealPayAmount) }}</p>
                   <div class="detail-link ml-2">
                     <a href="" class="underline text-c_dodger_blue"
@@ -111,22 +111,22 @@
                 </div>
               </template>
             </div>
-            <div class="body" v-if="order.isDetilOpen">
+            <div class="body border-t border-solid border-c_alto" v-if="order.isDetilOpen">
               <ul class="smallOrder">
-                <li class="smallOrderWrap" v-for="(product, idx) of order.productData" :key="idx">
-                  <div :class="['productArea']">
-                    <div class="mainPrd flex flex-space-between flex-align-center">
-                      <a class="flex" :href="`/product/${product.productId}`">
-                        <img :src="product.images|| ''" alt="" />
+                <li class="smallOrderWrap border-t border-solid border-c_alto first:border-t-0" v-for="(product, idx) of order.productData" :key="idx">
+                  <div class="productArea relative p-4">
+                    <div class="mainPrd flex justify-between items-center">
+                      <a class="flex max-w-1/5 w-1/5 aspect-69/43" :href="`/product/${product.productId}`">
+                        <img class="w-full" :src="product.images|| ''" alt="" />
                       </a>
-                      <div class="info">
-                        <div class="top flex flex-space-between mb5">
-                          <p>
-                            <a class="flex" :href="`/product/${product.productId}`">
+                      <div class="info flex flex-col justify-between w-[78%]">
+                        <div class="top flex justify-between mb-1">
+                          <p class="w-4/5 line-clamp-2 text-ellipsis font-normal">
+                            <a class="flex text-c_heavy_metal no-underline" :href="`/product/${product.productId}`">
                               {{ product.productName }}
                             </a>
                           </p>
-                          <a v-if="!siteData" href="" @click="(e) => openQaDialog(e, product, order)">問問題</a>
+                          <a class="underline text-c_dodger_blue" v-if="!siteData" href="" @click="(e) => openQaDialog(e, product, order)">問問題</a>
                         </div>
                         <div class="flex flex-space-between">
                           <p v-if="product.colorName">規格： {{ product.colorName }}</p>
@@ -139,31 +139,31 @@
                       </p>
                     </template>
                     <template v-if="product.combodata && product.combodata.length > 0">
-                      <p class="comboText">-組合商品-</p>
+                      <p class="comboText text-c_sliver font-bold text-sm my-2">-組合商品-</p>
                       <div class="comboPrd flex flex-space-between flex-align-center mb10"
                         v-for="(comboPrd, idx) in product.combodata" :key="idx">
-                        <a class="flex" :href="`/product/${comboPrd.productId}`">
-                          <img :src="comboPrd.images" alt="" />
+                        <a class="flex max-w-1/5 w-1/5 aspect-69/43" :href="`/product/${comboPrd.productId}`">
+                          <img class="w-full" :src="comboPrd.images" alt="" />
                         </a>
-                        <div class="info">
-                          <div class="top flex flex-space-between">
-                            <p>{{ comboPrd.productName }}</p>
+                        <div class="info flex flex-col justify-between w-[78%]">
+                          <div class="top flex justify-between mb-1">
+                            <p class="w-4/5 line-clamp-2 text-ellipsis font-normal">{{ comboPrd.productName }}</p>
                           </div>
-                          <div class="flex flex-space-between">
+                          <div class="flex justify-between">
                             <p v-if="comboPrd.colorName">規格： {{ comboPrd.colorName }}</p>
                           </div>
                         </div>
                       </div>
                     </template>
                   </div>
-                  <div class="detail-bar">
-                    <a v-if="!isNegative(order.dealId)" href="#" @click.prevent="goProofUrl(product.proofUrl || '')">購買證明</a>
+                  <div class="detail-bar grid grid-cols-3 p-2">
+                    <a class="text-center" v-if="!isNegative(order.dealId)" href="#" @click.prevent="goProofUrl(product.proofUrl || '')">購買證明</a>
                     <div v-if="product.productDiscount">
-                      <p>單價：{{ tools.priceFormat(product.productDiscountedPrice) }}</p>
-                      <p class="gray">(折扣後)</p>
+                      <p class="text-center">單價：{{ tools.priceFormat(product.productDiscountedPrice) }}</p>
+                      <p class="gray text-center">(折扣後)</p>
                     </div>
-                    <p v-else>單價：{{ tools.priceFormat(product.price) }}</p>
-                    <p>
+                    <p v-else class="text-center">單價：{{ tools.priceFormat(product.price) }}</p>
+                    <p class="text-center">
                       數量：{{ tools.priceFormat(product.quantity) }} &nbsp;<a
                         :href="'javascript:window.Android.openChat(' + product.productId + ', ' + order.dealId + ');'"
                         style="color: white">&nbsp;</a>
