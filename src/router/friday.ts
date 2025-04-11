@@ -5,6 +5,7 @@ import aiSearch from '../views/aiSearch.vue';
 import Product from '@/views/Product.vue';
 import Order from '@/views/Order.vue';
 import ShoppingIntro from '@/views/ShoppingIntro.vue';
+import ElectronicTicket from '@/views/ElectronicTicket.vue';
 export const fridayRoutes = [
   //首頁路由
   {
@@ -51,5 +52,18 @@ export const fridayRoutes = [
     path: '/shoppingIntro',
     name: 'shoppingIntro',
     component: ShoppingIntro,
+  },
+  {
+    path: '/shoppingIntro',
+    name: 'shoppingIntro',
+    component: ShoppingIntro,
+  },
+  {
+    path: '/tickets',
+    name: 'tickets',
+    component: ElectronicTicket,
+    props: (route: any) => ({
+      query: route.query,
+    }),
   },
 ];
