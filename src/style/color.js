@@ -64,4 +64,5 @@ export default {
   c_promotion: '#f56a01',
   c_turn_red: '#ff0063',
   c_light_blue: '#e7f2ff',
+  c_mercuryApprox: '#e2e2e2',
 };
