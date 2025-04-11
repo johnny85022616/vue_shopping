@@ -79,17 +79,6 @@
                 </ul>
               </div>
             </section>
-            <popup v-if="isPopupAlertOpen" :isShowHeader="false" :hasMask="true">
-              <template v-slot:body>
-                <div class="sendPopup">
-                  <p>感謝您對friDay購物的支持與愛護，我們會盡快回覆您</p>
-                  <div class="buttonBlock flex justify-center">
-                    <button class="border-0 rounded-[5px] py-1 px-5 bg-c_dodger_blue text-c_white mt-5"
-                      @click="confirmClick">確定</button>
-                  </div>
-                </div>
-              </template>
-            </popup>
           </section>
         </template>
       </fullscreenDialog>
@@ -110,7 +99,6 @@ const conversationInfo = ref<qaInfo[] | never[] | null>(null) //問答回覆框�
 const isMessageOpen = ref(false) //是否開啟問答回覆框
 const categoryList = ref<qaCategory[] | never[] | null>(null) //下拉資料
 const qaCategory = ref("9") //下拉選擇值
-const isPopupAlertOpen = ref(false)
 
 const props = defineProps<{ choseOrder: order, choseProduct?: orderProduct | null }>()
 const { choseOrder, choseProduct } = toRefs(props)
@@ -199,7 +187,7 @@ function submitQuestion() {
   // });
   // this.clientInput = ""; // 清空輸入框內容
   // this.qaCategory = "9"; //問題類型下拉選單改為預設
-  // this.isPopupAlertOpen = true;
+  // api.ui.alert.getFadeAlert("感謝您對friDay購物的支持與愛護，我們會盡快回覆您")
 }
 
 init()
