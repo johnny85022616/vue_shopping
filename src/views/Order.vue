@@ -135,7 +135,7 @@
                     </div>
                     <template v-if="product.giftdata">
                       <p class="giftBox" v-for="(item, idx) in product.giftdata" :key="idx">
-                        <span class="giftTag">贈品</span>{{ item.productName }}
+                        <span class="giftTag text-xs mr-1 text-c_special">贈品</span>{{ item.productName }}
                       </p>
                     </template>
                     <template v-if="product.combodata && product.combodata.length > 0">
@@ -186,12 +186,12 @@
                     !isNegative(order.dealId) &&
                     product.isIntangible === '1' &&
                     ![7863457, 7863324, 7863465].includes(product.productId)
-                  " class="elecTicket-bar">
+                  " class="elecTicket-bar m-[10px] p-[10px] flex border border-solid border-c_alto rounded-[5px]">
                     <template v-if="product.isTicketOpen">
-                      <p class="label">序號：</p>
-                      <ul v-if="product.tickets">
+                      <p class="label w-[18%]">序號：</p>
+                      <ul v-if="product.tickets" class="w-[82%] list-none">
                         <li v-for="(ticket, idx) of product.tickets" :key="idx">
-                          <a :href="tools.parseUrl(
+                          <a class="inline-block w-full whitespace-nowrap overflow-hidden text-ellipsis my-0 mx-auto" :href="tools.parseUrl(
                             `/member/tickets?dealId=${order.dealId}&productId=${product.productId}&sn=${ticket.sn}`
                           )
                             ">{{ ticket.sn }}</a>
@@ -199,7 +199,7 @@
                       </ul>
                       <p v-else>查無序號</p>
                     </template>
-                    <a v-else href="" @click.prevent="openTicketArea(order, product)">查看序號</a>
+                    <a v-else class="my-0 mx-auto text-c_dodger_blue underline" href="" @click.prevent="openTicketArea(order, product)">查看序號</a>
                   </div>
                 </li>
               </ul>

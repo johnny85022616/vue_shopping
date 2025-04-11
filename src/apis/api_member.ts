@@ -101,7 +101,7 @@ const api_member = {
     if (singleTicketInfo) {
       postData = { ...postData, ...singleTicketInfo };
     }
-    return await fetch(`${frontApiPath}member/ticket`, {
+    return await fetch(`${frontApiPath()}member/ticket`, {
       ...fetchPostHeaders,
       body: JSON.stringify(postData),
     })
