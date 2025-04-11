@@ -500,7 +500,6 @@ export default {
           d = d.sort((a, b) => b.date - a.date);
           return d;
         } else {
-          uiAlert.getFadeAlert('queryQaRecord data error!');
           return [];
         }
       })
