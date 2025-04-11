@@ -122,3 +122,28 @@ export interface History {
   date_time: string;
   formatDate?: string;
 }
+
+// ------------------- 問答紀錄 -------------------
+
+export interface qa {
+  [key: string]: qaInfo;
+}
+
+//QA對話資料
+export interface qaInfo {
+  caseId: string;
+  caseNo: string;
+  question: string;
+  createTime: string; // api傳回訊息創建時間
+  formatDate: string; // api傳回訊息創建時間轉換為要顯示的時間格式
+  date: number; //api傳回訊息創建時間getTime(供排序用)
+  sizeId: string;
+  status: number;
+  replyId: string;
+  reply: string;
+}
+//QA類型下拉框資料
+export interface qaCategory {
+  categoryId: string;
+  categoryName: string;
+}

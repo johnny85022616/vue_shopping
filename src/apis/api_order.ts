@@ -1,8 +1,9 @@
 import tools from '@/util/tools';
 import config from '@/config/config';
-import type { order, orderProduct, deliverTrack, History } from '@/types/order';
+import type { order, orderProduct, deliverTrack, History, qa, qaInfo, qaCategory } from '@/types/order';
 const { fetchGetHeaders, fetchPostHeaders, logistichermesPath, frontApiPath, websiteDomain } = config;
 import uiAlert from './ui_alert';
+import ui from './api_ui';
 
 //第三方支付代號名稱對應
 const thirdPartyObj: { [key: string]: string } = {
@@ -469,6 +470,58 @@ export default {
       .catch(() => {
         uiAlert.getFadeAlert('取得貨態明細資料發生錯誤');
         return null;
+      });
+  },
+  //查詢問答紀錄
+  async queryQaRecord(dealOrOrderId: string, sizeId: number): Promise<qaInfo[] | never[]> {
+    let url = `${frontApiPath()}list/${dealOrOrderId}`;
+    if (sizeId) {
+      url += `/${sizeId}`;
+    }
+    return await fetch(url, fetchPostHeaders)
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultData } = res;
+        if (resultData) {
+          const rd = resultData as qa;
+          let d = Object.values(rd).map((ele: qaInfo) => {
+            const now = new Date();
+            const MessageDay = new Date(ele.createTime);
+            const isToday = now.toLocaleDateString() === MessageDay.toLocaleDateString();
+            const formatDate = isToday
+              ? MessageDay.toLocaleTimeString('zh-TW', { hour12: false }).replace(/[\w:]{3}$/, '')
+              : MessageDay.toLocaleString('zh-TW', { hour12: false }).replace(/[\w:]{3}$/, '');
+            return {
+              ...ele,
+              date: new Date(ele.createTime).getTime(),
+              formatDate,
+            };
+          });
+          d = d.sort((a, b) => b.date - a.date);
+          return d;
+        } else {
+          uiAlert.getFadeAlert('queryQaRecord data error!');
+          return [];
+        }
+      })
+      .catch((e) => {
+        uiAlert.getFadeAlert('queryQaRecord error!');
+        return [];
+      });
+  },
+
+  // 取得問答紀錄類別清單
+  async getQuestionTypeCategory(): Promise<qaCategory[] | never[]> {
+    return await fetch(`${frontApiPath()}crm/category`, {
+      ...fetchPostHeaders,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultData } = res;
+        return resultData ? resultData : [];
+      })
+      .catch((e) => {
+        return [];
       });
   },
 };
