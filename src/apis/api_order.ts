@@ -473,7 +473,7 @@ export default {
       });
   },
   //查詢問答紀錄
-  async queryQaRecord(dealOrOrderId: string, sizeId: number): Promise<qaInfo[] | never[]> {
+  async queryQaRecord(dealOrOrderId: string, sizeId?: number): Promise<qaInfo[] | never[]> {
     let url = `${frontApiPath()}list/${dealOrOrderId}`;
     if (sizeId) {
       url += `/${sizeId}`;
