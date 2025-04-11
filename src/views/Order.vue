@@ -209,7 +209,7 @@
         <!-- <refundDialog v-if="isRefundDialogOpen" @closeRefundDialog="closeRefundDialog" :products="choseRefundProduct"
           :dealId="choseDealId" :memberId="choseMemberId" :order="choseOrder" @refreshOrder="refreshOrder">
         </refundDialog> -->
-        <qaDialog v-if="isQaRecordDialogOpen" @closeQaDialog="closeQaDialog" :choseProduct="choseProduct"
+        <qaDialog v-if="isQaRecordDialogOpen && choseProduct && choseOrder" @closeQaDialog="closeQaDialog" :choseProduct="choseProduct"
           :choseOrder="choseOrder"></qaDialog>
         <shippingDetailDialog v-if="isShippingDetailDialogOpen && shippingDetailInfo" :product="shippingDetailInfo"
           @closeShippingDetailDialog="closeShippingDetailDialog"></shippingDetailDialog>
@@ -225,6 +225,7 @@
 import navigation from '@/components/common/navigation.vue';
 import statusBar from '@/components/order/statusBar.vue';
 import shippingDetailDialog from '@/components/order/shippingDetailDialog.vue';
+import qaDialog from '@/components/order/qaDialog.vue';
 import tools from '@/util/tools';
 import type { order, orderProduct } from '@/types/order';
 import api from '@/apis/api';
