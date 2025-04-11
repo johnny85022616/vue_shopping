@@ -63,4 +63,5 @@ export default {
   c_noimg: '#eaeff0',
   c_promotion: '#f56a01',
   c_turn_red: '#ff0063',
+  c_light_blue: '#e7f2ff',
 };
