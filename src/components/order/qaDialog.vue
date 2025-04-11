@@ -52,7 +52,7 @@
                     <p
                       class="service-text bg-c_concretesolid shadow-[1px_2px_3px_rgba(173,173,173,1)] relative break-all max-w-[70%] py-2 px-4 rounded-[8px]">
                       {{
-                        v.reply }}<span class="right-0">{{ v.formatDate }}</span>
+                        v.reply }}<span class="right-0 absolute -bottom-[18px] text-xs min-w-[100px] text-right">{{ v.formatDate }}</span>
                     </p>
                   </div>
                   <div v-else-if="!v.replyId && v.question"
@@ -60,7 +60,7 @@
                     <p
                       class="client-text bg-c_light_blue shadow-[-1px_2px_3px_rgba(173,173,173,1)] relative break-all max-w-[70%] py-2 px-4 rounded-[8px]">
                       {{ v.question
-                      }}<span class="right-0">{{ v.formatDate }}</span></p>
+                      }}<span class="right-0 absolute -bottom-[18px] text-xs min-w-[100px] text-right">{{ v.formatDate }}</span></p>
                   </div>
                 </div>
               </template>
