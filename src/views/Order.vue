@@ -209,7 +209,7 @@
         <!-- <refundDialog v-if="isRefundDialogOpen" @closeRefundDialog="closeRefundDialog" :products="choseRefundProduct"
           :dealId="choseDealId" :memberId="choseMemberId" :order="choseOrder" @refreshOrder="refreshOrder">
         </refundDialog> -->
-        <qaDialog v-if="isQaRecordDialogOpen && choseProduct && choseOrder" @closeQaDialog="closeQaDialog" :choseProduct="choseProduct"
+        <qaDialog v-if="isQaRecordDialogOpen && choseOrder" @closeQaDialog="closeQaDialog" :choseProduct="choseProduct"
           :choseOrder="choseOrder"></qaDialog>
         <shippingDetailDialog v-if="isShippingDetailDialogOpen && shippingDetailInfo" :product="shippingDetailInfo"
           @closeShippingDetailDialog="closeShippingDetailDialog"></shippingDetailDialog>
