@@ -211,7 +211,7 @@
         </refundDialog> -->
         <qaDialog v-if="isQaRecordDialogOpen" @closeQaDialog="closeQaDialog" :choseProduct="choseProduct"
           :choseOrder="choseOrder"></qaDialog>
-        <shippingDetailDialog v-if="isShippingDetailDialogOpen" :product="shippingDetailInfo"
+        <shippingDetailDialog v-if="isShippingDetailDialogOpen && shippingDetailInfo" :product="shippingDetailInfo"
           @closeShippingDetailDialog="closeShippingDetailDialog"></shippingDetailDialog>
         <p class="bottomText" v-if="isBottomTextShow">- 已經到底摟 -</p>
         <div id="aiPromotionBottomLine"></div>
@@ -224,6 +224,7 @@
 <script lang="ts" setup name="order">
 import navigation from '@/components/common/navigation.vue';
 import statusBar from '@/components/order/statusBar.vue';
+import shippingDetailDialog from '@/components/order/shippingDetailDialog.vue';
 import tools from '@/util/tools';
 import type { order, orderProduct } from '@/types/order';
 import api from '@/apis/api';
@@ -548,6 +549,7 @@ function seeInvoiceUrl(url: string) {
 
 //查看物流明細
 async function lookShippingDetail(product: orderProduct) {
+  if(!product) return 
   shippingDetailInfo.value = product;
   openShippingDetailDialog();
 }
