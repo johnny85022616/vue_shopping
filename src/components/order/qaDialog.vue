@@ -33,8 +33,8 @@
               <button class="sendBtn w-[15%] border-0 rounded-[5px] p-1 bg-c_dodger_blue text-c_white" @click="submitQuestion">送出</button>
             </div>
           </section>
-          <div class="switch inline-flex items-center mt-2" @click="setSwitchStatus">
-            <img class="mr-1 w-5 h-5" src="../../images/icons/communications.png" alt="">
+          <div class="switch inline-flex items-center mt-4" @click="setSwitchStatus">
+            <img class="mr-1 w-5 h-5" src="../../assets/icons/communications.png" alt="">
             <p class="text-c_dodger_blue">問答紀錄</p>
           </div>
           <section v-if="isMessageOpen"
@@ -59,12 +59,12 @@
             </template>
             <p class="content__noCoversation absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-lg" v-else>查無問答紀錄</p>
           </section>
-          <section v-if="!isMessageOpen" class="notice bg-c_white text-sm p-2 mt-2 rounded-[5px]">
-            <p class="notice__title border border-solid border-c_sliver mb-2 pb-1 text-c_sliver">特別提醒您：</p>
+          <section v-if="!isMessageOpen" class="notice bg-c_white text-sm p-2 rounded-[5px]">
+            <p class="notice__title border-b border-solid border-b-c_sliver pb-1 mb-2 text-c_sliver">特別提醒您：</p>
             <p class="text-c_sliver">遠傳friDay購物不會主動以電話通知您因誤設分期，要求您提供信用卡卡號/銀行資料，或要求您前往ATM操作設定，若接到可疑電話，請拒絕回應... <a
                 class="text-c_dodger_blue underline" href="https://shopping.friday.tw/ec2/anti_grift">了解更多</a></p>
             <div class="fridayNotice mt-2">
-              <p class="text-sm">注意事項</p>
+              <p class="text-sm text-c_sliver">注意事項</p>
               <ul class="list-disc list-inside mt-1 text-c_sliver">
                 <li>問答紀錄保留您近6個月發問內容及回覆結果。</li>
                 <li>如有其他需要服務之處，您可再次發問。</li>
@@ -108,6 +108,10 @@ const { choseOrder, choseProduct } = toRefs(props)
 
 const emit = defineEmits(['closeQaDialog'])
 
+function init(){
+  getCategoryData();
+  getConversationInfo()
+}
 
 //取得category資料
 async function getCategoryData() {
@@ -188,6 +192,8 @@ function submitQuestion() {
   // this.qaCategory = "9"; //問題類型下拉選單改為預設
   // this.isPopupAlertOpen = true;
 }
+
+init()
 
 </script>
 
