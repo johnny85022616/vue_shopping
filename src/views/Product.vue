@@ -135,7 +135,7 @@ const parseProductDetail = async (productInfo: productInfo) => {
   }
 
   isApiRequested.value = true
-  await getCampaignData() //TODO
+  await getCampaignData()
   const buyItemData = tools.getCache("buyItemData");
   if (buyItemData && api.member.isLogin) {
     autoAddCart(buyItemData)
