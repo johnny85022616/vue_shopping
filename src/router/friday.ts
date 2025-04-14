@@ -59,7 +59,7 @@ export const fridayRoutes = [
     component: ShoppingIntro,
   },
   {
-    path: '/tickets',
+    path: '/member/tickets',
     name: 'tickets',
     component: ElectronicTicket,
     props: (route: any) => ({
