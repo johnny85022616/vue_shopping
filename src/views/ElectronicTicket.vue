@@ -30,7 +30,6 @@
         </li>
       </ul>
       <div v-if="isLookAllBtnShow" class="lookAllBtn flex justify-center">
-        <!-- <a class="bg-gradient-to-b from-c_silver1 to-c_dove_gray text-c_white font-bold py-2 px-3 rounded-lg no-underline shadow-[0_4px_6px_rgba(0,0,0,0.2)] text-base" :href="tools.parseUrl('/member/tickets')">看我的全部序號</a> -->
         <RouterLink :to="{name: 'tickets'}" class="bg-gradient-to-b from-c_silver1 to-c_dove_gray text-c_white font-bold py-2 px-3 rounded-lg no-underline shadow-[0_4px_6px_rgba(0,0,0,0.2)] text-base">看我的全部序號</RouterLink>
       </div>
     </div>
@@ -46,7 +45,7 @@ import navigation from '@/components/common/navigation.vue';
 import type { electronicTicket } from '@/types/electronicTicket';
 import { nextTick, ref, toRefs, watch } from 'vue';
 import useAtBottom from '@/hooks/useAtBottom';
-import { onBeforeRouteUpdate, RouterLink } from "vue-router";
+import { RouterLink, useRoute } from "vue-router";
 
 const ticketList = ref<electronicTicket[] | null>(null) //電子票券資料
 const isNoData = ref(false) //查無票券資料
@@ -55,12 +54,9 @@ const { isAtBottom, initScrollEvent } = useAtBottom() // 瀑布流
 const page = ref(0) //頁碼
 const isMaxPage = ref(false) // 是否為最大頁數(找不到資料算最大頁數)
 const isLookAllBtnShow = ref(false) //看所有票券Btn
-
-const props = defineProps(['query'])
-const  { dealId, productId, sn } = props.query
+const route = useRoute()
 
 async function init(){
-  console.log(8888);
   await getTicket();
   //如果第一次找不到資料顯示無資料
     if (!ticketList.value) isNoData.value = true;
@@ -71,17 +67,11 @@ async function init(){
 async function getTicket() {
   //達到maxPage不打api
   if (isMaxPage.value) return;
-  //若為訂單頁途徑則組單一票券資料
-  let singleTicketInfo;
-  if (dealId&& productId && sn) {
-    //直接設定到最大頁面避免下滑再出現
-    isMaxPage.value = true;
-    isLookAllBtnShow.value = true;
-    singleTicketInfo = { dealId , productId, sn};
-  }
+  
 
   page.value += 1;
   isApiOk.value = false;
+  const singleTicketInfo = composeSingleTicketInfo()
 
   let tickets = await api.member.getElectronicTicket(
     page.value,
@@ -112,6 +102,18 @@ async function getTicket() {
   appendBarCodeToTicket(tickets);
   isApiOk.value = true;
   isAtBottom.value = false;
+}
+
+//若為訂單頁途徑則組單一票券資料
+function composeSingleTicketInfo(){
+  const {dealId , productId , sn} = route.query
+  let singleTicketInfo;
+  if (dealId && productId && sn) {
+    //直接設定到最大頁面避免下滑再出現
+    isMaxPage.value = true;
+    isLookAllBtnShow.value = true;
+    return singleTicketInfo = { dealId , productId, sn};
+  }
 }
 
 //取到期
@@ -160,16 +162,11 @@ watch(isAtBottom,(newVal)=>{
   }
 })
 
-//避免非底層目錄戶轉時組件沒有重新載入問題(此時可以取得舊的路由和新的路由但路由本身還未改變成新的)
-onBeforeRouteUpdate((to, from)=>{
-  const fromStr = from.query?.dealId || '' + from.query.productId || '' + from.query.sn || ''
-  const toStr = to.query?.dealId || '' + to.query.productId || '' + to.query.sn || ''
-  console.log(fromStr,toStr);
-  if(fromStr !== toStr){
-    resetState()
-    init()
-  }
-})
+//監聽queryString變化，若變化表示可能點擊看我的全部序號按鈕(因為router沒變化組件不會重載)，重新取全部資料
+watch(()=>route.query ,()=>{
+  resetState()
+  init()
+},{deep: true})
 
 init()
 
