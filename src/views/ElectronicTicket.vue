@@ -1,16 +1,52 @@
 <template>
-  <div class="electronicTicket">
-    <navigation :windowY="200" />
+  <div class="electronicTicket mb-[100px]">
+    <navigation :windowY="200"></navigation>
+    <div class="title bg-c_fcoin text-c_white text-center rounded=[12px] mt-5 mb-[10px] mx-[10px] shadow-[0_4px_8px_rgba(0,0,0,0.2)] p-4 relative">
+      <p class="text-2xl">我的序號夾</p>
+      <a class="absolute top-1/2 -translate-y-1/2 right-5 bg-gradient-to-b from-c_silver1 to-c_dove_gray text-c_white text-sm font-bold py-2 px-3 rounded-lg no-underline shadow-[0_4px_6px_rgba(0,0,0,0.2)]" :href="tools.parseUrl('/campaign/DO_241206140440221')">去逛逛</a>
+    </div>
+    <div v-if="isNoData" class="isNoData flex justify-center mt-[100px] text-xl font-bold">
+      目前無電子序號
+    </div>
+    <div v-else class="electronicTicketList mt-5">
+      <ul>
+        <li class="ticket-card max-w-[95%] my-[10px] mx-auto shadow-[0_2px_8px_rgba(0,0,0,0.2)] rounded-lg overflow-hidden bg-c_white mb-5" v-for="(ticket, index) of ticketList" :key="index">
+          <p class="ticket-header bg-c_azure_radiance text-c_white p-2 text-center font-bold text-base">{{ticket.productName}}</p>
+          <div class="ticket-body p-4 text-xs font-bold">
+            <div class="info flex justify-between">
+              <div class="content w-3/5">
+                <p class="mb-1">交易編號：{{ticket.dealId}}</p>
+                <p class="mb-1">商品代碼：{{ticket.productId}}</p>
+                <p class="mb-1">序號：{{ticket.sn}}</p>
+                <p class="mb-1">有效期限：{{ticket.formatedPeriod}}</p>
+              </div>
+              <div class="image w-[32%]">
+                <img class="w-full" :src="ticket.images" alt="">
+              </div>
+            </div>
+            <div class="barcode mt-5 flex justify-center items-center flex-col" :id="`barcode-container-${ticket.dealId}-${ticket.sn}-${ticket.barcode}`">
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div v-if="isLookAllBtnShow" class="lookAllBtn flex justify-center">
+        <!-- <a class="bg-gradient-to-b from-c_silver1 to-c_dove_gray text-c_white font-bold py-2 px-3 rounded-lg no-underline shadow-[0_4px_6px_rgba(0,0,0,0.2)] text-base" :href="tools.parseUrl('/member/tickets')">看我的全部序號</a> -->
+        <RouterLink :to="{name: 'tickets'}" class="bg-gradient-to-b from-c_silver1 to-c_dove_gray text-c_white font-bold py-2 px-3 rounded-lg no-underline shadow-[0_4px_6px_rgba(0,0,0,0.2)] text-base">看我的全部序號</RouterLink>
+      </div>
+    </div>
+    <div id="aiPromotionBottomLine"></div>
   </div>
 </template>
 
 <script lang="ts" setup name="electronicTicket">
 import JsBarcode from "jsbarcode";
+import tools from '@/util/tools';
 import api from '@/apis/api';
 import navigation from '@/components/common/navigation.vue';
 import type { electronicTicket } from '@/types/electronicTicket';
 import { nextTick, ref, toRefs, watch } from 'vue';
 import useAtBottom from '@/hooks/useAtBottom';
+import { RouterLink } from "vue-router";
 
 const ticketList = ref<electronicTicket[] | null>(null) //電子票券資料
 const isNoData = ref(false) //查無票券資料
