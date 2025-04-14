@@ -46,7 +46,7 @@ import navigation from '@/components/common/navigation.vue';
 import type { electronicTicket } from '@/types/electronicTicket';
 import { nextTick, ref, toRefs, watch } from 'vue';
 import useAtBottom from '@/hooks/useAtBottom';
-import { RouterLink } from "vue-router";
+import { onBeforeRouteUpdate, RouterLink } from "vue-router";
 
 const ticketList = ref<electronicTicket[] | null>(null) //電子票券資料
 const isNoData = ref(false) //查無票券資料
@@ -57,9 +57,10 @@ const isMaxPage = ref(false) // 是否為最大頁數(找不到資料算最大�
 const isLookAllBtnShow = ref(false) //看所有票券Btn
 
 const props = defineProps(['query'])
-const  { dealId, productId, sn } = toRefs(props.query)
+const  { dealId, productId, sn } = props.query
 
 async function init(){
+  console.log(8888);
   await getTicket();
   //如果第一次找不到資料顯示無資料
     if (!ticketList.value) isNoData.value = true;
@@ -72,11 +73,11 @@ async function getTicket() {
   if (isMaxPage.value) return;
   //若為訂單頁途徑則組單一票券資料
   let singleTicketInfo;
-  if (dealId.value && productId.value && sn.value) {
+  if (dealId&& productId && sn) {
     //直接設定到最大頁面避免下滑再出現
     isMaxPage.value = true;
     isLookAllBtnShow.value = true;
-    singleTicketInfo = { dealId:dealId.value , productId:productId.value, sn:sn.value };
+    singleTicketInfo = { dealId , productId, sn};
   }
 
   page.value += 1;
@@ -143,9 +144,30 @@ function appendBarCodeToTicket(tickets: electronicTicket[]) {
   });
 }
 
+function resetState(){
+  ticketList.value = null
+  isNoData.value = false
+  isApiOk.value = true
+  isAtBottom.value = false
+  page.value = 0
+  isMaxPage.value = false
+  isLookAllBtnShow.value = false
+}
+
 watch(isAtBottom,(newVal)=>{
   if(ticketList.value && ticketList.value.length>0 && newVal){
     getTicket()
+  }
+})
+
+//避免非底層目錄戶轉時組件沒有重新載入問題(此時可以取得舊的路由和新的路由但路由本身還未改變成新的)
+onBeforeRouteUpdate((to, from)=>{
+  const fromStr = from.query?.dealId || '' + from.query.productId || '' + from.query.sn || ''
+  const toStr = to.query?.dealId || '' + to.query.productId || '' + to.query.sn || ''
+  console.log(fromStr,toStr);
+  if(fromStr !== toStr){
+    resetState()
+    init()
   }
 })
 
