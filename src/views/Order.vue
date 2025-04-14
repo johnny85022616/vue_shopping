@@ -186,15 +186,16 @@
                     !isNegative(order.dealId) &&
                     product.isIntangible === '1' &&
                     ![7863457, 7863324, 7863465].includes(product.productId)
-                  " class="elecTicket-bar m-[10px] p-[10px] flex border border-solid border-c_alto rounded-[5px]">
+                  " class="elecTicket-bar m-[10px] p-[10px] flex items-center border border-solid border-c_alto rounded-[5px]">
                     <template v-if="product.isTicketOpen">
                       <p class="label w-[18%]">序號：</p>
                       <ul v-if="product.tickets" class="w-[82%] list-none">
-                        <li v-for="(ticket, idx) of product.tickets" :key="idx">
-                          <a class="inline-block w-full whitespace-nowrap overflow-hidden text-ellipsis my-0 mx-auto" :href="tools.parseUrl(
-                            `/member/tickets?dealId=${order.dealId}&productId=${product.productId}&sn=${ticket.sn}`
-                          )
-                            ">{{ ticket.sn }}</a>
+                        <li v-for="(ticket, idx) of product.tickets" :key="idx" class="flex">
+                          <RouterLink :to="{name:'tickets', query:{
+                            dealId:order.dealId,
+                            productId: product.productId,
+                            sn: ticket.sn
+                          }}" class="inline-block w-full whitespace-nowrap overflow-hidden text-ellipsis my-0 mx-auto text-c_dodger_blue underline">{{ ticket.sn }}</RouterLink>
                         </li>
                       </ul>
                       <p v-else>查無序號</p>
@@ -233,6 +234,7 @@ import useAtBottom from '@/hooks/useAtBottom';
 import { useBsiteStore } from '@/stores/bsiteStore';
 import { computed, nextTick, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
+import { RouterLink } from 'vue-router';
 const { isAtBottom, initScrollEvent } = useAtBottom();
 
 const orderData = ref<order[] | null>(null); //訂單資料
