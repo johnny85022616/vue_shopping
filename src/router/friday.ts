@@ -62,8 +62,5 @@ export const fridayRoutes = [
     path: '/member/tickets',
     name: 'tickets',
     component: ElectronicTicket,
-    props: (route: any) => ({
-      query: route.query,
-    }),
   },
 ];
