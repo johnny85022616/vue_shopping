@@ -112,7 +112,7 @@
               </template>
             </div>
             <div class="body border-t border-solid border-c_alto" v-if="order.isDetilOpen">
-              <ul class="smallOrder">
+              <ul class="smallOrder pb-2">
                 <li class="smallOrderWrap border-t border-solid border-c_alto first:border-t-0" v-for="(product, idx) of order.productData" :key="idx">
                   <div class="productArea relative p-4">
                     <div class="mainPrd flex justify-between items-center">
