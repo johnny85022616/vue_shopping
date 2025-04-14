@@ -46,6 +46,10 @@
           <i class="inline-block w-6 h-6 bg-member-order-icon bg-center bg-100% bg-no-repeat"></i>
           <p>訂單記錄</p>
         </RouterLink>
+        <RouterLink class="w-1/4 text-center no-underline text-xs text-c_tundora" :to="{ name: 'tickets' }">
+          <i class="inline-block w-6 h-6 bg-ticketFolder-icon bg-center bg-100% bg-no-repeat"></i>
+          <p>電子序號</p>
+        </RouterLink>
         <a class="w-1/4 text-center no-underline text-xs text-c_tundora" href="/favorite">
           <i class="inline-block w-6 h-6 bg-member-favorite-icon bg-center bg-100% bg-no-repeat"></i>
           <p>我的最愛</p>
