@@ -36,11 +36,11 @@ async function getTicket() {
   if (isMaxPage.value) return;
   //若為訂單頁途徑則組單一票券資料
   let singleTicketInfo;
-  if (dealId && productId && sn) {
+  if (dealId.value && productId.value && sn.value) {
     //直接設定到最大頁面避免下滑再出現
     isMaxPage.value = true;
     isLookAllBtnShow.value = true;
-    singleTicketInfo = { dealId, productId, sn };
+    singleTicketInfo = { dealId:dealId.value , productId:productId.value, sn:sn.value };
   }
 
   page.value += 1;
