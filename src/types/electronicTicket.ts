@@ -9,4 +9,5 @@ export interface electronicTicket {
   barcode: string;
   period: string;
   isMemoed: boolean;
+  [key: string]: any;
 }

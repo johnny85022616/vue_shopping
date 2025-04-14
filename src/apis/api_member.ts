@@ -2,6 +2,7 @@ import config from '../config/config';
 import tools from '../util/tools';
 import memberInfo from '../mockData/memberInfo';
 import uiAlert from './ui_alert';
+import type { electronicTicket } from '@/types/electronicTicket';
 
 const { isLogin, mobileApiPath, frontApiPath, fetchGetHeaders, fetchPostHeaders, setTicket } = config;
 
@@ -90,7 +91,11 @@ const api_member = {
       });
   },
   //取得電子票券
-  async getElectronicTicket(pageNumber = 1, pageRow = 100, singleTicketInfo: any) {
+  async getElectronicTicket(
+    pageNumber = 1,
+    pageRow = 100,
+    singleTicketInfo: any
+  ): Promise<electronicTicket[] | never[]> {
     let postData: any = {};
     //若只取單張票券不需頁數相關參數
     if (!singleTicketInfo) {
