@@ -2,6 +2,12 @@ import { createApp, h } from 'vue';
 import type { App } from 'vue';
 import PopupConfirm from '@/components/common/textPopup.vue';
 
+interface option {
+  isCancelBtnShow: boolean; //是否要顯示取消按鈕
+  cancelBtnText?: string; //取消按鈕文字客制化
+  confirmBtnText?: string; //確定按鈕文字客製化
+}
+
 export interface PopupManager {
   confirm: (msg: string) => Promise<boolean>;
 }
@@ -23,7 +29,7 @@ export default {
     const popupRef = vm.$refs.popup as InstanceType<typeof PopupConfirm>;
 
     const popupManager: PopupManager = {
-      confirm: (msg: string) => popupRef.show(msg),
+      confirm: (msg) => popupRef.show(msg),
     };
 
     // ✅ 用 provide 提供 popupManager
