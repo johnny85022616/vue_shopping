@@ -1,7 +1,7 @@
 <template>
   <div class="qaDialog">
     <transition name="slide">
-      <fullscreenDialog @closeDialog="closeDialog">
+      <fullscreenDialog :closeKey="'closeQaDialog'">
         <template v-slot:header></template>
         <template v-slot:body>
           <section class="qaRecord relative h-[calc(100vh-46px-10px)]">
@@ -92,7 +92,7 @@ import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
 import type { order, orderProduct, qaCategory, qaInfo } from '@/types/order';
 import api from '@/apis/api';
 
-import { ref, toRefs } from 'vue';
+import { inject, ref, toRefs } from 'vue';
 
 const clientInput = ref('') //問答回覆框中使用者輸入框
 const conversationInfo = ref<qaInfo[] | never[] | null>(null) //問答回覆框中資料
@@ -102,8 +102,7 @@ const qaCategory = ref("9") //下拉選擇值
 
 const props = defineProps<{ choseOrder: order, choseProduct?: orderProduct | null }>()
 const { choseOrder, choseProduct } = toRefs(props)
-
-const emit = defineEmits(['closeQaDialog'])
+const closeQaDialog:any = inject('closeQaDialog')
 
 function init() {
   getCategoryData();
@@ -134,11 +133,6 @@ function formatDealId(dealId: string) {
   return result;
 }
 
-//關閉popup
-function closeDialog() {
-  emit("closeQaDialog");
-}
-
 //手動按下問答紀錄switch
 function setSwitchStatus() {
   isMessageOpen.value = !isMessageOpen.value;
@@ -157,7 +151,7 @@ function handleKeydown(event: any) {
 }
 
 function confirmClick() {
-  closeDialog();
+  closeQaDialog()
 }
 
 // 送出問題 

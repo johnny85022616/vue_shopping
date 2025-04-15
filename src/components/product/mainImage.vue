@@ -10,7 +10,7 @@
       </carousel>
     </template>
     <transition name="slide">
-      <fullscreenDialog v-if="isShowVideo" @closeDialog="closeVideo">
+      <fullscreenDialog v-if="isShowVideo">
         <template v-slot:header>商品影片</template>
         <template v-slot:body>
           <div class="product-images__youtube-iframe flex items-center h-full bg-c_black">
@@ -32,7 +32,7 @@ import tools from '@/util/tools';
 import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
 import 'vue3-carousel/dist/carousel.css'
 import { Carousel, Slide } from 'vue3-carousel'
-import { computed, ref, toRefs } from 'vue';
+import { computed, provide, ref, toRefs } from 'vue';
 
 const isShowVideo = ref(false)
 const isYoutubeVideo = ref(true)
@@ -102,6 +102,8 @@ const closeVideo = () => {
 const openVideo = () => {
   isShowVideo.value = true
 }
+
+provide('closeDialog',closeVideo)
 
 const init = () => {
 

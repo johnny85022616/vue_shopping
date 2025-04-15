@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup name="upload">
-import { ref } from 'vue';
+import { provide, ref } from 'vue';
 import fullscreenDialog from './fullscreenDialog.vue';
 
 const fileInput = ref<any>(null)
@@ -132,4 +132,6 @@ function closeDialog(){
 function setPreviewObject(item: fileInfo){
   previewObj.value = item
 }
+
+provide('closeDialog',closeDialog)
 </script>

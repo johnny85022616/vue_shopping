@@ -232,7 +232,7 @@ import type { order, orderProduct } from '@/types/order';
 import api from '@/apis/api';
 import useAtBottom from '@/hooks/useAtBottom';
 import { useBsiteStore } from '@/stores/bsiteStore';
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, provide, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { RouterLink } from 'vue-router';
 const { isAtBottom, initScrollEvent } = useAtBottom();
@@ -564,5 +564,7 @@ watch(isAtBottom, async (newVal) => {
   }
 });
 
+provide('closeQaDialog',closeQaDialog)
+provide('closeShippingDetailDialog',closeShippingDetailDialog)
 init();
 </script>

@@ -15,15 +15,17 @@
 </template>
 
 <script lang="ts" setup name="product">
-import { ref, toRefs } from 'vue';
+import { inject, ref, toRefs } from 'vue';
 
 const props = withDefaults(defineProps<{
   isFullscreen?: boolean,
   useClose?: boolean
   backgroundColor?: string
+  closeKey?: string  //若某個組件同時引用多個fullscreenDialog才需要傳入此參數
 }>(), {
   isFullscreen: true,
-  useClose: true
+  useClose: true,
+  closeKey:'closeDialog' //不傳入則預設inject closeDialog
 })
 
 const emit = defineEmits(['closeDialog'])
@@ -57,8 +59,16 @@ const calcuCntHeight = () => {
   }
 }
 
+//對於某組件引入多個fullscreenDialog，需要知道每個不同的fullscreenDialog分別需要inject哪一個close方法，故由props來判斷
+const key = props.closeKey;
+const closeFn:any = inject(key)
+
 const close = () => {
-  emit('closeDialog')
+  if (typeof closeFn === 'function') {
+    closeFn()
+  } else {
+    console.warn(`No close function provided for key: ${props.closeKey}`)
+  }
 }
 
 const init = () => { }

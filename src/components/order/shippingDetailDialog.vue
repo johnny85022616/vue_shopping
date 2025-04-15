@@ -2,7 +2,7 @@
   <div class="shippingDetailDialog">
     <div class="shippingDetailDialog">
       <transition name="slide">
-        <fullscreenDialog @closeDialog="closeDialog">
+        <fullscreenDialog :closeKey="'closeShippingDetailDialog'">
           <template v-slot:header>貨態進度</template>
           <template v-slot:body>
             <section class="shippingDetail">
@@ -64,10 +64,7 @@ function copyNumber(content: string) {
     alert(`已複製${content}至剪貼簿`);
   });
 }
-//關閉popup
-function closeDialog() {
-  emit("closeShippingDetailDialog");
-}
+
 //取得貨態明細
 async function getDeliverTrack() {
   const { deliveryNo, logisticName, timestamp } = product.value;
