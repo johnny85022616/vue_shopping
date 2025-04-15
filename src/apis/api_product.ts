@@ -374,7 +374,7 @@ const api_product = {
 
     return { price: Object.assign(priceObj, { promoPrice }), productDiscount };
   },
-  async getProductDescription(pid: number): Promise<string> {
+  async getProductDescription(pid: string): Promise<string> {
     return await fetch(`${cloudApiPath}product/v2/${pid}/description`)
       .then((res) => res.json())
       .then((res) => {

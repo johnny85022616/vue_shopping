@@ -24,7 +24,7 @@ import { computed, ref, toRefs } from 'vue';
 import api from '@/apis/api';
 import tools from '@/util/tools';
 
-const props = defineProps<{ pid: number }>()
+const props = defineProps<{ pid: string }>()
 const { pid } = toRefs(props)
 const productDescription = ref<string | null>(null)
 
