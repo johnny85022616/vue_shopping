@@ -677,14 +677,18 @@ export default {
     if (!keyword) keyword = '';
     keyword = encodeURIComponent(keyword);
 
-    let url = `/product/${pid}${exSearchParams.replace('?', '&')}${keyword ? `&kw=${keyword}` : ''}`;
+    // let url = `/product/${pid}${exSearchParams.replace('?', '&')}${keyword ? `&kw=${keyword}` : ''}`;
+    let url = '';
+    let urlSuffix = '';
+    if (window.siteData) {
+      urlSuffix = `/${window.siteData?.urlSuffix}`;
+    }
 
     // BSite商品頁網址不同
-    if (window.siteData) {
-      url = `/${window.siteData.urlSuffix}/product/${pid}${exSearchParams}${
-        keyword ? `${exSearchParams.includes('?') ? '&' : '?'}kw=${keyword}` : ''
-      }`;
-    }
+
+    url = `${urlSuffix}/product/${pid}${exSearchParams}${
+      keyword ? `${exSearchParams.includes('?') ? '&' : '?'}kw=${keyword}` : ''
+    }`;
 
     // 搜尋結果頁點擊商品來的資料 搜尋結果總筆數
     if (searchDataCount > 0) {
