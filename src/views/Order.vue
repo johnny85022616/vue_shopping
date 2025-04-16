@@ -237,19 +237,19 @@ import { storeToRefs } from 'pinia';
 import { RouterLink } from 'vue-router';
 const { isAtBottom, initScrollEvent } = useAtBottom();
 
-const orderData = ref<order[] | null>(null); //訂單資料
+const orderData = ref<OrNull<order[]>>(null); //訂單資料
 const isApiOk = ref(true); //api是否已完成
 const page = ref(0); //order page 頁數
 const isBottomTextShow = ref(false); //是否出現「已經到底部摟」
 const isRefundDialogOpen = ref(false); //退訂popup
-const choseOrder = ref<order | null>(null); //供退訂popup使用
-const choseProduct = ref<orderProduct | null>(null); //選擇的商品(供問答popup使用)
-const choseRefundProduct = ref<orderProduct[] | null>(null) //選擇的商品(供退訂popup使用)
-const choseDealId = ref<string | null>(null);
-const choseMemberId = ref<string | null>(null);
+const choseOrder = ref<OrNull<order>>(null); //供退訂popup使用
+const choseProduct = ref<OrNull<orderProduct>>(null); //選擇的商品(供問答popup使用)
+const choseRefundProduct = ref<OrNull<orderProduct[]>>(null) //選擇的商品(供退訂popup使用)
+const choseDealId = ref<OrNull<string>>(null);
+const choseMemberId = ref<OrNull<string>>(null);
 const isQaRecordDialogOpen = ref(false); //是否開啟問答紀錄popup
 const isShippingDetailDialogOpen = ref(false); //是否開啟貨態明細
-const shippingDetailInfo = ref<orderProduct | null>(null) //貨態明細所需商品資料(productData)
+const shippingDetailInfo = ref<OrNull<orderProduct>>(null) //貨態明細所需商品資料(productData)
 
 const bsiteStore = useBsiteStore()
 const { siteData } = storeToRefs(bsiteStore)
