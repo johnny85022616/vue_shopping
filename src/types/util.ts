@@ -40,5 +40,4 @@ type Values<T> = T[keyof T];
  * 使用方式(取多個key的型別)： type pickKeyType = Values<order, 'dealId' | 'dealPayAmount'>
  * 結果： string | number
  */
-
 type PickObj<T, U extends keyof T> = T[U];
