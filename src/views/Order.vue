@@ -235,6 +235,7 @@ import { useBsiteStore } from '@/stores/bsiteStore';
 import { computed, nextTick, provide, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';
 import { RouterLink } from 'vue-router';
+import type { OrNull } from '@/types/util';
 const { isAtBottom, initScrollEvent } = useAtBottom();
 
 const orderData = ref<OrNull<order[]>>(null); //訂單資料
