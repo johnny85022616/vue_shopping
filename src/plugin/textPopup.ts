@@ -6,6 +6,7 @@ interface option {
   isCancelBtnShow: boolean; //是否要顯示取消按鈕
   cancelBtnText?: string; //取消按鈕文字客制化
   confirmBtnText?: string; //確定按鈕文字客製化
+  msg?: string; //要顯示的文字
 }
 
 export interface PopupManager {
@@ -27,7 +28,6 @@ export default {
 
     const vm = popupApp.mount(container);
     const popupRef = vm.$refs.popup as InstanceType<typeof PopupConfirm>;
-
     const popupManager: PopupManager = {
       confirm: (msg) => popupRef.show(msg),
     };
