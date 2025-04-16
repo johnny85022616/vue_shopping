@@ -28,6 +28,8 @@ export default {
 
     const vm = popupApp.mount(container);
     const popupRef = vm.$refs.popup as InstanceType<typeof PopupConfirm>;
+    //也可寫成這樣
+    //const popupRef = vm.$refs.popup as typeof PopupConfirm;
     const popupManager: PopupManager = {
       confirm: (msg) => popupRef.show(msg),
     };
