@@ -42,7 +42,7 @@ const getCategoryProduct = async () => {
         : 0, // 若為bSite 且沒有帶 catg=uni 就設定為 1
     list_num: 500,
   };
-  let apiEndpoint = "getalist";
+  let apiEndpoint: 'getalist'| 'getwlist' = "getalist";
   if (siteData.value && siteData.value.supplierId && !catg) {
     postData.filter = {
       k: "1010",
