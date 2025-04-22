@@ -47,7 +47,6 @@ import { useBsiteStore } from "../stores/bsiteStore";
 import { storeToRefs } from "pinia";
 import type { siteData } from "@/types/apiWeb";
 import type { mixProduct } from "@/types/mixProducts";
-import type { aiProduct } from "@/types/aiProducts";
 
 const BsiteStore = useBsiteStore();
 const { siteData } = storeToRefs(BsiteStore); //siteData
