@@ -181,9 +181,9 @@ const getSimilarKW = async (pid: string) => {
     list_remote: "m",
     list_pids: pid,
   });
-  const d = res as keyword
-  if (d?.pids?.[0]) {
-    const data = d.pids[0];
+  
+  if (res?.pids?.[0]) {
+    const data = res.pids[0];
     keywords.value = data?.kids.map(v => v.kcontent);
   }
 }
