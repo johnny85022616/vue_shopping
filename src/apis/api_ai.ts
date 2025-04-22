@@ -231,7 +231,7 @@ const api_ai = {
       if (findCache1 || findCache2 || findCache) return;
       const data = await this.getAiData('getvlist', postData);
       if (!data) return;
-      const { catg1, catg2, groupings } = data as category;
+      const { catg1, catg2, groupings } = data;
       // 有供應商所產生的[本站的樹]
       if (catg1) {
         console.log('有供應商所產生的[本站的樹]', catg1);
@@ -250,7 +250,8 @@ const api_ai = {
       const findCache = tools.getCache(`ai_category_-_cache`);
       if (findCache) return;
       const data = await this.getAiData('getvlist', postData);
-      const { groupings } = data as category;
+      if (!data) return;
+      const { groupings } = data;
       // 沒有供應商 catg1 & catg2 都是null 時,提供給網站使用的default 樹 (或者是site id 傳入"-")
       if (groupings) {
         console.log('沒有供應商 catg1 & catg2 都是null 時,提供給網站使用的default 樹 ', groupings);
