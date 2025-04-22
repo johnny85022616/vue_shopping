@@ -6,6 +6,7 @@ import type { aiProduct } from '@/types/aiProducts';
 import type { mixProduct } from '@/types/mixProducts';
 import type { category } from '@/types/category';
 import type { keyword } from '@/types/keyword';
+import type { OrNull } from '@/types/util';
 
 const { aiCloudApiPath, aiApiPath, fetchPostHeaders } = config;
 
@@ -26,14 +27,26 @@ const excludeUnshown = (payload: anyObject) => {
   }
 };
 
+type aiDataApiMap = {
+  getalist: OrNull<mixProduct[]>;
+  getwlist: OrNull<mixProduct[]>;
+  getvlist: OrNull<category>;
+  getklist: OrNull<keyword>;
+};
+
 const api_ai = {
-  async getAiData(
-    aiType: string,
-    payload: {
-      [key: string]: any;
-    },
+  /**
+   * 呼叫時不需要傳入泛型(ex: await api.ai.getAiData("getalist", postData);typescript會依據傳入的第一個參數自動推斷出Ｔ)
+   * @param aiType //getalist, getwlist, getvlist, getklist
+   * @param payload
+   * @param notGetProductsInfoFlag 需不需要回傳完整的aiData資料
+   * @returns
+   */
+  async getAiData<T extends keyof aiDataApiMap>(
+    aiType: T,
+    payload: Record<string, any>,
     notGetProductsInfoFlag = false
-  ): Promise<mixProduct[] | aiProduct[] | category | keyword | null> {
+  ): Promise<aiDataApiMap[T]> {
     payload = excludeUnshown(payload) || payload;
 
     // 部份上雲的AI API判斷
@@ -91,7 +104,7 @@ const api_ai = {
     }
     return aiUserId;
   },
-  async getYsdtThemeData(rows = 400, categoryId = '', siteData = null, apiEndpoint = 'getalist') {
+  async getYsdtThemeData<T extends keyof aiDataApiMap>(rows = 400, categoryId = '', siteData = null, apiEndpoint: T) {
     const { siteId, b4Info, unShowSupplierIds, productScopeK, productScopeV } =
       siteData || (window as anyObject).siteData;
     let keyword = '';
