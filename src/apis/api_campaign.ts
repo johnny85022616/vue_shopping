@@ -75,16 +75,18 @@ const api_campaign = {
     return pids;
   },
 
-  async parseCampaignDetail(ids: string[], myCampaignIds = []): Promise<string[]> {
+  async parseCampaignDetail(ids: string[], myCampaignIds: string[] = []): Promise<string[]> {
     if (!ids) return [];
     const detailRes = await this.getCampaignDetail(ids);
 
     // D9再折劵 抽出哪寫劵有綁定再折劵
     const childCampaignMapObj = detailRes
       .filter((v: campaignInfo) => v.campaignRange?.v2?.[0]) // 取出ASD開頭劵
-      .reduce((map: any, v: campaignInfo) => {
+      .reduce((map: Record<string, campaignInfo>, v: campaignInfo) => {
         const parentCampaignId = v.campaignRange?.v2?.[0];
-        map[parentCampaignId as string] = v; // 將parentCampaignId對應至child campaign
+        if (parentCampaignId) {
+          map[parentCampaignId] = v; // 將parentCampaignId對應至child campaign
+        }
         return map;
       }, {});
 
