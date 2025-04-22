@@ -95,9 +95,9 @@ import api from '@/apis/api';
 import { inject, ref, toRefs } from 'vue';
 
 const clientInput = ref('') //問答回覆框中使用者輸入框
-const conversationInfo = ref<qaInfo[] | never[] | null>(null) //問答回覆框中資料
+const conversationInfo = ref<qaInfo[] | null>(null) //問答回覆框中資料
 const isMessageOpen = ref(false) //是否開啟問答回覆框
-const categoryList = ref<qaCategory[] | never[] | null>(null) //下拉資料
+const categoryList = ref<qaCategory[] | null>(null) //下拉資料
 const qaCategory = ref("9") //下拉選擇值
 
 const props = defineProps<{ choseOrder: order, choseProduct?: orderProduct | null }>()

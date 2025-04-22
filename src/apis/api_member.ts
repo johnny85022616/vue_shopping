@@ -91,11 +91,7 @@ const api_member = {
       });
   },
   //取得電子票券
-  async getElectronicTicket(
-    pageNumber = 1,
-    pageRow = 100,
-    singleTicketInfo: any
-  ): Promise<electronicTicket[] | never[]> {
+  async getElectronicTicket(pageNumber = 1, pageRow = 100, singleTicketInfo: any): Promise<electronicTicket[]> {
     let postData: any = {};
     //若只取單張票券不需頁數相關參數
     if (!singleTicketInfo) {

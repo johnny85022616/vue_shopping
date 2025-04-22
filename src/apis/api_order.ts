@@ -510,7 +510,7 @@ export default {
   },
 
   // 取得問答紀錄類別清單
-  async getQuestionTypeCategory(): Promise<qaCategory[] | never[]> {
+  async getQuestionTypeCategory(): Promise<qaCategory[]> {
     return await fetch(`${frontApiPath()}crm/category`, {
       ...fetchPostHeaders,
     })
