@@ -77,9 +77,8 @@ import hotKeywords from '@/components/common/hotKeywords.vue';
         site_id: siteId,
       });
       
-      const data = d as category
-
-      const { catg1, catg2, groupings } = data;
+      if(!d) return 
+      const { catg1, catg2, groupings } = d;
 
       // 有供應商所產生的[本站的樹]
       if (catg1) {

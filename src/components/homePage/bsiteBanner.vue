@@ -54,12 +54,11 @@ const {siteData} = storeToRefs(bsiteStore)
 
     let data = await api.ai.getAiData("getalist", postData);
     if(data){
-      data = data as aiProduct[]|mixProduct[]
       parseData(data)
     }
   }
 
-  const parseData = (data:mixProduct[] | aiProduct[]) =>{
+  const parseData = (data:mixProduct[]) =>{
       const { urlSuffix } = siteData.value || {};
       const temp:any = {};
 

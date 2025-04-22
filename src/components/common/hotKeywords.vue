@@ -46,7 +46,7 @@ const getHotkeywords = async () => {
     parseHotKeywords(findCache);
     return;
   }
-  const data: any = await api.ai.getAiData('getklist', payloadData);
+  const data = await api.ai.getAiData('getklist', payloadData);
 
   if (data && data.kids) {
     parseHotKeywords(data);
