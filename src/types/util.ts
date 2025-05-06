@@ -41,3 +41,18 @@ export type Values<T> = T[keyof T];
  * 結果： string | number
  */
 export type PickObj<T, U extends keyof T> = T[U];
+
+// -------- 以下在typescript utility中都有 --------
+//全部變為optional
+type partial<T> = { [K in keyof T]?: string };
+
+//全部變為 readonly
+type Readonly<T> = { readonly [K in keyof T]: string };
+
+//選取type中的指定key與value組成新的type
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
+
+//排除type中的指定key與value組成新的type
+type Omit<T, U extends keyof T> = Pick<T, Exclude<keyof T, U>>;
