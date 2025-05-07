@@ -11,8 +11,8 @@ import type { OrNull } from '@/types/util';
 const { aiCloudApiPath, aiApiPath, fetchPostHeaders } = config;
 
 // 加入不願意曝光在其他地方的供應商Id
-const excludeUnshown = (payload: anyObject) => {
-  const windowData = window as anyObject;
+const excludeUnshown = (payload: Record<string,any>) => {
+  const windowData = window as Record<string,any>;
   const siteData = windowData.siteData || windowData.fridayData;
   if (siteData && siteData.unShowSupplierIds) {
     const { filter } = payload;
