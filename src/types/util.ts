@@ -1,3 +1,41 @@
+/**
+ * 拆解 Promise 型別，取得其內部型別
+ * ex: type Resolved = UnwrapPromise<Promise<string>> // string
+ */
+export type UnwrapPromise<T> = T extends Promise<infer U> ? U : never;
+
+/**
+ * 推斷陣列元素型別
+ * ex: type Elem = ArrayElement<number[]> // number
+ */
+export type ArrayElement<T> = T extends (infer U)[] ? U : never;
+
+/**
+ * 推斷函式回傳型別 (ReturnType 的簡化版)
+ * ex: type Ret = FnReturnType<() => number> // number
+ */
+export type FnReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+
+/**
+ * 遞迴將所有屬性設為 readonly
+ */
+export type DeepReadonly<T> = {
+  readonly [P in keyof T]: T[P] extends object ? DeepReadonly<T[P]> : T[P];
+};
+
+/**
+ * 遞迴將所有屬性設為 optional
+ */
+export type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
+
+/**
+ * 移除物件型別中 value 為 undefined 的 key
+ */
+export type Defined<T> = {
+  [P in keyof T as undefined extends T[P] ? never : P]: T[P];
+};
 import type { order } from './order';
 
 /**
