@@ -33,18 +33,23 @@ const api_member = {
     }
     return isLogin;
   },
-  //取得會員資料
-  async getMemberData() {
+  /**
+   * 
+   * @param isGetMark 是否取得會員標記
+   * @returns 
+   */
+  async getMemberData(isGetMark=false) {
     const exHeaders = setTicket();
-    const data = await fetch(`${mobileApiPath()}member/detail`, {
-      ...fetchGetHeaders,
-      ...exHeaders,
+    const data = await fetch(`${frontApiPath()}member/info/getMemberInfo?type=${isGetMark}`, {
+      ...fetchPostHeaders,
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res && res.data) {
-          return res.data[0];
+        const { resultCode, resultData } = res;
+        if(resultCode === 0 && resultData){
+          return resultData 
         }
+        return null 
       })
       .catch((err) => {
         console.error(`getMemeberData faliure.`);
@@ -73,17 +78,12 @@ const api_member = {
   //查遠傳幣餘額
   async getFetCoins(): Promise<number> {
     const exHeaders = setTicket();
-    return await fetch(`${mobileApiPath('')}fcoin/queryFcoins`, {
-      ...fetchGetHeaders,
-      ...exHeaders,
+    return await fetch(`${frontApiPath()}fcoin/queryPoints`, {
+      ...fetchPostHeaders,
     })
       .then((res) => res.json())
       .then((res) => {
-        // const res = JSON.parse('{"payload":[{"amount":485}],"code":"0000","message":"OK"}');
-        if (res && res.message === 'OK') {
-          return res.payload[0].amount;
-        }
-        return 0;
+        return res?.resultData?.totalPoint || 0;
       })
       .catch(() => {
         console.log('queryFcoins api error');

@@ -16,25 +16,17 @@
         </div>
       </div>
       <div class="flex border-b border-solid border-c_swirl py-6" v-if="fetLife !== null">
-        <template v-if="fetLife !== 1">
-          <a class="text-xs w-1/4 text-center no-underline" href="/member/voucher/list">
-            <p class="text-c_black">{{ voucher || 0 }}</p>
-            <p class="text-c_sliver">購物金<br />(原遠傳幣)</p>
-          </a>
-        </template>
-        <template v-else-if="fetLife === 1">
-          <a class="text-xs w-1/4 text-center no-underline" href="/member/voucher/list">
-            <p class="text-c_black">{{ voucher || 0 }}</p>
-            <p class="text-c_sliver">購物金</p>
-          </a>
-          <a href="/mobileweb/member/fcoin/list" class="text-xs w-1/4 text-center no-underline">
-            <p class="text-c_black">{{ fcoin || 0 }}</p>
-            <p class="text-c_sliver">遠傳幣</p>
-          </a>
-        </template>
+        <a class="text-xs w-1/4 text-center no-underline" href="/member/voucher/list">
+          <p class="text-c_black">{{ voucher || 0 }}</p>
+          <p class="text-c_sliver">購物金</p>
+        </a>
         <a class="text-xs w-1/4 text-center no-underline" href="/member/queryCoupon">
-          <p class="text-c_black">{{ couponAmount || 0 }}張</p>
-          <p class="text-c_sliver">折價券</p>
+          <p class="text-c_black">{{ couponAmount || 0 }}</p>
+          <p class="text-c_sliver">我的優惠</p>
+        </a>
+        <a href="/mobileweb/member/fcoin/list" class="text-xs w-1/4 text-center no-underline">
+          <p class="text-c_black">{{ fcoin || 0 }}</p>
+          <p class="text-c_sliver">遠傳幣</p>
         </a>
         <div class="text-xs w-1/4 text-center no-underline">
           <a class="text-c_dodger_blue no-underline" href="/mobileweb/member/queryHappyGoPoints">點數查詢</a>
