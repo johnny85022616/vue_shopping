@@ -40,7 +40,7 @@ const responseHandler = (res: any): { status: number; msg: string; code: number 
 
 const api_campaign = {
   // 取活動明細
-  async getCampaignDetail(campaignIds: string[]) {
+  async getCampaignDetail(campaignIds: string[]):Promise<campaignInfo[]> {
     return await fetch(`${cloudApiPath}campaign/getInfo`, {
       ...fetchPostHeaders,
       body: JSON.stringify({
@@ -71,7 +71,7 @@ const api_campaign = {
   // 取得遠傳手機館熱銷排行資料
   async getHotRankingInfo() {
     const info = await this.getCampaignDetail(['DO_241007175822515']);
-    const pids = info ? info[0].campaignRange.v[9]?.split(',') : [];
+    const pids = info ? info[0].campaignRange?.v[9]?.split(',') : [];
     return pids;
   },
 

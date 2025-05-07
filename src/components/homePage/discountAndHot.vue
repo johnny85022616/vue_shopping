@@ -21,13 +21,12 @@
         <a class="relative min-h-[210px] p-2 rounded-lg no-underline bg-c_white flex flex-col items-center"
           v-for="(item, index) of prodData" :key="index" href="" @click="e => tools.goProductPage(e, item.pid)">
           <img class="aspect-square" :src="item.image_url" :alt="item.name">
-          <div class="reactive w-full flex justify-end items-baseline mt-2">
+          <div class="reactive w-full flex items-baseline mt-2">
             <span v-if="item.discount"
               class="absolute left-[-5px] top-[148px] p-[2px] text-c_white bg-c_fcoin text-sm text-center min-w-10 max-w-[50px] flex items-center justify-center rounded-lg ">
               {{ formatDiscount(item.discount) }}<p class="text-xs">折</p>
             </span>
-            <p class="mr-1 text-c_sliver text-xs line-through">{{ item.list_price }}</p>
-            <p class="text-c_red text-xl">{{ item.cheapest }}</p>
+            <p class="text-c_red text-xl text-left">${{ tools.priceFormat(item.price) }}</p>
           </div>
           <span class="text-sm line-clamp-2 mt-2">
             {{ item.name }}
@@ -51,12 +50,14 @@ import type { product } from '@/types/product';
 
   const getPidsByPromotionId = async () => {
     const campaignInfo = await api.campaign.getCampaignDetail(['DO_241004094023093']);
-      if (!campaignInfo || !campaignInfo[0]) return [];
-      if (!campaignInfo[0].campaignRange.v[9]) return [];
+    console.log(campaignInfo);
+      if (!(campaignInfo && campaignInfo[0].campaignRange?.v[9])) return [];
 
       const pids = campaignInfo[0].campaignRange.v[9].split(',').splice(0, 6);
       const products = await api.product.getProducts(pids);
-      prodData.value = pids.map((v:any)=> products?.[v]);
+      console.log(prodData);
+      if(!products) return []
+      prodData.value = pids.map((v:string)=> products[Number(v)]);
   }
   const formatDiscount = (discount: number) => {
     if (discount) {
