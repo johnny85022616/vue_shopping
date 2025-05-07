@@ -1,6 +1,7 @@
 import type { productInfo } from '@/types/productInfo';
 import config from '../config/config';
 import { getCampaignUI } from './campaign/campaign_util';
+import tools from '../util/tools';
 
 const { isLogin, cloudApiPath, fetchGetHeaders, fetchPostHeaders, frontApiPath } = config;
 
@@ -183,6 +184,21 @@ const api_campaign = {
         window.sessionStorage.removeItem('my_campaign_count');
         return responseHandler(res);
       });
+  },
+  // 取得共用天 我的優惠數量 （分子）
+  async getMyCampaignsCount(): Promise<number> {
+    if (!isLogin) return 0;
+
+    const conutCache = tools.getCache('my_campaign_count');
+    if (conutCache) {
+      return conutCache;
+    }
+
+    const campaignData = await this.getMyCampaigns(false);
+    if (campaignData.length === 0) return 0;
+    const count = campaignData.filter(v => /^(CD|AC|FV|BC|PC|SC|OC|UO|ED|AED|LD|ALD|ADD)/i.test(v)).length;
+    tools.setCache('my_campaign_count', count, 600);
+    return count;
   },
 };
 

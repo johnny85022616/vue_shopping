@@ -136,6 +136,7 @@ const getMemberData = async () => {
   if (!info) return
   const { maskName, memberType } = info.MaskInfo || {}
   name.value = maskName
+  couponAmount.value = await api.campaign.getMyCampaignsCount()
   type.value = memberType
   voucher.value = await api.member.queryVoucherBalance()
   fcoin.value = await api.member.getFetCoins()
