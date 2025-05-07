@@ -46,6 +46,9 @@ export type PickObj<T, U extends keyof T> = T[U];
 //全部變為optional
 type partial<T> = { [K in keyof T]?: string };
 
+//排除type中的指定key與value組成新的type，並將指定的key變為optional
+type Optional<T extends object, K extends keyof T = keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
+
 //全部變為 readonly
 type Readonly<T> = { readonly [K in keyof T]: string };
 
