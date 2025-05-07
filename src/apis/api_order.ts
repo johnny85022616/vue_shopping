@@ -19,8 +19,12 @@ const isAppWebview = /gohappy/i.test(navigator.userAgent);
 
 export default {
   // 取得訂單明細
-  async getOrders(page = 1, rows = 10, extPayload = null) {
-    const siteId = window.siteData?.siteId || '';
+  async getOrders(
+    page: number = 1,
+    rows: number = 10,
+    extPayload: Record<string, unknown> | null = null
+  ): Promise<order[]> {
+    const siteId: string = (window as any).siteData?.siteId || '';
     let fetchApi = `${frontApiPath()}v1/order/getcusorderlist`;
     let fetchPayload = {
       ...fetchPostHeaders,
@@ -40,8 +44,8 @@ export default {
           return [];
         }
         if (!resultData) {
-          return [];
-        }
+        return [];
+      }
 
         // 格式化資料
         return resultData.map((v: order) => {
@@ -314,18 +318,18 @@ export default {
           const returnPayTypeHintText = v.payType === '信用卡刷退' ? '(實際退款時間依各發卡銀行為準)' : '';
           // 正、負物流方式
 
-          return Object.assign(v, {
-            returnPayTypeHintText,
-            orderDate: new Date(v.orderDate).toLocaleDateString(),
-            orderTime: new Date(v.orderDate).toLocaleTimeString('en-US', { hour12: false }).substr(0, 5),
-            isShowRefundBankForm,
-            isShowRefundBankSelected,
-            isShowReturnAddressForm,
-            isShowProcessStatusBar,
-            isSomeReturnFlag, //是否存在部分退訂
-          });
+        return Object.assign(v, {
+          returnPayTypeHintText,
+          orderDate: new Date(v.orderDate).toLocaleDateString(),
+          orderTime: new Date(v.orderDate).toLocaleTimeString('en-US', { hour12: false }).substr(0, 5),
+          isShowRefundBankForm,
+          isShowRefundBankSelected,
+          isShowReturnAddressForm,
+          isShowProcessStatusBar,
+          isSomeReturnFlag, //是否存在部分退訂
         });
-      })
+      });
+    })
       .catch((err) => {
         return [];
       });
