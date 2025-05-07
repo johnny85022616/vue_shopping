@@ -1,6 +1,7 @@
 /**
  * 拆解 Promise 型別，取得其內部型別
  * ex: type Resolved = UnwrapPromise<Promise<string>> // string
+ * T是用來判斷是否包含在extends的條件中，如果符合條件，則會回傳infer U的型別(這個情況是Ｔ必須是Promise<....>的架構)，
  */
 export type UnwrapPromise<T> = T extends Promise<infer U> ? U : never;
 
@@ -9,12 +10,6 @@ export type UnwrapPromise<T> = T extends Promise<infer U> ? U : never;
  * ex: type Elem = ArrayElement<number[]> // number
  */
 export type ArrayElement<T> = T extends (infer U)[] ? U : never;
-
-/**
- * 推斷函式回傳型別 (ReturnType 的簡化版)
- * ex: type Ret = FnReturnType<() => number> // number
- */
-export type FnReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
 
 /**
  * 遞迴將所有屬性設為 readonly
@@ -36,7 +31,6 @@ export type DeepPartial<T> = {
 export type Defined<T> = {
   [P in keyof T as undefined extends T[P] ? never : P]: T[P];
 };
-import type { order } from './order';
 
 /**
  * type為定義的型別或是null
@@ -97,3 +91,11 @@ type Pick<T, K extends keyof T> = {
 
 //排除type中的指定key與value組成新的type
 type Omit<T, U extends keyof T> = Pick<T, Exclude<keyof T, U>>;
+
+/**
+ * 推斷函式回傳型別 (ReturnType 的簡化版)
+ * ex: type Ret = FnReturnType<() => number> // number
+ */
+type FnReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+
+
