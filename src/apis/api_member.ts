@@ -3,6 +3,7 @@ import tools from '../util/tools';
 import memberInfo from '../mockData/memberInfo';
 import uiAlert from './ui_alert';
 import type { electronicTicket } from '@/types/electronicTicket';
+import type { consignee } from '@/types/consignee';
 
 const { isLogin, mobileApiPath, frontApiPath, fetchGetHeaders, fetchPostHeaders, setTicket } = config;
 
@@ -172,6 +173,30 @@ const api_member = {
       .catch(() => {
         uiAlert.getFadeAlert('取得電子票券發生錯誤');
         return [];
+      });
+  },
+  // 取得收件人
+  async getConsignee(isGetMark:boolean = false /** 是否取得隱碼 */):Promise<consignee[]> {
+    return await fetch(`${frontApiPath()}receiver/getReceiver?type=${isGetMark}`, {
+      ...fetchPostHeaders,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultCode, resultData, resultMsg} = res;
+        let data 
+        if([0, 800].includes(resultCode) && resultData){
+          console.log(resultData.info);
+          data = resultData.info?.map((ele: consignee)=>{
+            return { ...ele, isDefault: ele.isDefault === 'Y'? true: false }
+          })
+          return data
+        }
+        uiAlert.getFadeAlert(resultMsg)
+        return  null
+      })
+      .catch(() => {
+        uiAlert.getFadeAlert("取得收貨人發生錯誤")
+        return null;
       });
   },
 };
