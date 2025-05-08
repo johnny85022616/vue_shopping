@@ -42,10 +42,10 @@
           <i class="inline-block w-6 h-6 bg-ticketFolder-icon bg-center bg-100% bg-no-repeat"></i>
           <p>電子序號</p>
         </RouterLink>
-        <a class="w-1/4 text-center no-underline text-xs text-c_tundora" href="/favorite">
+        <!-- <a class="w-1/4 text-center no-underline text-xs text-c_tundora" href="/favorite">
           <i class="inline-block w-6 h-6 bg-member-favorite-icon bg-center bg-100% bg-no-repeat"></i>
           <p>我的最愛</p>
-        </a>
+        </a> -->
       </div>
       <div class="border-b border-solid border-c_swirl py-5">
         <div class="text-c_sliver text-sm mb-[10px]">個人管理</div>
