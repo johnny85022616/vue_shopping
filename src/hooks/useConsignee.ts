@@ -4,7 +4,7 @@ import type { consignee } from "@/types/consignee";
 import type { OrNull } from "@/types/util";
 
 export default function(){
-  const consigneeData = ref<OrNull<consignee[]>>(null);
+  const consigneeData = ref<OrNull<consignee[]>>(null); //收貨人資料
 
   //取得收貨人資料
 async function getConsignee() {
