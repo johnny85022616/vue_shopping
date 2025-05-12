@@ -39,4 +39,7 @@ export default {
   'photo-icon': "url('@/assets/icons/photo.png')",
   'nextArrow-icon': "url('@/assets/icons/next_arrow.png')",
   'ticketFolder-icon': "url('@/assets/icons/ticket-folder.svg')",
+  'radio-icon': "url('@/assets/icons/radio.svg')",
+  'radio-active-icon': "url('@/assets/icons/radio_active.svg')",
+  'delete-icon': "url('@/assets/icons/delete.svg')"
 };

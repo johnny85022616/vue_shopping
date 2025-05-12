@@ -185,9 +185,8 @@ const api_member = {
         const { resultCode, resultData, resultMsg} = res;
         let data 
         if([0, 800].includes(resultCode) && resultData){
-          console.log(resultData.info);
           data = resultData.info?.map((ele: consignee)=>{
-            return { ...ele, isDefault: ele.isDefault === 'Y'? true: false }
+            return { ...ele, isDefaultBoolean: ele.isDefault === 'Y'? true: false }
           })
           return data
         }
@@ -197,6 +196,26 @@ const api_member = {
       .catch(() => {
         uiAlert.getFadeAlert("取得收貨人發生錯誤")
         return null;
+      });
+  },
+  //更新收貨人
+  async updateDefaultConsignee(updateId:string){
+    return await fetch(`${frontApiPath()}receiver/updateDefaultReceiver?dataId=${updateId}`, {
+      ...fetchPostHeaders,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultCode, resultMsg} = res;
+        if(resultCode === 0 ){
+          uiAlert.getFadeAlert('已變更預設收貨人')
+          return true
+        }
+        uiAlert.getFadeAlert(resultMsg)
+        return  false
+      })
+      .catch(() => {
+        uiAlert.getFadeAlert('變更預設收貨人失敗')
+        return false;
       });
   },
 };

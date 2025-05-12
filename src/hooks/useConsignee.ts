@@ -14,8 +14,15 @@ async function getConsignee() {
     }
   });
 }
+//變更預設收貨人
+async function updateDefaultConsignee(id: string){
+  const pass = await api.member.updateDefaultConsignee(id);
+  if(pass) getConsignee()
+}
+
 return {
   consigneeData,
-  getConsignee
+  getConsignee,
+  updateDefaultConsignee
 }
 }
