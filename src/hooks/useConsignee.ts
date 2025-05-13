@@ -4,7 +4,7 @@ import type { consignee } from "@/types/consignee";
 import type { OrNull } from "@/types/util";
 import usePopup from '@/hooks/usePopup';
 
-export default function(){
+export default function useConsignee(){
   const consigneeData = ref<OrNull<consignee[]>>(null); //收貨人資料
   const popup = usePopup() //popup composable
 
@@ -22,6 +22,7 @@ async function updateDefaultConsignee(id: string){
   if(pass) getConsignee()
 }
 
+//刪除收貨人
 async function deleteConsignee(id: string){
   const confirm = await popup.confirm('是否刪除此收貨人')
   if(!confirm) return 
