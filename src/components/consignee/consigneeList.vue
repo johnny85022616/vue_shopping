@@ -21,32 +21,30 @@
 </template>
 
 <script lang="ts" setup name="consigneeList">
-import usePopup from '@/hooks/usePopup';
 import type { consignee } from '@/types/consignee';
-import { toRefs } from 'vue';
+import { inject, toRefs } from 'vue';
 
 
 const props = defineProps<{
   consigneeData: consignee[];
 }>();
 const { consigneeData } = toRefs(props);
-const popup = usePopup()
+const consignee:any = inject('consignee')
 
 const emit = defineEmits(['updateDefaultConsignee'])
-
-//變更預設收貨人
-function updateDefaultConsignee(id: string) {
-  emit('updateDefaultConsignee', id)
-}
-async function deleteConsignee(id: string) {
-  const pass = await popup.confirm('是否刪除此收貨人')
-  if(pass){}
-}
 
 init();
 
 function init() { }
 
+//變更預設收貨人
+function updateDefaultConsignee(id: string) {
+  consignee.updateDefaultConsignee(id)
+}
+//刪除聯絡人
+async function deleteConsignee(id: string) {
+  consignee.deleteConsignee(id)
+}
 
 function openCenterDialog(id: string) { }
 

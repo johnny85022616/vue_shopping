@@ -2,7 +2,7 @@
   <div class="consigneeManagement">
     <navigation :windowY="200"></navigation>
     <consigneeList v-if="consigneeData && consigneeData.length !== 0" :consigneeData="consigneeData"
-    @updateDefaultConsignee="updateDefaultConsignee"></consigneeList>
+    ></consigneeList>
   </div>
 </template>
 
@@ -10,14 +10,14 @@
 import navigation from '@/components/common/navigation.vue';
 import consigneeList from '@/components/consignee/consigneeList.vue';
 import useConsignee from '@/hooks/useConsignee';
-import { provide } from 'vue';
+import { provide, toRefs } from 'vue';
 
-const { consigneeData, getConsignee , updateDefaultConsignee, deleteConsignee} = useConsignee();
-const consigneeSymbol = Symbol('consignee');
-
+const consignee = useConsignee(); //取得consignee composable
+const {consigneeData} = toRefs(consignee)
+provide('consignee', consignee)
 
 const init = async () => {
-  getConsignee();
+  consignee.getConsignee();
 };
 
 

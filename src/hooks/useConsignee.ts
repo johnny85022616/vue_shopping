@@ -2,9 +2,11 @@ import { ref } from "vue";
 import api from '@/apis/api';
 import type { consignee } from "@/types/consignee";
 import type { OrNull } from "@/types/util";
+import usePopup from '@/hooks/usePopup';
 
 export default function(){
   const consigneeData = ref<OrNull<consignee[]>>(null); //收貨人資料
+  const popup = usePopup() //popup composable
 
   //取得收貨人資料
 async function getConsignee() {
@@ -21,6 +23,8 @@ async function updateDefaultConsignee(id: string){
 }
 
 async function deleteConsignee(id: string){
+  const confirm = await popup.confirm('是否刪除此收貨人')
+  if(!confirm) return 
   const pass = await api.member.deleteConsignee(id);
   if(pass) getConsignee()
 }
