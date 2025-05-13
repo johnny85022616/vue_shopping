@@ -1,11 +1,18 @@
-import { ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import api from '@/apis/api';
 import type { consignee } from '@/types/consignee';
 import type { OrNull } from '@/types/util';
 import usePopup from '@/hooks/usePopup';
 
-export default function useConsignee() {
-  const consigneeData = ref<OrNull<consignee[]>>(null); //收貨人資料
+export interface consigneeConposable {
+  consigneeData: Ref<OrNull<consignee[]>>;
+  getConsignee: () => Promise<void>;
+  updateDefaultConsignee: (id: string) => Promise<void>;
+  deleteConsignee: (id: string) => Promise<void>;
+};
+
+export default function useConsignee():consigneeConposable {
+   const consigneeData = ref<OrNull<consignee[]>>(null); // 明確指定型別
   const popup = usePopup(); //popup composable
 
   //取得收貨人資料

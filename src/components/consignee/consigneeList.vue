@@ -4,8 +4,8 @@
       :key="item.id">
       <div class="consigneeList__item-left">
         <div class="flex mb-2">
-          <i :class="`${item.isDefaultBoolean ? 'bg-radio-active-icon' : 'bg-radio-icon'} w-5 h-5 mr-2 bg-center bg-100% bg-no-repeat`"
-            @click="updateDefaultConsignee(item.id)"></i>
+          <i :class="`${item.isDefaultBoolean ? 'bg-radio-active-icon' : 'bg-radio-icon'
+            } w-5 h-5 mr-2 bg-center bg-100% bg-no-repeat`" @click="updateConsignee(item.id)"></i>
           <p class="text-sm font-bold text-c_black">{{ item.name }}</p>
           <p v-if="item.isDefault" class="text-sm font-bold text-c_black">(預設)</p>
         </div>
@@ -21,32 +21,28 @@
 </template>
 
 <script lang="ts" setup name="consigneeList">
+import type { consigneeConposable } from '@/hooks/useConsignee';
 import type { consignee } from '@/types/consignee';
 import { inject, toRefs } from 'vue';
-
 
 const props = defineProps<{
   consigneeData: consignee[];
 }>();
 const { consigneeData } = toRefs(props);
-const consignee:any = inject('consignee')
+const consignee = inject('consignee') as consigneeConposable;
 
-const emit = defineEmits(['updateDefaultConsignee'])
+const emit = defineEmits(['updateDefaultConsignee']);
 
 init();
 
 function init() { }
 
 //變更預設收貨人
-function updateDefaultConsignee(id: string) {
-  consignee.updateDefaultConsignee(id)
+function updateConsignee(id: string) {
+  consignee.updateDefaultConsignee(id);
 }
 //刪除聯絡人
 async function deleteConsignee(id: string) {
-  consignee.deleteConsignee(id)
+  consignee.deleteConsignee(id);
 }
-
-function openCenterDialog(id: string) { }
-
-
 </script>
