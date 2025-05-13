@@ -12,6 +12,64 @@ const fetchGetHeaders = {
   },
 };
 
+const indexedDBHelper = {
+  dbName: 'toolFuncsDB',
+  storeName: 'cacheStore',
+  async initDB() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open(this.dbName, 1);
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains(this.storeName)) {
+          db.createObjectStore(this.storeName, { keyPath: 'name' });
+        }
+      };
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  },
+  async setItem(name, value) {
+    const db = await this.initDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(this.storeName, 'readwrite');
+      const store = transaction.objectStore(this.storeName);
+      const request = store.put(value);
+      request.onsuccess = () => resolve(true);
+      request.onerror = () => reject(request.error);
+    });
+  },
+  async getItem(name) {
+    const db = await this.initDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(this.storeName, 'readonly');
+      const store = transaction.objectStore(this.storeName);
+      const request = store.get(name);
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    });
+  },
+  async removeItem(name) {
+    const db = await this.initDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(this.storeName, 'readwrite');
+      const store = transaction.objectStore(this.storeName);
+      const request = store.delete(name);
+      request.onsuccess = () => resolve(true);
+      request.onerror = () => reject(request.error);
+    });
+  },
+  async clear() {
+    const db = await this.initDB();
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(this.storeName, 'readwrite');
+      const store = transaction.objectStore(this.storeName);
+      const request = store.clear();
+      request.onsuccess = () => resolve(true);
+      request.onerror = () => reject(request.error);
+    });
+  }
+};
+
 const Url = {
   // public method for url encoding
   encode: function (string) {
@@ -1320,5 +1378,49 @@ export default {
       url = '/' + window.siteData.urlSuffix + url;
     }
     return url;
+  },
+  // ------------------------------------- indexDB -------------------------------------
+  async getIndexedDBCache(name) {
+    if (!name || typeof name !== 'string') return null;
+
+    const cache = await indexedDBHelper.getItem(name);
+    if (!cache) return null;
+
+    const { data, expires } = cache;
+    if (data !== null && expires > new Date().getTime()) {
+      return data;
+    } else {
+      return null;
+    }
+  },
+  async setIndexedDBCache(name, value, plusSeconds) {
+    if (!name || value === undefined || !plusSeconds) return false;
+
+    const now = new Date();
+    if (typeof plusSeconds === 'number') {
+      now.setSeconds(now.getSeconds() + plusSeconds);
+    }
+
+    const cacheObject = {
+      name,
+      data: value,
+      expires: now.getTime(),
+    };
+
+    await indexedDBHelper.setItem(name, cacheObject);
+  },
+  async removeIndexedDBCache(name) {
+    if (!name || typeof name !== 'string') return false;
+
+    const cache = await indexedDBHelper.getItem(name);
+    if (cache) {
+      await indexedDBHelper.removeItem(name);
+      return true;
+    } else {
+      return false;
+    }
+  },
+  async clearIndexedDBCache() {
+    await indexedDBHelper.clear();
   },
 };
