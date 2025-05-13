@@ -20,9 +20,15 @@ async function updateDefaultConsignee(id: string){
   if(pass) getConsignee()
 }
 
+async function deleteConsignee(id: string){
+  const pass = await api.member.deleteConsignee(id);
+  if(pass) getConsignee()
+}
+
 return {
   consigneeData,
   getConsignee,
-  updateDefaultConsignee
+  updateDefaultConsignee,
+  deleteConsignee
 }
 }

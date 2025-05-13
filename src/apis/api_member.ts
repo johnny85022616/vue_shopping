@@ -6,6 +6,7 @@ import type { electronicTicket } from '@/types/electronicTicket';
 import type { consignee } from '@/types/consignee';
 
 const { isLogin, mobileApiPath, frontApiPath, fetchGetHeaders, fetchPostHeaders, setTicket } = config;
+const frontPath = frontApiPath()
 
 const api_member = {
   isLogin,
@@ -41,7 +42,7 @@ const api_member = {
    */
   async getMemberData(isGetMark=false) {
     const exHeaders = setTicket();
-    const data = await fetch(`${frontApiPath()}member/info/getMemberInfo?type=${isGetMark}`, {
+    const data = await fetch(`${frontPath}member/info/getMemberInfo?type=${isGetMark}`, {
       ...fetchPostHeaders,
     })
       .then((res) => res.json())
@@ -60,7 +61,7 @@ const api_member = {
   },
   //查購物金餘額
   async queryVoucherBalance(): Promise<number> {
-    return await fetch(`${frontApiPath()}member/voucher/queryVoucherBalance`, {
+    return await fetch(`${frontPath}member/voucher/queryVoucherBalance`, {
       ...fetchGetHeaders,
     })
       .then((res) => res.json())
@@ -79,7 +80,7 @@ const api_member = {
   //查遠傳幣餘額
   async getFetCoins(): Promise<number> {
     const exHeaders = setTicket();
-    return await fetch(`${frontApiPath()}fcoin/queryPoints`, {
+    return await fetch(`${frontPath}fcoin/queryPoints`, {
       ...fetchPostHeaders,
     })
       .then((res) => res.json())
@@ -103,7 +104,7 @@ const api_member = {
     if (singleTicketInfo) {
       postData = { ...postData, ...singleTicketInfo };
     }
-    return await fetch(`${frontApiPath()}member/ticket`, {
+    return await fetch(`${frontPath}member/ticket`, {
       ...fetchPostHeaders,
       body: JSON.stringify(postData),
     })
@@ -177,7 +178,7 @@ const api_member = {
   },
   // 取得收件人
   async getConsignee(isGetMark:boolean = false /** 是否取得隱碼 */):Promise<consignee[]> {
-    return await fetch(`${frontApiPath()}receiver/getReceiver?type=${isGetMark}`, {
+    return await fetch(`${frontPath}receiver/getReceiver?type=${isGetMark}`, {
       ...fetchPostHeaders,
     })
       .then((res) => res.json())
@@ -199,8 +200,8 @@ const api_member = {
       });
   },
   //更新收貨人
-  async updateDefaultConsignee(updateId:string){
-    return await fetch(`${frontApiPath()}receiver/updateDefaultReceiver?dataId=${updateId}`, {
+  async updateDefaultConsignee(updateId:string):Promise<boolean>{
+    return await fetch(`${frontPath}receiver/updateDefaultReceiver?dataId=${updateId}`, {
       ...fetchPostHeaders,
     })
       .then((res) => res.json())
@@ -215,6 +216,27 @@ const api_member = {
       })
       .catch(() => {
         uiAlert.getFadeAlert('變更預設收貨人失敗')
+        return false;
+      });
+  },
+  //刪除收貨人
+  async deleteConsignee(deleteId:string):Promise<boolean>{
+    return await fetch(`${frontPath}receiver/deleteReceiver`, {
+      ...fetchPostHeaders,
+      body: JSON.stringify({dataId: [deleteId]}),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultCode, resultMsg} = res;
+        if(resultCode === 0 ){
+          uiAlert.getFadeAlert('刪除收貨人成功')
+          return true
+        }
+        uiAlert.getFadeAlert(resultMsg)
+        return  false
+      })
+      .catch(() => {
+        uiAlert.getFadeAlert('刪除收貨人失敗')
         return false;
       });
   },
