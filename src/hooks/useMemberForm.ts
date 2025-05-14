@@ -2,37 +2,37 @@ import { reactive, type Ref } from 'vue';
 import tools from '@/util/tools';
 import address from '@/mockData/AddressMap';
 
-
 interface City {
   id: number;
   name: string;
   counties?: Region[];
 }
-
 interface Region {
   id: number;
   name: string;
   zip: string;
 }
+interface MemberForm {
+  name: string;
+  nameAlert: string;
+  phone: string;
+  phoneAlert: string;
+  city: string;
+  region: string;
+  road: string;
+  addressAlert: string;
+  cityArr: City[] | null;
+  regionArr: Region[] | null;
+}
+
 export interface UseMemberForm {
-  memberForm: {
-    name: string;
-    nameAlert: string;
-    phone: string;
-    phoneAlert: string;
-    city: string ;
-    region: string ;
-    road: string;
-    addressAlert: string;
-    cityArr:City[]|null;
-    regionArr: Region[]| null;
-  };
+  memberForm: MemberForm;
   getCounty: (id: number) => Region[];
   formCheck: (fields: ('name' | 'phone' | 'address')[]) => boolean;
 }
 
 export default function useMemberForm(): UseMemberForm {
-  const memberForm = reactive({
+  const memberForm: MemberForm = reactive({
     name: '',
     nameAlert: '',
     phone: '',
@@ -53,7 +53,7 @@ export default function useMemberForm(): UseMemberForm {
       phone: () => (memberForm.phoneAlert = checkMoblie(memberForm.phone)),
       address: () => (memberForm.addressAlert = checkAddress(memberForm.city, memberForm.region, memberForm.road)),
     };
-    return fields.every(field => {
+    return fields.every((field) => {
       alertMap[field]();
       if (field === 'name') return !memberForm.nameAlert;
       if (field === 'phone') return !memberForm.phoneAlert;
@@ -75,11 +75,11 @@ export default function useMemberForm(): UseMemberForm {
     return obj ? obj.counties || [] : [];
   }
 
-  // memberForm.cityArr = getCity()
-  
+  memberForm.cityArr = getCity();
+
   return {
     memberForm,
     formCheck,
-    getCounty
+    getCounty,
   };
 }
