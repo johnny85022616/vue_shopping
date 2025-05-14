@@ -1,7 +1,20 @@
 import { reactive, type Ref } from 'vue';
 import tools from '@/util/tools';
+import address from '@/mockData/AddressMap';
 
-export interface useMemeberForm {
+
+interface City {
+  id: number;
+  name: string;
+  counties?: Region[];
+}
+
+interface Region {
+  id: number;
+  name: string;
+  zip: string;
+}
+export interface UseMemberForm {
   memberForm: {
     name: string;
     nameAlert: string;
@@ -11,11 +24,14 @@ export interface useMemeberForm {
     region: string ;
     road: string;
     addressAlert: string;
+    cityArr:City[]|null;
+    regionArr: Region[]| null;
   };
+  getCounty: (id: number) => Region[];
   formCheck: (fields: ('name' | 'phone' | 'address')[]) => boolean;
 }
 
-export default function useMemeberForm():useMemeberForm {
+export default function useMemberForm(): UseMemberForm {
   const memberForm = reactive({
     name: '',
     nameAlert: '',
@@ -25,6 +41,8 @@ export default function useMemeberForm():useMemeberForm {
     region: '',
     road: '',
     addressAlert: '',
+    cityArr: [],
+    regionArr: [],
   });
 
   //防呆檢查
@@ -43,8 +61,25 @@ export default function useMemeberForm():useMemeberForm {
       return true;
     });
   }
+
+  // 縣 資料
+  function getCity(): City[] {
+    return address.addressData.map((v) => {
+      const { id, name } = v;
+      return { id, name };
+    });
+  }
+  // 區 資料
+  function getCounty(id: number) {
+    const obj = address.addressData.find((v) => v.id === id);
+    return obj ? obj.counties || [] : [];
+  }
+
+  // memberForm.cityArr = getCity()
+  
   return {
     memberForm,
     formCheck,
+    getCounty
   };
 }
