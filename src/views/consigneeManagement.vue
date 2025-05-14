@@ -7,20 +7,24 @@
       <span @click="openCreateDialog">新增</span>
     </div>
     <consigneeList v-if="consigneeData && consigneeData.length !== 0" :consigneeData="consigneeData"></consigneeList>
+    <createDialog v-if="isCreateDialogOpen"></createDialog>
   </div>
 </template>
 
 <script lang="ts" setup name="consigneeManagement">
 import navigation from '@/components/common/navigation.vue';
 import consigneeList from '@/components/consignee/consigneeList.vue';
+import createDialog from '@/components/consignee/createDialog.vue';
 import useConsignee from '@/hooks/useConsignee';
-import { provide, toRefs } from 'vue';
+import { provide, ref, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router  = useRouter()
 const consignee = useConsignee(); //取得consignee composable
 const { consigneeData } = toRefs(consignee)
+const isCreateDialogOpen = ref(false); //是否開啟新增收貨人視窗
 provide('consignee', consignee)
+provide('closeDialog', closeCreateDialog)
 
 async function init() {
   consignee.getConsignee();
@@ -29,6 +33,10 @@ function historyBack() {
   router.back()
 }
 function openCreateDialog(){
+  isCreateDialogOpen.value = true;
+}
+function closeCreateDialog(){
+  isCreateDialogOpen.value = false;
 }
 
 init();
