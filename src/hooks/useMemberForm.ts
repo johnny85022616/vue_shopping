@@ -29,18 +29,22 @@ export default function useMemeberForm():useMemeberForm {
 
   //防呆檢查
   function formCheck(fields: ('name' | 'phone' | 'address')[]): boolean {
-    console.log(fields);
-    let { checkName, checkMoblie, checkAddress } = tools;
-    memberForm.nameAlert = checkName(memberForm.name);
-    memberForm.phoneAlert = checkMoblie(memberForm.phone);
-    memberForm.addressAlert = checkAddress(memberForm.city, memberForm.region, memberForm.road);
-    if (memberForm.nameAlert.length > 0 || memberForm.phoneAlert.length > 0 || memberForm.addressAlert.length > 0) {
-      return false;
-    }
-    return true;
+    const { checkName, checkMoblie, checkAddress } = tools;
+    const alertMap = {
+      name: () => (memberForm.nameAlert = checkName(memberForm.name)),
+      phone: () => (memberForm.phoneAlert = checkMoblie(memberForm.phone)),
+      address: () => (memberForm.addressAlert = checkAddress(memberForm.city, memberForm.region, memberForm.road)),
+    };
+    return fields.every(field => {
+      alertMap[field]();
+      if (field === 'name') return !memberForm.nameAlert;
+      if (field === 'phone') return !memberForm.phoneAlert;
+      if (field === 'address') return !memberForm.addressAlert;
+      return true;
+    });
   }
   return {
     memberForm,
-    formCheck
+    formCheck,
   };
 }
