@@ -1,6 +1,6 @@
 import { ref, type Ref } from 'vue';
 import api from '@/apis/api';
-import type { consignee } from '@/types/consignee';
+import type { Addr, consignee, createConsigneePayload } from '@/types/consignee';
 import type { OrNull } from '@/types/util';
 import usePopup from '@/hooks/usePopup';
 
@@ -9,7 +9,9 @@ export interface consigneeConposable {
   getConsignee: () => Promise<void>;
   updateDefaultConsignee: (id: string) => Promise<void>;
   deleteConsignee: (id: string) => Promise<void>;
+  createConsignee: (payload: createConsigneePayload) => Promise<void>;
 };
+
 
 export default function useConsignee():consigneeConposable {
    const consigneeData = ref<OrNull<consignee[]>>(null); // 明確指定型別
@@ -37,10 +39,16 @@ export default function useConsignee():consigneeConposable {
     if (pass) getConsignee();
   }
 
+  async function createConsignee(payload: createConsigneePayload) {
+    const pass = await api.member.createConsignee(payload);
+    if (pass) getConsignee();
+  }
+
   return {
     consigneeData,
     getConsignee,
     updateDefaultConsignee,
     deleteConsignee,
+    createConsignee,
   };
 }

@@ -17,13 +17,15 @@
             </div>
             <div :class="['mb-5 group', { error: phoneAlert.length > 0 }]">
               <p class="text-c_heavy-metal">*手機號碼</p>
-              <input type="phone" class="formInput group-[.error]:border-c_red" v-model="phone" @input="phoneFormat" placeholder="請輸入手機號碼" />
+              <input type="phone" class="formInput group-[.error]:border-c_red" v-model="phone" @input="phoneFormat"
+                placeholder="請輸入手機號碼" />
               <span class="text-c_red">{{ phoneAlert }}</span>
             </div>
             <div :class="['consigneeForm__address mb-5 group', { error: addressAlert.length > 0 }]">
               <p class="text-c_heavy-metal">*地址</p>
               <div class="flex">
-                <select class="formSelect group-[.error]:border-c_red mr-5" name="city" v-model="city" @change="city && changeCity(city)">
+                <select class="formSelect group-[.error]:border-c_red mr-5" name="city" v-model="city"
+                  @change="city && changeCity(city)">
                   <option v-for="(item, index) in cityArr" :key="index" :value="item.id">{{ item.name }}</option>
                 </select>
                 <select class="formSelect group-[.error]:border-c_red" name="region" v-model="region">
@@ -49,15 +51,30 @@
 </template>
 <script lang="ts" setup name="createDialog">
 import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
+import type { consigneeConposable } from '@/hooks/useConsignee';
 import useMemberForm from '@/hooks/useMemberForm';
-import { ref, toRefs, watch } from 'vue';
+import { inject, ref, toRefs, watch } from 'vue';
 
-const { memberForm,changeCity, phoneFormat, formCheck} = useMemberForm();
+const { memberForm, changeCity, phoneFormat, formCheck } = useMemberForm();
+const consignee = inject('consignee') as consigneeConposable;
 const { name, phone, city, region, road, nameAlert, phoneAlert, addressAlert, cityArr, regionArr } = toRefs(memberForm);
-const isDefault = ref(false);
+const isDefault = ref(true);
 
+//form檢查 ＆ 新增收貨人
 function confirmClick() {
-  formCheck(['name', 'phone', 'address'])
- }
+  const isPass = formCheck(['name', 'phone', 'address'])
+  if (!isPass) return
+  let postData = {
+    data: {
+      addr: road.value.replace(/\s*/g, ""),
+      city: city.value,
+      county: region.value,
+      isDefault: isDefault.value ? "Y" : "N",
+      mobile: phone.value,
+      name: name.value,
+    },
+  };
+  consignee.createConsignee(postData);
+}
 
 </script>

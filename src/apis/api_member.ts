@@ -3,7 +3,7 @@ import tools from '../util/tools';
 import memberInfo from '../mockData/memberInfo';
 import uiAlert from './ui_alert';
 import type { electronicTicket } from '@/types/electronicTicket';
-import type { consignee } from '@/types/consignee';
+import type { consignee, createConsigneePayload } from '@/types/consignee';
 
 const { isLogin, mobileApiPath, frontApiPath, fetchGetHeaders, fetchPostHeaders, setTicket } = config;
 const frontPath = frontApiPath()
@@ -237,6 +237,27 @@ const api_member = {
       })
       .catch(() => {
         uiAlert.getFadeAlert('刪除收貨人失敗')
+        return false;
+      });
+  },
+  //新增收貨人
+  async createConsignee(postData: createConsigneePayload): Promise<boolean>{
+    return await fetch(`${frontPath}receiver/addReceiver`, {
+      ...fetchPostHeaders,
+      body: JSON.stringify(postData),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultCode, resultData, resultMsg } = res;
+        if(resultCode === 0 && resultData){
+          uiAlert.getFadeAlert('新增收貨人成功')
+          return true
+        }
+        uiAlert.getFadeAlert(resultMsg)
+        return  false
+      })
+      .catch(() => {
+        uiAlert.getFadeAlert('新增收貨人失敗')
         return false;
       });
   },
