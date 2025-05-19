@@ -67,7 +67,7 @@ export default function useMemberForm(): UseMemberForm {
     return address.addressData.map((v) => {
       const { id, name } = v;
       return { id, name };
-    });
+    }) || [];
   }
   // 區 資料
   function getCounty(id: number) {
