@@ -65,13 +65,13 @@ export default function useMemberForm(): UseMemberForm {
       phone: () => (memberForm.phoneAlert = checkMoblie(memberForm.phone)),
       address: () => (memberForm.addressAlert = checkAddress(memberForm.city, memberForm.region, memberForm.road)),
     };
-    return fields.every((field) => {
-      alertMap[field]();
-      if (field === 'name') return !memberForm.nameAlert;
-      if (field === 'phone') return !memberForm.phoneAlert;
-      if (field === 'address') return !memberForm.addressAlert;
-      return true;
-    });
+    const isPass =fields.reduce((pass, field) => {
+      const fieldPass = alertMap[field]()? false : true
+      pass =  pass && fieldPass
+      return pass
+    }, true);
+   
+    return isPass
   }
 
   // 縣 資料
@@ -98,9 +98,7 @@ export default function useMemberForm(): UseMemberForm {
   //電話號碼限制10碼
   function phoneFormat() {
     const phone = memberForm.phone;
-    console.log(phone);
     if (phone.length > 10) {
-      console.log(888);
       memberForm.phone = phone.slice(0, 10);
     }
   }
