@@ -17,4 +17,5 @@ export interface Addr {
   countyName: string;
 }
 
-export type createConsigneePayload = Pick<consignee, 'name' | 'mobile' | 'isDefault'> & Pick<Addr,  'city' | 'county' |  'addr'>;
+// 新增收貨人api的 payload type，api要求要要多一層data故型別也多加一層data
+export type createConsigneePayload = {data : Pick<consignee, 'name' | 'mobile' | 'isDefault'> & Pick<Addr,  'city' | 'county' |  'addr'>};
