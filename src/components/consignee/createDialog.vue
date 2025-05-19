@@ -12,12 +12,12 @@
           </div> -->
             <div :class="['mb-5', { error: nameAlert.length > 0 }]">
               <p class="text-c_heavy-metal">*姓名</p>
-              <input type="text" v-model="name" placeholder="請輸入姓名">
+              <input type="text" class="formInput" v-model="name" placeholder="請輸入姓名">
               <span class="">{{ nameAlert }}</span>
             </div>
             <div :class="['mb-5', { error: phoneAlert.length > 0 }]">
               <p class="text-c_heavy-metal">*手機號碼</p>
-              <input type="number" v-model="phone" @input="changePhone" placeholder="請輸入手機號碼">
+              <input type="number" class="formInput" v-model="phone" @input="changePhone" placeholder="請輸入手機號碼">
               <span>{{ phoneAlert }}</span>
             </div>
             <div :class="['consigneeForm__address mb-5 ', { error: addressAlert.length > 0 }]">
