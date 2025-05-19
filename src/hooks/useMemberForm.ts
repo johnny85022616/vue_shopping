@@ -17,8 +17,8 @@ interface MemberForm {
   nameAlert: string;
   phone: string;
   phoneAlert: string;
-  city: string;
-  region: string;
+  city: number;
+  region: number;
   road: string;
   addressAlert: string;
   cityArr: City[] | null;
@@ -28,6 +28,8 @@ interface MemberForm {
 export interface UseMemberForm {
   memberForm: MemberForm;
   getCounty: (id: number) => Region[];
+  changeCity: (id: number) => void;
+  phoneFormat: () => void;
   formCheck: (fields: ('name' | 'phone' | 'address')[]) => boolean;
 }
 
@@ -37,13 +39,23 @@ export default function useMemberForm(): UseMemberForm {
     nameAlert: '',
     phone: '',
     phoneAlert: '',
-    city: '',
-    region: '',
+    city: 1,
+    region: 1,
     road: '',
     addressAlert: '',
     cityArr: [],
     regionArr: [],
   });
+
+  init()
+
+  //初始化
+  function init() {
+  memberForm.cityArr = getCity();
+  memberForm.city = memberForm.cityArr[0].id;
+  memberForm.regionArr = getCounty(memberForm.city);
+  memberForm.region = memberForm.regionArr[0].id;
+  }
 
   //防呆檢查
   function formCheck(fields: ('name' | 'phone' | 'address')[]): boolean {
@@ -64,10 +76,12 @@ export default function useMemberForm(): UseMemberForm {
 
   // 縣 資料
   function getCity(): City[] {
-    return address.addressData.map((v) => {
-      const { id, name } = v;
-      return { id, name };
-    }) || [];
+    return (
+      address.addressData.map((v) => {
+        const { id, name } = v;
+        return { id, name };
+      }) || []
+    );
   }
   // 區 資料
   function getCounty(id: number) {
@@ -75,11 +89,27 @@ export default function useMemberForm(): UseMemberForm {
     return obj ? obj.counties || [] : [];
   }
 
-  memberForm.cityArr = getCity();
+  //選擇縣市後，更新預設區域為區域陣列第一筆
+  function changeCity(id: number) {
+    memberForm.regionArr = getCounty(id);
+    memberForm.region = memberForm.regionArr[0].id;
+  }
+
+  //電話號碼限制10碼
+  function phoneFormat() {
+    const phone = memberForm.phone;
+    console.log(phone);
+    if (phone.length > 10) {
+      console.log(888);
+      memberForm.phone = phone.slice(0, 10);
+    }
+  }
 
   return {
     memberForm,
     formCheck,
     getCounty,
+    changeCity,
+    phoneFormat,
   };
 }
