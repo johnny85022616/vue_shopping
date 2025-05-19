@@ -16,3 +16,5 @@ export interface Addr {
   cityName: string;
   countyName: string;
 }
+
+export type createConsigneePayload = Pick<consignee, 'name' | 'mobile' | 'isDefault'> & Pick<Addr,  'city' | 'county' |  'addr'>;
