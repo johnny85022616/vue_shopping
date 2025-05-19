@@ -39,6 +39,7 @@ export default function useConsignee():consigneeConposable {
     if (pass) getConsignee();
   }
 
+  //新增收貨人
   async function createConsignee(payload: createConsigneePayload) {
     const pass = await api.member.createConsignee(payload);
     if (pass) getConsignee();

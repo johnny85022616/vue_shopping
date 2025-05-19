@@ -57,6 +57,7 @@ import { inject, ref, toRefs, watch } from 'vue';
 
 const { memberForm, changeCity, phoneFormat, formCheck } = useMemberForm();
 const consignee = inject('consignee') as consigneeConposable;
+const closeDialog:any = inject('closeDialog')
 const { name, phone, city, region, road, nameAlert, phoneAlert, addressAlert, cityArr, regionArr } = toRefs(memberForm);
 const isDefault = ref(true);
 
@@ -75,6 +76,7 @@ function confirmClick() {
     },
   };
   consignee.createConsignee(postData);
+  closeDialog()
 }
 
 </script>
