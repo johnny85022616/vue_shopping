@@ -1,5 +1,5 @@
 <template>
-  <ul class="consigneeList bg-c_background min-h-[100vh] mb-[50px]">
+  <ul class="consigneeList bg-c_background min-h-[100vh] mb-[50px] py-3">
     <li v-for="item in consigneeData" class="bg-c_white flex justify-between py-4 px-2 m-2 rounded-lg first:mt-0"
       :key="item.id">
       <div class="consigneeList__item-left">
