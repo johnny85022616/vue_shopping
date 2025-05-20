@@ -50,7 +50,9 @@
       <div class="border-b border-solid border-c_swirl py-5">
         <div class="text-c_sliver text-sm mb-[10px]">個人管理</div>
         <ul class="list-none">
-          <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/member/receiver">收貨人通訊錄</a></li>
+          <!-- <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/member/receiver">收貨人通訊錄</a></li> -->
+          <li class="py-2"><RouterLink class="no-underline text-c_tundora text-sm apple" :to="{ name: 'receiver' }">收貨人通訊錄
+        </RouterLink></li>
           <li class="py-2"><a class="no-underline text-c_tundora text-sm"
               href="/mobileweb/member/creditCardInfo">信用卡綁定</a>
           </li>
@@ -134,10 +136,8 @@ const getMemberData = async () => {
   const info = await api.member.getMemberData()
   console.log(info);
   if (!info) return
-  const { maskName, memberType } = info.MaskInfo || {}
-  name.value = maskName
+  name.value = info.name
   couponAmount.value = await api.campaign.getMyCampaignsCount()
-  type.value = memberType
   voucher.value = await api.member.queryVoucherBalance()
   fcoin.value = await api.member.getFetCoins()
 }
