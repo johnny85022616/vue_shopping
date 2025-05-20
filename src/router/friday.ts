@@ -7,6 +7,7 @@ import Order from '@/views/Order.vue';
 import ShoppingIntro from '@/views/ShoppingIntro.vue';
 import ElectronicTicket from '@/views/ElectronicTicket.vue';
 import ConsigneeManagement from '@/views/consigneeManagement.vue';
+import CreditCardManagement from '@/views/CreditCardManagement.vue';
 export const fridayRoutes = [
   //首頁路由
   {
@@ -68,5 +69,10 @@ export const fridayRoutes = [
     path: '/member/receiver',
     name: 'receiver',
     component: ConsigneeManagement,
+  },
+  {
+    path: '/member/creditCard',
+    name: 'creditCard',
+    component: CreditCardManagement,
   },
 ];
