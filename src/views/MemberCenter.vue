@@ -53,9 +53,8 @@
           <!-- <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/member/receiver">收貨人通訊錄</a></li> -->
           <li class="py-2"><RouterLink class="no-underline text-c_tundora text-sm apple" :to="{ name: 'receiver' }">收貨人通訊錄
         </RouterLink></li>
-          <li class="py-2"><a class="no-underline text-c_tundora text-sm"
-              href="/mobileweb/member/creditCardInfo">信用卡綁定</a>
-          </li>
+          <li class="py-2"><RouterLink class="no-underline text-c_tundora text-sm apple" :to="{ name: 'creditCard' }">信用卡綁定
+        </RouterLink></li>
           <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/mobileweb/member/cvsInfo">取貨門市設定</a>
           </li>
           <li class="py-2"><a class="no-underline text-c_tundora text-sm" href="/member/einvoiceInfo">電子發票(手機)載具設定</a>
