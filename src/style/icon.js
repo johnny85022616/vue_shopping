@@ -41,5 +41,8 @@ export default {
   'ticketFolder-icon': "url('@/assets/icons/ticket-folder.svg')",
   'radio-icon': "url('@/assets/icons/radio.svg')",
   'radio-active-icon': "url('@/assets/icons/radio_active.svg')",
-  'delete-icon': "url('@/assets/icons/delete.svg')"
+  'delete-icon': "url('@/assets/icons/delete.svg')",
+  'visa-icon': "url('@/assets/icons/visa.png')",
+  'jcb-icon': "url('@/assets/icons/jcb.png')",
+  'mastercard-icon': "url('@/assets/icons/mastercard.png')",
 };

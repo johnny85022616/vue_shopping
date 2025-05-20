@@ -6,12 +6,24 @@
       <p class="text-lg font-bold text-c_mine_shaft">信用卡管理</p>
       <span @click="openCreateDialog">新增</span>
     </div>
+    <creditCardList v-if="creditCardData && creditCardData.length !== 0" :creditCardData="creditCardData"></creditCardList>
   </div>
 </template>
 <script lang="ts" setup name="creditCardManagement">
 import navigation from '@/components/common/navigation.vue';
+import creditCardList from '@/components/creditCard/creditCardList.vue';
+import useCreditCard from '@/hooks/useCreditCard';
+import { toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter()
+const creditCard = useCreditCard(); //取得creditCard composable
+const { creditCardData } = toRefs(creditCard)
+
+init()
+
+async function init () {
+  creditCard.getCreditCardData();
+}
 
 function historyBack() {
  router.back()  
