@@ -24,7 +24,7 @@
         <p class="text-sm text-c_sliver">{{ item.name }}</p>
       </div>
       <div class="right">
-        <i class="inline-block bg-delete-icon w-5 h-5 mr-2 bg-center bg-100% bg-no-repeat"></i>
+        <i @click="deleteCreditCard(item.expressCheckoutId)" class="inline-block bg-delete-icon w-5 h-5 mr-2 bg-center bg-100% bg-no-repeat"></i>
       </div>
     </li>
   </ul>
@@ -44,5 +44,10 @@ const creditCard = inject('creditCard') as creditCardConposable;
 init();
 
 function init() { }
+
+//刪除信用卡
+function deleteCreditCard(id: string) {
+  creditCard.deleteCreditCard(id);
+}
 
 </script>

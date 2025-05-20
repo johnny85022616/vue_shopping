@@ -13,10 +13,11 @@
 import navigation from '@/components/common/navigation.vue';
 import creditCardList from '@/components/creditCard/creditCardList.vue';
 import useCreditCard from '@/hooks/useCreditCard';
-import { toRefs } from 'vue';
+import { provide, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter()
 const creditCard = useCreditCard(); //取得creditCard composable
+provide('creditCard', creditCard)
 const { creditCardData } = toRefs(creditCard)
 
 init()
