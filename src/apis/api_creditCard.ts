@@ -18,6 +18,19 @@ const api_creditCard = {
         return [];
       });
   },
+  // 刪除信用卡
+  async deleteCreditCard(cartId:string ): Promise<boolean> {
+    return await fetch(`${frontPath}mgmt/member/creditCardDel/${cartId}`, {
+      ...fetchPostHeaders,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        return res?.resultCode === 0 || false;
+      })
+      .catch(() => {
+        return false;
+      });
+  },
 }
 
 
