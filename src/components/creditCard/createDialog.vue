@@ -19,10 +19,10 @@
             <div :class="['mb-5 group', { error: expireAlert.length > 0 }]">
               <p class="text-c_heavy-metal">有效期限</p>
               <div class="flex">
-                <input class="formInput mr-2 group-[.error]:border-c_red" type="phone" v-model="expire.month" @input="formatExpire('month')"
-                  placeholder="MM" ref="monthInput">
-                <input class="formInput group-[.error]:border-c_red" type="phone" v-model="expire.year" @input="formatExpire('year')"
-                  placeholder="YY" ref="yearInput">
+                <input class="formInput mr-2 group-[.error]:border-c_red" type="phone" v-model="expire.month"
+                  @input="formatExpire('month')" placeholder="MM" ref="monthInput">
+                <input class="formInput group-[.error]:border-c_red" type="phone" v-model="expire.year"
+                  @input="formatExpire('year')" placeholder="YY" ref="yearInput">
               </div>
               <span class="text-c_red">{{ expireAlert }}</span>
             </div>
@@ -60,10 +60,20 @@ function formatExpire(type: 'month' | 'year') {
   if (type === 'year' && val.length === 0) monthInput.value?.focus();
 }
 
-function confirmClick() {
+async function confirmClick() {
   const namePass = checkMemeber(['name']);
   const creditPass = checkCreditCard()
-  return namePass && creditPass
+  const pass = namePass && creditPass
+  if (!pass) return
+  const insertInfo = {
+    isDefault: "Y",
+    name: name.value,
+    number: creditNum.value.replace(/[\s]/g, ""),
+    expiration: `20${expire.value.year}${expire.value.month}`,
+    temp: false,
+  };
+  const added = await creditCard.addCreditCard(insertInfo)
+  if (added) closeDialog()
 }
 
 </script>

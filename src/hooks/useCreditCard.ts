@@ -1,4 +1,4 @@
-import type { creditCard } from '@/types/creditCard';
+import type { addCreditCardPayload, creditCard } from '@/types/creditCard';
 import type { OrNull } from '@/types/util';
 import api from '@/apis/api';
 import { ref, type Ref } from 'vue';
@@ -8,11 +8,11 @@ export interface creditCardConposable {
   creditCardData: Ref<OrNull<creditCard[]>>;
   getCreditCardData: () => void;
   deleteCreditCard: (cartId: string) => void;
+  addCreditCard: (payload: addCreditCardPayload) => Promise<boolean>;
 }
 
-
 export default function useCreditCard(): creditCardConposable {
-  const popup = usePopup()
+  const popup = usePopup();
   const creditCardData = ref<OrNull<creditCard[]>>(null);
 
   //取得信用卡列表
@@ -29,7 +29,13 @@ export default function useCreditCard(): creditCardConposable {
     const confirm = await popup.confirm('是否刪除此信用卡');
     if (!confirm) return;
     const isPass = await api.creditCard.deleteCreditCard(cartId);
-    if (isPass) getCreditCardData()
+    if (isPass) getCreditCardData();
   }
-  return { creditCardData,getCreditCardData, deleteCreditCard};
+  //新增信用卡
+  async function addCreditCard(payload: addCreditCardPayload): Promise<boolean> {
+    const isPass = await api.creditCard.addCreditCard(payload);
+    if (isPass) getCreditCardData();
+    return isPass;
+  }
+  return { creditCardData, getCreditCardData, deleteCreditCard, addCreditCard };
 }

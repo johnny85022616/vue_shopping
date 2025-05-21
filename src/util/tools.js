@@ -516,6 +516,7 @@ export default {
       return errorMessage;
     } else {
       year = '20' + year;
+      console.log('year', year);
       // 檢查到期日
       var today = new Date();
       if (today.getFullYear() > year || (today.getFullYear() == year && today.getMonth() + 1 > month)) {

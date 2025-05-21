@@ -31,7 +31,7 @@ export default function useCreditCardForm(): UseCreditCardForm {
   function checkCreditCard(): boolean {
     const { checkCreditCardInfo, checkCreditExpire } = tools;
     creditCardForm.creditNumAlert = checkCreditCardInfo(creditCardForm.creditNum);
-    creditCardForm.expireAlert = checkCreditExpire(creditCardForm.expire.month, creditCardForm.expire.year);
+    creditCardForm.expireAlert = checkCreditExpire(creditCardForm.expire.year, creditCardForm.expire.month);
     return !creditCardForm.creditNumAlert && !creditCardForm.expireAlert;
   }
 
