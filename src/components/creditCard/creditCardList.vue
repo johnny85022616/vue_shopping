@@ -3,7 +3,7 @@
     <li v-for="(item , idx) in creditCardData" class="bg-c_white flex py-4 px-2 m-2 rounded-lg first:mt-0"
       :key="idx">
       <div class="left">
-          <i :class="`${item.isChose ? 'bg-radio-active-icon' : 'bg-radio-icon'} inline-block w-5 h-5 mr-2 bg-center bg-100% bg-no-repeat`"></i>
+          <i :class="`${item.isChose ? 'bg-radio-active-icon' : 'bg-radio-icon'} inline-block w-5 h-5 mr-2 bg-center bg-100% bg-no-repeat`" @click="updateDefaultCreditCard(item.expressCheckoutId)"></i>
       </div>
       <div class="middle flex-1">
         <div class="flex items-center mb-1">
@@ -48,6 +48,9 @@ function init() { }
 //刪除信用卡
 function deleteCreditCard(id: string) {
   creditCard.deleteCreditCard(id);
+}
+function updateDefaultCreditCard(id: string){
+  creditCard.updateDefaultCreditCard(id);
 }
 
 </script>

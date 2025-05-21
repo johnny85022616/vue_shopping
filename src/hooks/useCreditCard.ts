@@ -9,6 +9,7 @@ export interface creditCardConposable {
   getCreditCardData: () => void;
   deleteCreditCard: (cartId: string) => void;
   addCreditCard: (payload: addCreditCardPayload) => Promise<boolean>;
+  updateDefaultCreditCard: (expressCheckoutId: string) => void;
 }
 
 export default function useCreditCard(): creditCardConposable {
@@ -37,5 +38,9 @@ export default function useCreditCard(): creditCardConposable {
     if (isPass) getCreditCardData();
     return isPass;
   }
-  return { creditCardData, getCreditCardData, deleteCreditCard, addCreditCard };
+  async function updateDefaultCreditCard(expressCheckoutId: string) {
+    const isPass = await api.creditCard.updateCreditCard(expressCheckoutId);
+    if (isPass) getCreditCardData();
+  }
+  return { creditCardData, getCreditCardData, deleteCreditCard, addCreditCard, updateDefaultCreditCard };
 }
