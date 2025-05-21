@@ -24,7 +24,7 @@
 <script lang="ts" setup name="createDialog">
 import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
 import type { consigneeConposable } from '@/hooks/useConsignee';
-import useMemberForm from '@/hooks/useMemberForm';
+import useMemberForm from '@/hooks/form/useMemberForm';
 import { inject, ref, toRefs, watch } from 'vue';
 
 const { memberForm, changeCity, phoneFormat, formCheck } = useMemberForm();
