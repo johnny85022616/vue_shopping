@@ -3,10 +3,10 @@
     <div class="textPopup"></div>
     <div v-if="visible" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
-        <p class="mb-4 text-gray-800">{{ message }}</p>
+        <p class="mb-6 text-gray-800">{{ message }}</p>
         <div class="flex justify-center gap-4">
-          <button @click="onConfirm" class="px-4 py-2 bg-blue-600 text-white rounded">確認</button>
-          <button @click="onCancel" class="px-4 py-2 bg-gray-300 text-black rounded">取消</button>
+          <button @click="onCancel" class="px-4 py-1 bg-c_white text-c_red border border-solid border-c_red rounded">取消</button>
+          <button @click="onConfirm" class="px-4 py-1 bg-c_red text-white border border-solid border-c_red rounded">確認</button>
         </div>
       </div>
     </div>
