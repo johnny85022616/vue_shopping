@@ -14,4 +14,3 @@ export interface creditCard {
 }
 
 export type addCreditCardPayload = Pick<creditCard, 'number' | 'name' | 'expiration' | 'isDefault' | 'temp'>;
-export type updateCreditCardPayload = Pick<creditCard, 'expressCheckoutId' | 'isDefault'>;
