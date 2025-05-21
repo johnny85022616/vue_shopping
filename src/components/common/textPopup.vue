@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
-    <div class="textPopup"></div>
-    <div v-if="visible" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    <!-- <div class="textPopup"></div> -->
+    <div v-if="visible" class="textPopup fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
         <p class="mb-6 text-gray-800">{{ message }}</p>
         <div class="flex justify-center gap-4">
