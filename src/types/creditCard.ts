@@ -12,3 +12,5 @@ export interface creditCard {
   temp: boolean;
   isChose?: boolean;
 }
+
+export type addCreditCardPayload = Pick<creditCard, 'number' | 'name' | 'expiration' | 'isDefault' | 'temp'>;
