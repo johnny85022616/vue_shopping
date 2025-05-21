@@ -1,4 +1,4 @@
-import type { addCreditCardPayload, creditCard } from '@/types/creditCard';
+import type { addCreditCardPayload, creditCard, updateCreditCardPayload } from '@/types/creditCard';
 import config from '../config/config';
 import uiAlert from './ui_alert';
 const { frontApiPath, fetchGetHeaders,fetchPostHeaders } = config
@@ -49,6 +49,20 @@ const api_creditCard = {
       })
       .catch(() => {
         uiAlert.getFadeAlert("新增信用卡錯誤")
+        return false;
+      });
+  },
+  // 設定信用卡
+  async updateCreditCard(postData: updateCreditCardPayload): Promise<boolean> {
+    return await fetch(`${frontPath}mgmt/member/creditCardUpdate/default`, {
+      ...fetchPostHeaders,
+      body: JSON.stringify(postData),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        return res?.resultCode === 0 || false;
+      })
+      .catch(() => {
         return false;
       });
   },
