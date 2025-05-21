@@ -19,13 +19,14 @@
             <div :class="['mb-5 group', { error: expireAlert.length > 0 }]">
               <p class="text-c_heavy-metal">有效期限</p>
               <div class="flex">
-                <input class="formInput mr-2 group-[.error]:border-c_red" type="phone" v-model="expire.month"
+                <input class="formInput mr-2 group-[.error]:border-c_red text-center" type="phone" v-model="expire.month"
                   @input="formatExpire('month')" placeholder="MM" ref="monthInput">
-                <input class="formInput group-[.error]:border-c_red" type="phone" v-model="expire.year"
+                <input class="formInput group-[.error]:border-c_red text-center" type="phone" v-model="expire.year"
                   @input="formatExpire('year')" placeholder="YY" ref="yearInput">
               </div>
               <span class="text-c_red">{{ expireAlert }}</span>
             </div>
+            <p class="text-sm text-c_mine_shaft">按下確認即表示同意將本次收貨人資料紀錄於「信用卡管理｣中，節省下次結帳時間。</p>
           </div>
           <div
             class="submitBtn w-full h-[60px] leading-[60px] fixed bottom-0 left-0 right-0 bg-c_white text-center border-t border-solid border-c_alto">
