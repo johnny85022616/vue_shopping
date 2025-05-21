@@ -6,14 +6,25 @@
         <template v-slot:body>
           <div class="creditCardForm mt-2 mr-4 mb-20 ml-4">
             <div :class="['mb-5 group', { error: nameAlert.length > 0 }]">
-              <p class="text-c_heavy-metal">*姓名</p>
+              <p class="text-c_heavy-metal">姓名</p>
               <input type="text" class="formInput group-[.error]:border-c_red" v-model="name" placeholder="請輸入姓名" />
               <span class="text-c_red">{{ nameAlert }}</span>
             </div>
             <div :class="['mb-5 group', { error: creditNumAlert.length > 0 }]">
               <p class="text-c_heavy-metal">信用卡號碼</p>
-              <input type="text" class="formInput group-[.error]:border-c_red" v-model="creditNum" placeholder="XXXX XXXX XXXX XXXX" />
+              <input type="text" class="formInput group-[.error]:border-c_red" v-model="creditNum"
+                placeholder="XXXX XXXX XXXX XXXX" />
               <span class="text-c_red">{{ creditNumAlert }}</span>
+            </div>
+            <div :class="['mb-5 group', { error: expireAlert.length > 0 }]">
+              <p class="text-c_heavy-metal">有效期限</p>
+              <div class="flex">
+                <input class="formInput mr-2 group-[.error]:border-c_red" type="phone" v-model="expire.month" @input="formatExpire('month')"
+                  placeholder="MM" ref="monthInput">
+                <input class="formInput group-[.error]:border-c_red" type="phone" v-model="expire.year" @input="formatExpire('year')"
+                  placeholder="YY" ref="yearInput">
+              </div>
+              <span class="text-c_red">{{ expireAlert }}</span>
             </div>
           </div>
           <div
@@ -33,19 +44,26 @@ import { inject, ref, toRefs, watch } from 'vue';
 import type { creditCardConposable } from '@/hooks/useCreditCard';
 import useCreditCardForm from '@/hooks/form/useCreditCardForm';
 
-const { memberForm, formCheck:checkMemeber } = useMemberForm();
+const { memberForm, formCheck: checkMemeber } = useMemberForm();
 const { creditCardForm, checkCreditCard } = useCreditCardForm();
 const creditCard = inject('creditCard') as creditCardConposable;
 const closeDialog: any = inject('closeDialog')
-const isDefault = ref(true);
 const { name, nameAlert } = toRefs(memberForm)
-const { creditNum, creditNumAlert } = toRefs(creditCardForm)
+const { creditNum, creditNumAlert, expire, expireAlert } = toRefs(creditCardForm)
+const yearInput = ref<HTMLElement | null>(null)
+const monthInput = ref<HTMLElement | null>(null)
 
+//信用卡有效期限行為
+function formatExpire(type: 'month' | 'year') {
+  const val = expire.value[type] = expire.value[type].slice(0, 2);
+  if (type === 'month' && val.length === 2) yearInput.value?.focus();
+  if (type === 'year' && val.length === 0) monthInput.value?.focus();
+}
 
 function confirmClick() {
-  const namePass = checkMemeber(['name']); 
+  const namePass = checkMemeber(['name']);
   const creditPass = checkCreditCard()
-  return namePass && creditPass 
+  return namePass && creditPass
 }
 
 </script>
