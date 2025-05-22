@@ -45,4 +45,6 @@ export default {
   'visa-icon': "url('@/assets/icons/visa.png')",
   'jcb-icon': "url('@/assets/icons/jcb.png')",
   'mastercard-icon': "url('@/assets/icons/mastercard.png')",
+  'creditCard-icon': "url('@/assets/icons/credit_manage_big_img.png')",
+  'consignee-icon': "url('@/assets/icons/noConsignee.jpg')",
 };
