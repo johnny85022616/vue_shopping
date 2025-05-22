@@ -7,9 +7,16 @@
       <p class="text-lg font-bold text-c_mine_shaft">信用卡管理</p>
       <span @click="openCreateDialog">新增</span>
     </div>
-    <creditCardList v-if="creditCardData && creditCardData.length !== 0" :creditCardData="creditCardData">
-    </creditCardList>
-    <createDialog v-if="isCreateDialogOpen"></createDialog>
+    <template v-if="isInitDataLoaded">
+      <creditCardList v-if="creditCardData && creditCardData.length !== 0" :creditCardData="creditCardData">
+      </creditCardList>
+      <div v-else class="noCreditCard text-center">
+        <i class="inline-block bg-creditCard-icon w-[212px] h-[163px] bg-center bg-100% bg-no-repeat my-5"/>
+        <p class="text-base text-c_sliver">你沒有任何已儲存的信用卡</p>
+        <p class="text-base text-c_sliver">快來新增信用卡，以節省您結帳的時間</p>
+      </div>
+      <createDialog v-if="isCreateDialogOpen"></createDialog>
+    </template>
   </div>
 </template>
 <script lang="ts" setup name="creditCardManagement">
@@ -22,7 +29,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 const creditCard = useCreditCard(); //取得creditCard composable
 provide('creditCard', creditCard)
-const { creditCardData } = toRefs(creditCard)
+const { isInitDataLoaded, creditCardData } = toRefs(creditCard)
 const isCreateDialogOpen = ref(false); //是否開啟新增信用卡視窗
 provide('closeDialog', closeCreateDialog)
 

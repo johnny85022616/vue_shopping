@@ -5,6 +5,7 @@ import { ref, type Ref } from 'vue';
 import usePopup from './usePopup';
 
 export interface creditCardConposable {
+  isInitDataLoaded: Ref<boolean>;
   creditCardData: Ref<OrNull<creditCard[]>>;
   getCreditCardData: () => void;
   deleteCreditCard: (cartId: string) => void;
@@ -15,10 +16,12 @@ export interface creditCardConposable {
 export default function useCreditCard(): creditCardConposable {
   const popup = usePopup();
   const creditCardData = ref<OrNull<creditCard[]>>(null);
+  const isInitDataLoaded = ref(false);
 
   //取得信用卡列表
   async function getCreditCardData() {
     const data = await api.creditCard.getCreditCard();
+    isInitDataLoaded.value = true;
     if (data) {
       creditCardData.value = data.map((ele: creditCard) => {
         return { ...ele, isChose: ele.isDefault === 'Y' };
@@ -42,5 +45,5 @@ export default function useCreditCard(): creditCardConposable {
     const isPass = await api.creditCard.updateCreditCard(expressCheckoutId);
     if (isPass) getCreditCardData();
   }
-  return { creditCardData, getCreditCardData, deleteCreditCard, addCreditCard, updateDefaultCreditCard };
+  return { isInitDataLoaded, creditCardData, getCreditCardData, deleteCreditCard, addCreditCard, updateDefaultCreditCard };
 }
