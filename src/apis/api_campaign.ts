@@ -3,7 +3,8 @@ import config from '../config/config';
 import { getCampaignUI } from './campaign/campaign_util';
 import tools from '../util/tools';
 
-const { isLogin, cloudApiPath, fetchGetHeaders, fetchPostHeaders, frontApiPath } = config;
+const { isLogin, cloudApiPath, fetchGetHeaders, fetchPostHeaders, frontApiPath, aiCmspApiPath} = config;
+const { getIndexedDBCache, setIndexedDBCache } = tools;
 
 const responseHandler = (res: any): { status: number; msg: string; code: number } => {
   const { resultData } = res;
@@ -200,6 +201,50 @@ const api_campaign = {
     tools.setCache('my_campaign_count', count, 600);
     return count;
   },
+  // 取得CMS Banner設定
+  async getCmsBanners(params = {
+    site_id: 'BW290341',
+    block_code: '',
+    status: 1,
+    type: 1,
+    page: 1,
+    per_page: 100
+  }) {
+    const cacheName = 'cms_banner_cache';
+    const cache = await getIndexedDBCache(cacheName);
+    if (cache) return cache;
+
+    // Convert all params values to string for URLSearchParams
+    const stringParams = Object.fromEntries(
+      Object.entries(params).map(([k, v]) => [k, String(v)])
+    );
+    return await fetch(
+      `${aiCmspApiPath}/api/website_layout?${new URLSearchParams(
+        stringParams
+      ).toString()}`,
+      {
+        ...fetchGetHeaders,
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultCode, resultData } = res;
+        if (resultCode === 0 && resultData) {
+          // 格式化 回吐已 block_code 當作 key 的物件 . A1、SB1、A54、A47、A50、A51
+          const obj: Record<string, any[]> = {};
+          resultData.forEach((x: any) => {
+            if (!obj[x.block_code]) obj[x.block_code] = [];
+            obj[x.block_code].push(x.contents);
+          });
+          setIndexedDBCache(cacheName, obj, 60);
+          return obj;
+        }
+        return null;
+      })
+      .catch(() => {
+        return null;
+      });
+  }
 };
 
 export default api_campaign;
