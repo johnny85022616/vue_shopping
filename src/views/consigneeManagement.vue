@@ -6,8 +6,14 @@
       <p class="text-lg font-bold text-c_mine_shaft">收貨人通訊錄管理</p>
       <span @click="openCreateDialog">新增</span>
     </div>
-    <consigneeList v-if="consigneeData && consigneeData.length !== 0" :consigneeData="consigneeData"></consigneeList>
-    <createDialog v-if="isCreateDialogOpen"></createDialog>
+    <template v-if="isInitDataLoaded">
+      <consigneeList v-if="consigneeData && consigneeData.length !== 0" :consigneeData="consigneeData"></consigneeList>
+      <div v-else class="noConsignee text-center">
+        <i class="inline-block bg-consignee-icon w-[335px] h-[180px] bg-center bg-100% bg-no-repeat my-5"/>
+        <p class="text-base text-c_sliver">你沒有任何已儲存的收貨人資訊</p>
+      </div>
+      <createDialog v-if="isCreateDialogOpen"></createDialog>
+    </template>
   </div>
 </template>
 
@@ -21,7 +27,7 @@ import { useRouter } from 'vue-router';
 
 const router  = useRouter()
 const consignee = useConsignee(); //取得consignee composable
-const { consigneeData } = toRefs(consignee)
+const { isInitDataLoaded, consigneeData } = toRefs(consignee)
 const isCreateDialogOpen = ref(false); //是否開啟新增收貨人視窗
 provide('consignee', consignee)
 provide('closeDialog', closeCreateDialog)

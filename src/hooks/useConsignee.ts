@@ -5,6 +5,7 @@ import type { OrNull } from '@/types/util';
 import usePopup from '@/hooks/usePopup';
 
 export interface consigneeConposable {
+  isInitDataLoaded: Ref<boolean>;
   consigneeData: Ref<OrNull<consignee[]>>;
   getConsignee: () => Promise<void>;
   updateDefaultConsignee: (id: string) => Promise<void>;
@@ -16,6 +17,7 @@ export interface consigneeConposable {
 export default function useConsignee():consigneeConposable {
    const consigneeData = ref<OrNull<consignee[]>>(null); // 明確指定型別
   const popup = usePopup(); //popup composable
+  const isInitDataLoaded = ref(false);
 
   //取得收貨人資料
   async function getConsignee() {
@@ -23,6 +25,7 @@ export default function useConsignee():consigneeConposable {
       if (data) {
         consigneeData.value = data;
       }
+      isInitDataLoaded.value = true;
     });
   }
   //變更預設收貨人
@@ -46,6 +49,7 @@ export default function useConsignee():consigneeConposable {
   }
 
   return {
+    isInitDataLoaded,
     consigneeData,
     getConsignee,
     updateDefaultConsignee,
