@@ -26,9 +26,17 @@ const api_creditCard = {
     })
       .then((res) => res.json())
       .then((res) => {
-        return res?.resultCode === 0 || false;
+        const { resultCode, resultMsg } = res;
+        if (resultCode === 0) {
+          uiAlert.getFadeAlert('刪除成功');
+          return true;
+        } else {
+          uiAlert.getFadeAlert(resultMsg);
+          return false;
+        }
       })
       .catch(() => {
+        uiAlert.getFadeAlert('刪除信用卡錯誤');
         return false;
       });
   },
@@ -75,6 +83,7 @@ const api_creditCard = {
         }
       })
       .catch(() => {
+        uiAlert.getFadeAlert('修改信用卡錯誤');
         return false;
       });
   },
