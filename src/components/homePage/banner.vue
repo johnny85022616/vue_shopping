@@ -17,19 +17,17 @@
 </template>
 
 <script setup lang="ts" name="banner">
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, toRefs } from 'vue';
 import api from '@/apis/api';
 import 'vue3-carousel/dist/carousel.css';
 import { Carousel, Slide } from 'vue3-carousel';
 
-let items = ref<any[]>([]);
-const nowItemPage = ref(0);
+const props = defineProps<{items: any[]}>();
+const {items} = toRefs(props);
+
+const emit = defineEmits(['update:items']);
 
 const init = async () => {
-  api.campaign.getCmsBanners().then((data) => {
-    console.log("data", data);
-    items.value = data['A1'];
-  });
 };
 init();
 </script>

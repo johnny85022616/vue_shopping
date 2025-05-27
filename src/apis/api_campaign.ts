@@ -214,10 +214,11 @@ const api_campaign = {
     const cache = await getIndexedDBCache(cacheName);
     if (cache) return cache;
 
-    // Convert all params values to string for URLSearchParams
-    const stringParams = Object.fromEntries(
+    // Convert all values to string for URLSearchParams
+    const stringParams: Record<string, string> = Object.fromEntries(
       Object.entries(params).map(([k, v]) => [k, String(v)])
     );
+
     return await fetch(
       `${aiCmspApiPath}/api/website_layout?${new URLSearchParams(
         stringParams
@@ -230,12 +231,22 @@ const api_campaign = {
       .then((res) => {
         const { resultCode, resultData } = res;
         if (resultCode === 0 && resultData) {
-          // 格式化 回吐已 block_code 當作 key 的物件 . A1、SB1、A54、A47、A50、A51
+          // 優化：一次處理分類與排序，減少重複程式碼
           const obj: Record<string, any[]> = {};
-          resultData.forEach((x: any) => {
-            if (!obj[x.block_code]) obj[x.block_code] = [];
-            obj[x.block_code].push(x.contents);
-          });
+          for (const x of resultData) {
+            let key = x.block_code;
+            if (/^IC/.test(key)) {
+              // 取出IC後方的數字並存入 contents.id
+              const match = key.match(/^IC(\d+)/);
+              x.contents.id = match ? parseInt(match[1], 10) : 0;
+              key = 'IC';
+            }
+            (obj[key] = obj[key] || []).push(x.contents);
+          }
+          // 只在有 IC 資料時才排序
+          if (Array.isArray(obj.IC)) {
+            obj.IC.sort((a, b) => a.id - b.id);
+          }
           setIndexedDBCache(cacheName, obj, 60);
           return obj;
         }

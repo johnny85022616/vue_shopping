@@ -13,7 +13,7 @@
     <template v-else>
       <div class="homepage-top w-[95%] mx-auto mt-3">
         <template v-if="!siteData">
-          <banner />
+          <banner v-if="A1Data && A1Data.length>0" :items="A1Data"/>
           <shortcutSlider />
         </template>
         <template v-else>
@@ -21,7 +21,9 @@
         </template>
       </div>
       <div class="text-sm w-[95%] mx-auto py-2">
-        <a href="https://shopping.friday.tw/ec2/anti_grift" target="_blank" style="color: red; text-decoration: none;">【慎防詐騙】 本公司不會主動聯繫要求您提供個人金融資料，也不會要求您操作ATM轉帳或網銀</a>
+        <a href="https://shopping.friday.tw/ec2/anti_grift" target="_blank"
+          style="color: red; text-decoration: none;">【慎防詐騙】
+          本公司不會主動聯繫要求您提供個人金融資料，也不會要求您操作ATM轉帳或網銀</a>
       </div>
       <discountAndHot v-if="!siteData" />
       <hotKeywords :isBsite="isBsite" />
@@ -34,7 +36,7 @@
 
 <script setup lang="ts" name="Homepage">
 import api from "@/apis/api";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import navigation from "../components/common/navigation.vue";
 import bsiteBanner from "@/components/homePage/bsiteBanner.vue";
 import banner from "@/components/homePage/banner.vue";
@@ -47,6 +49,7 @@ import { useBsiteStore } from "../stores/bsiteStore";
 import { storeToRefs } from "pinia";
 import type { siteData } from "@/types/apiWeb";
 import type { mixProduct } from "@/types/mixProducts";
+import type { OrNull } from "@/types/util";
 
 const BsiteStore = useBsiteStore();
 const { siteData } = storeToRefs(BsiteStore); //siteData
@@ -60,6 +63,18 @@ const windowY = ref(0);
 const currentY = ref(0);
 const promoData = ref(null);
 const notIsOthersExposeToMeData = ref<mixProduct[] | null>(null);
+const cmsData = ref<OrNull<any>>(null);
+const A1Data = computed(()=> (cmsData.value?.A1 || []))
+const A2Data = computed(()=> (cmsData.value?.A2?.[0] || null))
+const ICData = computed(()=> (cmsData.value?.IC || []))
+
+//取得CMS入稿資料
+async function getCmsData() {
+  const data = await api.campaign.getCmsBanners();
+  if (data) {
+    cmsData.value = data;
+  }
+}
 
 async function getNotIsOthersExposeToMeData() {
   let postData: any = {
@@ -85,6 +100,7 @@ async function getNotIsOthersExposeToMeData() {
 }
 
 const init = async () => {
+  getCmsData()
   window.addEventListener(
     "scroll",
     () => {
