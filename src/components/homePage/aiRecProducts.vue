@@ -73,10 +73,11 @@ const props = defineProps<{ windowY: number }>()
 
 const getProducts = async () => {
   let postData: any = {
-    type: "2",
+    type: 2,
     q1_x: 0.5,
     supplier_y: 0,
     list_num: 500,
+    ui_cnt: "aiRecProduct"
   };
 
   postData.filter = { k: "0000", v: ["", "", "", ""] };
@@ -122,7 +123,7 @@ const parseData = async (data: mixProduct[]) => {
   });
 
   const groupData: any[] = [];
-
+  
   Object.values(tempData).forEach((v: any) => {
     if (v.sub.length > 6) {
       let calcSubRows = Math.floor(v.sub.length / 3) * 3;
