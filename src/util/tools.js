@@ -67,7 +67,7 @@ const indexedDBHelper = {
       request.onsuccess = () => resolve(true);
       request.onerror = () => reject(request.error);
     });
-  }
+  },
 };
 
 const Url = {
@@ -440,6 +440,15 @@ export default {
       }
     }
     return telAlert;
+  },
+  //email防呆
+  checkEmail(val) {
+    let msg = '';
+    if (val !== '') {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      msg = regex.test(val) ? '' : '請輸入正確信箱格式';
+    }
+    return msg;
   },
 
   // //email防呆
