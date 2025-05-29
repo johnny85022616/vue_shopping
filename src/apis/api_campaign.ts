@@ -2,6 +2,7 @@ import type { productInfo } from '@/types/productInfo';
 import config from '../config/config';
 import { getCampaignUI } from './campaign/campaign_util';
 import tools from '../util/tools';
+import api from './api';
 
 const { isLogin, cloudApiPath, fetchGetHeaders, fetchPostHeaders, frontApiPath, aiCmspApiPath} = config;
 const { getIndexedDBCache, setIndexedDBCache } = tools;
@@ -77,48 +78,83 @@ const api_campaign = {
     return pids;
   },
 
-  async parseCampaignDetail(ids: string[], myCampaignIds: string[] = []): Promise<string[]> {
+  async parseCampaignDetail(ids: string[], myCampaignIds: string[] = [], needProductImg = false) {
     if (!ids) return [];
-    const detailRes = await this.getCampaignDetail(ids);
+    let detailRes = await this.getCampaignDetail(ids);
 
-    // D9再折劵 抽出哪寫劵有綁定再折劵
-    const childCampaignMapObj = detailRes
-      .filter((v: campaignInfo) => v.campaignRange?.v2?.[0]) // 取出ASD開頭劵
-      .reduce((map: Record<string, campaignInfo>, v: campaignInfo) => {
-        const parentCampaignId = v.campaignRange?.v2?.[0];
-        if (parentCampaignId) {
-          map[parentCampaignId] = v; // 將parentCampaignId對應至child campaign
+    const payload = {
+      q1_x: 0.5,
+      list_num: 1,
+      type: 1,
+      supplier_y: 1,
+    };
+    //排除子券
+    detailRes = detailRes.filter(v => (!v.campaignRange?.v2?.[0]));
+    if (/print=1/i.test(location.search)) console.log('detailRes', detailRes);
+
+    // 用 Promise.all 等待所有 async forEach 完成
+    await Promise.all(
+      detailRes.map(async (v) => {
+        // 如果campaignRange.v[9]為空格，則無需打getalist
+        if (v.campaignRange?.v[9] === ' ') {
+          const data = {
+            ...payload,
+            filter: {
+              k: v.campaignRange?.k,
+              v: v.campaignRange?.v,
+            },
+          };
+          const res = await api.ai.getAiData('getalist', data);
+          if (res?.[0]?.image_url) v.productImg = res?.[0].image_url;
         }
-        return map;
-      }, {});
+      })
+    );
 
-    const detailObj = detailRes.reduce((p: { [key: string]: campaignInfo }, c: campaignInfo) => {
-      if (c && c.campaignId) {
-        p[c.campaignId] = c;
+    const childCampaignIdsArr:string [] = [] ;
+    const campaignUi = detailRes.map(v=>{
+      if (v.childCampaignIds && v.childCampaignIds.length > 0) {
+        const childCampaignId = v.childCampaignIds[0];
+        childCampaignIdsArr.push(childCampaignId);
       }
-      return p;
-    }, {});
-
-    const output: any[] = [];
-    ids.forEach((id) => {
-      const ob = detailObj[id];
-      if (ob && !ob.campaignRange?.v2?.[0]) {
-        output.push(getCampaignUI(ob, myCampaignIds));
-      } else if (/print=1/i.test(location.search)) {
-        console.log(id + '取不到資料');
-      }
+      return {...getCampaignUI(v, myCampaignIds), childCampaignId: v.childCampaignIds?.[0]};
     });
+    if (/print=1/i.test(location.search)) console.log('campaignUi', campaignUi);
+    if (/print=1/i.test(location.search)) console.log('childCampaignIdsArr', childCampaignIdsArr);
+
+    //子券cmapaignInfo
+    let childDtailRes = await this.getCampaignDetail(childCampaignIdsArr);
+    //子券UI
+    const childCampaignUI = childDtailRes.map((v) => {
+      return getCampaignUI(v, myCampaignIds);
+    })
+    if (/print=1/i.test(location.search)) console.log('childCampaignUI', childCampaignUI);
+
+    const output = campaignUi.map((v:any) => {
+      if(v.childCampaignId){
+        //若有子券，則塞回母券
+        const childCampaignInfo = childCampaignUI.find(c => c.campaignId === v.childCampaignId);
+        if(childCampaignInfo){
+          v.childCampaignInfo = childCampaignInfo;
+        }
+      }
+      return v
+    })
+
+    //取得活動第一個商品圖
+    if(output && needProductImg){
+      const pids = output.map(v=>v.pid)
+      const products = await api.product.getProducts(pids)
+      output.forEach((v) => {
+        if (!v.productImg) {
+          const product = products?.[v.pid]
+            v.productImg = product?.image_url || 'https://img.shopping.friday.tw/images/product/272/8168822/8168822_3_1.webp?853171'
+        }
+      })
+    }
+    if (/print=1/i.test(location.search)) console.log('output', output);
 
     // 判斷是否有再折劵
-    return Object.keys(childCampaignMapObj).length === 0
-      ? output
-      : output.map((v) => {
-          // 若有再折劵，再折劵對應母campaignId，塞回母劵
-          if (childCampaignMapObj[v.campaignId]) {
-            v['childCampaignInfo'] = getCampaignUI(childCampaignMapObj[v.campaignId], myCampaignIds);
-          }
-          return v;
-        });
+    return output
   },
   // 取得個人身上有哪些活動折扣campaignId
   async getMyCampaigns(returnDetail = false): Promise<string[]> {
