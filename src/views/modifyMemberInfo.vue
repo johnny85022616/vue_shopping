@@ -1,5 +1,5 @@
 <template>
-  <div class="modifyMemberInfo">
+  <div class="modifyMemberInfo mb-[60px]">
     <navigation></navigation>
     <div
       class="w-full h-[50px] text-center border-b border-solid border-c_alto relative flex items-center justify-center p-5">
@@ -9,18 +9,30 @@
     </div>
     <div class="consigneeForm mt-2 mr-4 mb-20 ml-4">
       <div :class="['mb-5 group', { error: nameAlert.length > 0 }]">
-        <p class="text-c_heavy-metal">姓名</p>
+        <p class="text-c_heavy-metal">姓名：</p>
         <input type="text" class="formInput group-[.error]:border-c_red" v-model="name" placeholder="請輸入姓名" />
         <span class="text-c_red">{{ nameAlert }}</span>
       </div>
+      <div :class="['mb-5 group']">
+        <p class="text-c_heavy-metal">性別：</p>
+        <select class="formSelect group-[.error]:border-c_red" name="gender" v-model="gender">
+            <option :value="0">男</option>
+          </select>
+      </div>  
+      <div :class="['mb-5 group', { error: emailAlert.length > 0 }]">
+        <p class="text-c_heavy-metal">E-mail：</p>
+        <input type="text" class="formInput group-[.error]:border-c_red" v-model="email" @input="phoneFormat"
+          placeholder="請輸入E-mail" />
+        <span class="text-c_red">{{ emailAlert }}</span>
+      </div>
       <div :class="['mb-5 group', { error: phoneAlert.length > 0 }]">
-        <p class="text-c_heavy-metal">手機號碼</p>
+        <p class="text-c_heavy-metal">手機號碼：</p>
         <input type="phone" class="formInput group-[.error]:border-c_red" v-model="phone" @input="phoneFormat"
           placeholder="請輸入手機號碼" />
         <span class="text-c_red">{{ phoneAlert }}</span>
       </div>
       <div :class="['consigneeForm__address mb-5 group', { error: addressAlert.length > 0 }]">
-        <p class="text-c_heavy-metal">地址</p>
+        <p class="text-c_heavy-metal">地址：</p>
         <div class="flex">
           <select class="formSelect group-[.error]:border-c_red mr-5" name="city" v-model="city"
             @change="city && changeCity(city)">
@@ -49,7 +61,7 @@ import { toRefs } from "vue";
 
 const router = useRouter()
 const { memberForm, changeCity, phoneFormat, formCheck } = useMemberForm();
-const { name, phone, city, region, road, nameAlert, phoneAlert, addressAlert, cityArr, regionArr } = toRefs(memberForm);
+const { name, phone, city, region, road, email, gender, nameAlert, phoneAlert, emailAlert, addressAlert, cityArr, regionArr } = toRefs(memberForm);
 
 function historyBack() {
   router.back()
