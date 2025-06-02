@@ -32,6 +32,7 @@ interface MemberForm {
   addressAlert: string;
   cityArr: City[] | null;
   regionArr: Region[] | null;
+  hasMemeberName: boolean; 
 }
 
 export interface UseMemberForm {
@@ -63,6 +64,7 @@ export default function useMemberForm(): UseMemberForm {
     addressAlert: '',
     cityArr: [], // 縣市陣
     regionArr: [], // 區域陣列
+    hasMemeberName: false // 是否有設定過會員名稱
   });
 
   init();
@@ -77,9 +79,12 @@ export default function useMemberForm(): UseMemberForm {
 
   //如果有會員資料，則填入會員資料
   async function processMemeber(){
-    const memebetData = await api.member.getMemberData(true)
-    if(!memebetData) return 
-    const { addr, name, mobile, email , gender} = memebetData;
+    const memberData = await api.member.getMemberData(true)
+    if(!memberData) return 
+    const { addr, name, mobile, email , gender} = memberData;
+    if(memberData.name){
+      memberForm.hasMemeberName = true; //有設定過會員資料
+    }
     memberForm.name = name || "";
     memberForm.gender = gender === 0 ? 0 : 1;
     memberForm.email = email || "";

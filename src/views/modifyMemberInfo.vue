@@ -10,7 +10,7 @@
     <div class="consigneeForm mt-2 mr-4 mb-20 ml-4">
       <div :class="['mb-5 group', { error: nameAlert.length > 0 }]">
         <p class="text-c_heavy-metal">姓名：</p>
-        <input type="text" class="formInput group-[.error]:border-c_red" v-model="name" placeholder="請輸入姓名" />
+        <input type="text" class="formInput group-[.error]:border-c_red" v-model="name" placeholder="請輸入姓名" :disabled="hasMemeberName"/>
         <span class="text-c_red">{{ nameAlert }}</span>
       </div>
       <div :class="['mb-5 group']">
@@ -62,12 +62,12 @@ import { toRefs } from "vue";
 
 const router = useRouter()
 const { memberForm, changeCity, phoneFormat, processMemeber, formCheck } = useMemberForm();
-const { name, phone, city, region, road, email, gender, nameAlert, phoneAlert, emailAlert, addressAlert, cityArr, regionArr } = toRefs(memberForm);
+const { name, phone, city, region, road, email, gender, nameAlert, phoneAlert, emailAlert, addressAlert, cityArr, regionArr,hasMemeberName} = toRefs(memberForm);
 
 init()
 
 async function init(){
-  processMemeber()
+  await processMemeber()
 }
 
 function historyBack() {

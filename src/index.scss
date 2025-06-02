@@ -2,30 +2,35 @@
 @tailwind components;
 @tailwind utilities;
 
-
-@layer utilities{
-  
+@layer utilities {
 }
 
-@layer base{
+@layer base {
+  input, select {
+    &:disabled {
+      @apply text-c_sliver bg-c_black_haze;
+      /* 若需更明顯可加上 cursor-not-allowed */
+      cursor: not-allowed;
+    }
+  }
 }
 
-@layer components{
-  .redCount{
-    @apply absolute top-[2px] right-[23px] flex items-center w-fit min-w-[14px] h-[15px] py-[1px] px-[5px] rounded-[25px] text-c_white text-xs bg-c_pomegranateapprox
+@layer components {
+  .redCount {
+    @apply absolute top-[2px] right-[23px] flex items-center w-fit min-w-[14px] h-[15px] py-[1px] px-[5px] rounded-[25px] text-c_white text-xs bg-c_pomegranateapprox;
   }
-  .gap-line{
-    @apply h-3 bg-c_background
+  .gap-line {
+    @apply h-3 bg-c_background;
   }
-  .arrowBorder{
-    @apply relative border border-solid border-c_sliver no-underline rounded-[15px] py-2 px-4 mb-1 shadow-[0_0_8px_rgba(0,0,0,0.3)] before:block before:absolute before:left-[40%] before:bottom-[100%] before:w-0  before:h-0 before:border-[10px] before:border-solid before:border-[transparent] before:border-b-c_sliver after:block after:absolute after:left-[40.25%] after:top-[-17px] after:bottom-full after:w-0 after:h-0 after:border-[9px] after:border-solid after:border-[transparent] after:border-b-c_white
+  .arrowBorder {
+    @apply relative border border-solid border-c_sliver no-underline rounded-[15px] py-2 px-4 mb-1 shadow-[0_0_8px_rgba(0,0,0,0.3)] before:block before:absolute before:left-[40%] before:bottom-[100%] before:w-0  before:h-0 before:border-[10px] before:border-solid before:border-[transparent] before:border-b-c_sliver after:block after:absolute after:left-[40.25%] after:top-[-17px] after:bottom-full after:w-0 after:h-0 after:border-[9px] after:border-solid after:border-[transparent] after:border-b-c_white;
   }
 
-  .formInput{
-    @apply text-base py-2 px-4 mt-1 border border-solid border-c_black_haze rounded-lg w-full bg-c_black_haze placeholder:text-c_sliver
+  .formInput {
+    @apply text-base py-2 px-4 mt-1 border border-solid border-c_black_haze rounded-lg w-full bg-c_black_haze placeholder:text-c_sliver;
   }
-  .formSelect{
-    @apply w-full text-base py-2 px-4 mt-1 border border-solid border-c_black_haze rounded-lg bg-c_black_haze
+  .formSelect {
+    @apply w-full text-base py-2 px-4 mt-1 border border-solid border-c_black_haze rounded-lg bg-c_black_haze;
   }
   // 自訂aler樣式
   @import './style/component/fadeAlert.scss';
