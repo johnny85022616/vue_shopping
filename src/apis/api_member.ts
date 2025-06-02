@@ -40,7 +40,7 @@ const api_member = {
    * @param isGetMark 是否取得會員標記
    * @returns 
    */
-  async getMemberData(isGetMark=false) {
+  async getMemberData(isGetMark=false): Promise<Member | null> {
     const exHeaders = setTicket();
     const data = await fetch(`${frontPath}member/info/getMemberInfo?type=${isGetMark}`, {
       ...fetchPostHeaders,
