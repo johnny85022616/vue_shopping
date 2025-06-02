@@ -16,9 +16,10 @@
       <div :class="['mb-5 group']">
         <p class="text-c_heavy-metal">性別：</p>
         <select class="formSelect group-[.error]:border-c_red" name="gender" v-model="gender">
-            <option :value="0">男</option>
+            <option :value="Gender.男">男</option>
+            <option :value="Gender.女">女</option>
           </select>
-      </div>  
+      </div>
       <div :class="['mb-5 group', { error: emailAlert.length > 0 }]">
         <p class="text-c_heavy-metal">E-mail：</p>
         <input type="text" class="formInput group-[.error]:border-c_red" v-model="email" @input="phoneFormat"
@@ -53,7 +54,7 @@
   </div>
 </template>
 <script lang="ts" setup name="modifyMemberInfo">
-import api from "@/apis/api";
+import { Gender } from '@/hooks/form/useMemberForm';
 import navigation from "../components/common/navigation.vue";
 import { useRouter } from "vue-router";
 import useMemberForm from "@/hooks/form/useMemberForm";
