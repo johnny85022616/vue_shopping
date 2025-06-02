@@ -380,9 +380,10 @@ export default {
   //姓名防呆
   checkName(name) {
     let nameAlert = '';
-    var otherChar = name.replace(/[A-Za-z-\s\u4e00-\u9fa5]/g, ''); //取代非特殊字元正則
+    var otherChar = name.replace(/[A-Za-z-\s*\u4e00-\u9fa5]/g, ''); //取代非特殊字元正則
     var tabChar = name.search(/\t/); //存在tab正則
-    var onlyChinese = name.replace(/[A-Za-z-\s]/g, ''); //英文取代正則
+    var onlyChinese = name.replace(/[A-Za-z-\s*]/g, ''); //英文取代正則
+    console.log(onlyChinese);
 
     //是否為空值
     if (null == name || name.trim().length <= 0) {
@@ -397,12 +398,8 @@ export default {
       nameAlert += '不可輸入特殊字元';
     }
     //當英文被取代掉時候 應只剩下中文
-    else if (onlyChinese != '' && name.length != onlyChinese.length) {
-      nameAlert += '不可中英夾雜';
-    }
-    //姓名如輸入中文，最少需輸入兩個字
     else if (onlyChinese.length < 2 && onlyChinese.length != 0) {
-      nameAlert += '需輸入兩個以上中文字元';
+      nameAlert += '不可中英夾雜';
     }
     //不可輸入超過20個字
     else if (name.length > 20) {
@@ -417,7 +414,7 @@ export default {
     var re = /^09/; //09開頭正則
 
     if (phone.length != 0) {
-      if (isNaN(phone) == true) {
+      if (/[^0-9x*]/g.test(phone)) {
         phoneAlert += '不可包含其他字元';
       } else if (null == phone || phone.length < 10) {
         phoneAlert += '字數不足';
