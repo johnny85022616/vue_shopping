@@ -6,6 +6,7 @@ export enum Gender {
 import { reactive, type Ref } from 'vue';
 import tools from '@/util/tools';
 import address from '@/mockData/AddressMap';
+import api from '@/apis/api';
 
 interface City {
   id: number;
@@ -39,6 +40,7 @@ export interface UseMemberForm {
   changeCity: (id: number) => void;
   phoneFormat: () => void;
   formCheck: (fields: ('name' | 'phone' | 'address' | 'email')[]) => boolean;
+  processMemeber: () => Promise<void>;
 }
 
 export default function useMemberForm(): UseMemberForm {
@@ -71,6 +73,21 @@ export default function useMemberForm(): UseMemberForm {
     memberForm.city = memberForm.cityArr[0].id;
     memberForm.regionArr = getCounty(memberForm.city);
     memberForm.region = memberForm.regionArr[0].id;
+  }
+
+  //如果有會員資料，則填入會員資料
+  async function processMemeber(){
+    const memebetData = await api.member.getMemberData(true)
+    if(!memebetData) return 
+    const { addr, name, mobile, email , gender} = memebetData;
+    memberForm.name = name || "";
+    memberForm.gender = gender === 0 ? 0 : 1;
+    memberForm.email = email || "";
+    memberForm.phone = mobile || "";
+    memberForm.city = addr?.cityId || 1;
+    changeCity(memberForm.city); //利用使用者cityId取reigionArr
+    memberForm.region = addr?.countyId || 1;
+    memberForm.road = addr.partialAddress || "";
   }
 
   //防呆檢查
@@ -126,5 +143,6 @@ export default function useMemberForm(): UseMemberForm {
     getCounty,
     changeCity,
     phoneFormat,
+    processMemeber
   };
 }

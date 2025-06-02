@@ -61,8 +61,14 @@ import useMemberForm from "@/hooks/form/useMemberForm";
 import { toRefs } from "vue";
 
 const router = useRouter()
-const { memberForm, changeCity, phoneFormat, formCheck } = useMemberForm();
+const { memberForm, changeCity, phoneFormat, processMemeber, formCheck } = useMemberForm();
 const { name, phone, city, region, road, email, gender, nameAlert, phoneAlert, emailAlert, addressAlert, cityArr, regionArr } = toRefs(memberForm);
+
+init()
+
+async function init(){
+  processMemeber()
+}
 
 function historyBack() {
   router.back()
