@@ -383,7 +383,6 @@ export default {
     var otherChar = name.replace(/[A-Za-z-\s*\u4e00-\u9fa5]/g, ''); //取代非特殊字元正則
     var tabChar = name.search(/\t/); //存在tab正則
     var onlyChinese = name.replace(/[A-Za-z-\s*]/g, ''); //英文取代正則
-    console.log(onlyChinese);
 
     //是否為空值
     if (null == name || name.trim().length <= 0) {
@@ -466,7 +465,7 @@ export default {
   checkAddress(city, region, road) {
     let addressAlert = '';
     var addrFormat = new RegExp('[路街道號]'); //街道正則
-    var otherChar = road.replace(/[\w-\s\u4e00-\u9fa5]/g, ''); //非特殊字元取代
+    var otherChar = road.replace(/[\w-\s*x\u4e00-\u9fa5]/g, ''); //非特殊字元取代
 
     //縣市
     if (city === '') {
