@@ -47,6 +47,7 @@
         <span class="text-c_red">{{ addressAlert }}</span>
       </div>
     </div>
+    <agreeBox v-if="isGetMemberData" :sendEdm="memberForm.sendEdm" :sendSms="memberForm.sendSms"></agreeBox>
     <div class="flex justify-center">
       <span class="inline-block w-[92%] h-[40px] bg-c_red text-c_white leading-[40px] text-center rounded-[10px]"
         @click="confirmClick">確認</span>
@@ -58,16 +59,19 @@ import { Gender } from '@/hooks/form/useMemberForm';
 import navigation from "../components/common/navigation.vue";
 import { useRouter } from "vue-router";
 import useMemberForm from "@/hooks/form/useMemberForm";
-import { toRefs } from "vue";
+import agreeBox from '@/components/modifyMemberInfo/agreeBox.vue'
+import { ref, toRefs } from "vue";
 
 const router = useRouter()
 const { memberForm, changeCity, phoneFormat, processMemeber, formCheck } = useMemberForm();
 const { name, phone, city, region, road, email, gender, nameAlert, phoneAlert, emailAlert, addressAlert, cityArr, regionArr,hasMemeberName} = toRefs(memberForm);
+const isGetMemberData = ref(false)
 
 init()
 
 async function init(){
   await processMemeber()
+  isGetMemberData.value = true
 }
 
 function historyBack() {

@@ -33,6 +33,8 @@ interface MemberForm {
   cityArr: City[] | null;
   regionArr: Region[] | null;
   hasMemeberName: boolean; 
+  sendEdm: boolean; 
+  sendSms: boolean;
 }
 
 export interface UseMemberForm {
@@ -64,6 +66,8 @@ export default function useMemberForm(): UseMemberForm {
     addressAlert: '',
     cityArr: [], // 縣市陣
     regionArr: [], // 區域陣列
+    sendEdm: false, // 是否同意EDM
+    sendSms: false, // 是否同意簡訊
     hasMemeberName: false // 是否有設定過會員名稱
   });
 
@@ -81,7 +85,8 @@ export default function useMemberForm(): UseMemberForm {
   async function processMemeber(){
     const memberData = await api.member.getMemberData(true)
     if(!memberData) return 
-    const { addr, name, mobile, email , gender} = memberData;
+    const { addr, name, mobile, email , gender,sendEdm,sendSms} = memberData;
+    console.log("memberData", memberData);
     if(memberData.name){
       memberForm.hasMemeberName = true; //有設定過會員資料
     }
@@ -93,6 +98,8 @@ export default function useMemberForm(): UseMemberForm {
     changeCity(memberForm.city); //利用使用者cityId取reigionArr
     memberForm.region = addr?.countyId || 1;
     memberForm.road = addr.partialAddress || "";
+    memberForm.sendEdm = memberData.sendEdm
+    memberForm.sendSms = memberData.sendSms
   }
 
   //防呆檢查
