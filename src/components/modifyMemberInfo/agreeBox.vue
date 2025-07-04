@@ -23,6 +23,7 @@
     <fullscreenDialog v-if="isAgreeDialogOpen" @closeDialog="closeAgreeDialog">
       <template v-slot:body>
           <ecTerms v-if="dialogType === 1" />
+          <ecPrivacy v-if="dialogType === 2" />
       </template>
     </fullscreenDialog>
   </div>
@@ -32,6 +33,7 @@
 import { provide, reactive, ref, toRefs } from 'vue';
 import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
 import ecTerms from '@/components/website/ec_terms.vue';
+import ecPrivacy from '@/components/website/ec_privacy.vue';
 
 
 //checkbox的狀態

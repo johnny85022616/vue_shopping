@@ -344,10 +344,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
-
-
 .serviceTerms {
   &__info {
     @apply p-[5%];
