@@ -13,7 +13,7 @@ interface City {
   name: string;
   counties?: Region[];
 }
-interface Region {
+export interface Region {
   id: number;
   name: string;
   zip: string;
@@ -35,6 +35,7 @@ interface MemberForm {
   hasMemeberName: boolean; 
   sendEdm: boolean; 
   sendSms: boolean;
+  memberId?: number | null; // 會員ID
 }
 
 export interface UseMemberForm {
@@ -68,7 +69,8 @@ export default function useMemberForm(): UseMemberForm {
     regionArr: [], // 區域陣列
     sendEdm: false, // 是否同意EDM
     sendSms: false, // 是否同意簡訊
-    hasMemeberName: false // 是否有設定過會員名稱
+    hasMemeberName: false, // 是否有設定過會員名稱
+    memberId: null,
   });
 
   init();
@@ -100,6 +102,7 @@ export default function useMemberForm(): UseMemberForm {
     memberForm.road = addr.partialAddress || "";
     memberForm.sendEdm = memberData.sendEdm
     memberForm.sendSms = memberData.sendSms
+    memberForm.memberId = memberData.memberId; // 設定會員ID
   }
 
   //防呆檢查

@@ -6,7 +6,7 @@
         :class="{ 'bg-checkbox-icon-active': boxData.isFridayMemberAgree }"></i>
       <div>
         <p>我已閱讀並同意</p>
-        <p class="dialogBtn">《<span @click="openAgreeDialog(1)">服務條款</span>》及《<span
+        <p class="dialogBtn">《<span class="text-c_dodger_blue underline" @click="openAgreeDialog(1)">服務條款</span>》及《<span class="text-c_dodger_blue underline"
             @click="openAgreeDialog(2)">隱私權政策</span>》</p>
       </div>
     </div>
@@ -22,8 +22,8 @@
     </div>
     <fullscreenDialog v-if="isAgreeDialogOpen" @closeDialog="closeAgreeDialog">
       <template v-slot:body>
-          <ecTerms v-if="dialogType === 1" />
-          <ecPrivacy v-if="dialogType === 2" />
+        <ecTerms v-if="dialogType === 1" />
+        <ecPrivacy v-if="dialogType === 2" />
       </template>
     </fullscreenDialog>
   </div>
@@ -31,6 +31,7 @@
 
 <script lang="ts" setup name="agreeBox">
 import { provide, reactive, ref, toRefs } from 'vue';
+import api from '@/apis/api';
 import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
 import ecTerms from '@/components/website/ec_terms.vue';
 import ecPrivacy from '@/components/website/ec_privacy.vue';
@@ -81,6 +82,21 @@ function setCheckboxStatus(type: keyof typeof boxData) {
   // 切換checkbox狀態
   boxData[type] = !boxData[type];
 }
-  
-provide('closeDialog',closeAgreeDialog)
+
+function submit() {
+  let pass = true;
+  if (!boxData.isFridayMemberAgree) {
+    pass = false;
+    api.ui.alert.getFadeAlert("尚未同意服務條款及隱私權政策");
+  }
+
+  return {
+    pass,
+    sendEDM: boxData.isSendEdmAgree,
+    sendSMS: boxData.isSendSmsAgree,
+  };
+}
+
+provide('closeDialog', closeAgreeDialog)
+defineExpose({ submit })
 </script>

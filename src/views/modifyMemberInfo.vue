@@ -10,15 +10,16 @@
     <div class="consigneeForm mt-2 mr-4 mb-20 ml-4">
       <div :class="['mb-5 group', { error: nameAlert.length > 0 }]">
         <p class="text-c_heavy-metal">姓名：</p>
-        <input type="text" class="formInput group-[.error]:border-c_red" v-model="name" placeholder="請輸入姓名" :disabled="hasMemeberName"/>
+        <input type="text" class="formInput group-[.error]:border-c_red" v-model="name" placeholder="請輸入姓名"
+          :disabled="hasMemeberName" />
         <span class="text-c_red">{{ nameAlert }}</span>
       </div>
       <div :class="['mb-5 group']">
         <p class="text-c_heavy-metal">性別：</p>
         <select class="formSelect group-[.error]:border-c_red" name="gender" v-model="gender">
-            <option :value="Gender.男">男</option>
-            <option :value="Gender.女">女</option>
-          </select>
+          <option :value="Gender.男">男</option>
+          <option :value="Gender.女">女</option>
+        </select>
       </div>
       <div :class="['mb-5 group', { error: emailAlert.length > 0 }]">
         <p class="text-c_heavy-metal">E-mail：</p>
@@ -47,7 +48,7 @@
         <span class="text-c_red">{{ addressAlert }}</span>
       </div>
     </div>
-    <agreeBox v-if="isGetMemberData" :sendEdm="memberForm.sendEdm" :sendSms="memberForm.sendSms"></agreeBox>
+    <agreeBox v-if="isGetMemberData" :sendEdm="memberForm.sendEdm" :sendSms="memberForm.sendSms" ref="agreeBoxComponent"></agreeBox>
     <div class="flex justify-center">
       <span class="inline-block w-[92%] h-[40px] bg-c_red text-c_white leading-[40px] text-center rounded-[10px]"
         @click="confirmClick">確認</span>
@@ -55,32 +56,99 @@
   </div>
 </template>
 <script lang="ts" setup name="modifyMemberInfo">
-import { Gender } from '@/hooks/form/useMemberForm';
-import navigation from "../components/common/navigation.vue";
-import { useRouter } from "vue-router";
-import useMemberForm from "@/hooks/form/useMemberForm";
-import agreeBox from '@/components/modifyMemberInfo/agreeBox.vue'
-import { ref, toRefs } from "vue";
+import { Gender, type Region } from '@/hooks/form/useMemberForm';
+import navigation from '../components/common/navigation.vue';
+import { useRouter } from 'vue-router';
+import useMemberForm from '@/hooks/form/useMemberForm';
+import agreeBox from '@/components/modifyMemberInfo/agreeBox.vue';
+import { reactive, ref, toRefs } from 'vue';
+import api from '@/apis/api';
 
-const router = useRouter()
+interface aggreeBoxData {
+  sendEDM: boolean;
+  sendSMS: boolean;
+  pass: boolean;
+}
+
+const router = useRouter();
 const { memberForm, changeCity, phoneFormat, processMemeber, formCheck } = useMemberForm();
-const { name, phone, city, region, road, email, gender, nameAlert, phoneAlert, emailAlert, addressAlert, cityArr, regionArr,hasMemeberName} = toRefs(memberForm);
-const isGetMemberData = ref(false)
+const {
+  name,
+  phone,
+  city,
+  region,
+  road,
+  email,
+  gender,
+  nameAlert,
+  phoneAlert,
+  emailAlert,
+  addressAlert,
+  cityArr,
+  regionArr,
+  hasMemeberName,
+  memberId,
+} = toRefs(memberForm);
 
-init()
+const zip = ref('');
+const isGetMemberData = ref(false);
+const agreeBoxComponent = ref<any>(null);
+const agreeBoxData: aggreeBoxData = reactive({
+  sendEDM: false,
+  sendSMS: false,
+  pass: false,
+});
 
-async function init(){
-  await processMemeber()
-  isGetMemberData.value = true
+init();
+
+async function init() {
+  await processMemeber();
+  isGetMemberData.value = true;
 }
 
 function historyBack() {
-  router.back()
+  router.back();
+}
+
+function parseSubmitData() {
+  const fullAddress = composeFullAddress();
+  const payload = {
+    address: fullAddress || '',
+    email: email.value || '',
+    gender: gender.value,
+    memberId: memberId?.value || '',
+    mobile: phone.value || '',
+    name: name.value || '',
+    sendEdm: agreeBoxData?.sendEDM ? 1 : 0,
+    sendSms: agreeBoxData?.sendSMS ? 1 : 0,
+    zip: zip.value || '',
+  };
+  return payload;
+}
+
+function composeFullAddress() {
+  const cityName = cityArr.value?.filter((v) => v.id === city.value)?.[0].name || '';
+  const regionObj: Region | undefined = regionArr.value?.filter((v) => v.id === region.value)?.[0];
+  const regionName = regionObj?.name || '';
+  zip.value = regionObj?.zip || '';
+  return cityName + regionName + road.value;
+}
+function setAgreeBoxData(agreeBox: aggreeBoxData) {
+  agreeBoxData.sendEDM = agreeBox.sendEDM;
+  agreeBoxData.sendSMS = agreeBox.sendSMS;
 }
 
 //form檢查 ＆ 新增收貨人
-function confirmClick() {
-  const isPass = formCheck(['name', 'phone', 'address'])
-  if (!isPass) return
+async function confirmClick() {
+  const agreeBoxData = agreeBoxComponent.value.submit();
+  if (!agreeBoxData.pass) return;``
+  console.log(5555, agreeBoxData);
+  setAgreeBoxData(agreeBoxData);
+  const formPass = formCheck(['name', 'phone', 'address']);
+  if (!formPass) return;
+  const payload = parseSubmitData();
+  const pass = await api.member.updateMember(payload);
+  if (!pass) return;
+  processMemeber();
 }
 </script>

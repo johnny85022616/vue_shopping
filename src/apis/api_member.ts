@@ -59,6 +59,32 @@ const api_member = {
       });
     return data;
   },
+
+  // 更新會員資料
+  async updateMember(postData: any, showAlert = true) {
+    return await fetch(`${frontPath}member/info/updateV2`, {
+      ...fetchPostHeaders,
+      body: JSON.stringify({
+        param: postData
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const { resultCode, resultMsg } = res;
+        if(resultCode === 0){
+          if(showAlert){
+            uiAlert.getFadeAlert("會員資料更新成功！");
+          }
+          return true;
+        }
+        uiAlert.getFadeAlert(resultMsg);
+        return false;
+      })
+      .catch(() => {
+        uiAlert.getFadeAlert("會員資料更新失敗！");
+        return false;
+      });
+  },
   //查購物金餘額
   async queryVoucherBalance(): Promise<number> {
     return await fetch(`${frontPath}member/voucher/queryVoucherBalance`, {
