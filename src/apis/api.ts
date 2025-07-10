@@ -8,6 +8,7 @@ import promotion from './api_promotion';
 import order from './api_order';
 import creditCard from './api_creditCard';
 import ui from './api_ui';
+import invoice from './api_invoice';
 export default {
   cart,
   web,
@@ -18,5 +19,6 @@ export default {
   promotion,
   ui,
   creditCard,
+  invoice,
   order,
 };
