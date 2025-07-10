@@ -9,6 +9,7 @@ import ElectronicTicket from '@/views/ElectronicTicket.vue';
 import ConsigneeManagement from '@/views/consigneeManagement.vue';
 import CreditCardManagement from '@/views/CreditCardManagement.vue';
 import modifyMemberInfo from '@/views/modifyMemberInfo.vue';
+import invoiceManagement from '@/views/invoiceManagement.vue';
 export const fridayRoutes = [
   //首頁路由
   {
@@ -80,5 +81,10 @@ export const fridayRoutes = [
     path: '/member/edit',
     name: 'editMember',
     component: modifyMemberInfo,
+  },
+  {
+    path: '/member/einvoiceInfo',
+    name: 'einvoiceInfo',
+    component: invoiceManagement,
   },
 ];
