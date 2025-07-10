@@ -6,5 +6,5 @@ export interface invoice {
   companyName?: string;
   type?: number;
   name?: string;
-  vehicle?: string;
+  vehicle?: string | undefined | null;
 }
