@@ -40,7 +40,7 @@
             </div>
           </div>
           <div class="submit-area absolute bottom-0 left-0 w-full p-2 border-t border-solid border-c_alto text-center bg-c_white flex justify-between items-center">
-            <button class="w-[49%] p-2 flex justify-center items-center text-base rounded-[10px] border border-solid border-c_sliver text-c_sliver">重置</button>
+            <button class="w-[49%] p-2 flex justify-center items-center text-base rounded-[10px] border border-solid border-c_red text-c_red">重置</button>
             <button class="w-[49%] p-2 flex justify-center items-center text-base text-c_white bg-c_red rounded-[10px] border border-solid border-c_red">確認</button>
           </div>
       </template>
