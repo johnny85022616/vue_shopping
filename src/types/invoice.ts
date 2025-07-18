@@ -4,7 +4,7 @@ export interface invoice {
   donateId?: string;
   vatNumber?: string;
   companyName?: string;
-  type?: number;
+  type: number;
   name?: string;
   vehicle?: string | undefined | null;
 }
