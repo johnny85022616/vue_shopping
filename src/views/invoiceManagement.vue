@@ -88,7 +88,6 @@ const companyVat = ref('') // 統一編號
 const companyName = ref('') // 公司名稱
 const vehicle = ref('') // 手機條碼載具
 const isVehicleValid = ref(true) // 驗證手機條碼載具是否正確
-const isformChecked = ref(false) // 表單驗證
 const isVehicleSetting = ref(false) // 是否設定手機條碼載具
 const isCompanySetting = ref(false) // 是否設定公司電子發票
 const isApiOk = ref(true)
@@ -156,6 +155,7 @@ function closeDialog() {
   isDialogShow.value = false;
 }
 
+//修改發票資訊
 async function updateInvoice(type: number) {
   let payload = {};
   switch (type) {
