@@ -26,23 +26,30 @@
       </template>
       <template v-slot:body>
         <div v-if="currenType === 5" class="member-cloud-invoice-box mt-5">
-            <div class="text-c_sliver">
-              <div class="form-area">
-                <p>如欲使用手機條碼載具，請於輸入框輸入驗證</p>
-                <div class="input_wrapper mt-1 mb-10">
-                  <input class="text-base py-2 px-4 mt-1 border border-solid border-c_black_haze text-c_mine_shaft rounded-[10px] w-full bg-c_black_haze" type="text" placeholder="請輸入手機條碼" v-model="vehicle" maxlength="8">
-                  <span class="error-msg">手機條碼載具碼有誤，請重新輸入。</span>
-                </div>
-                <p class="text-c_sliver mt-5">・friDay購物已採用電子發票，開立後可至【訂單查詢】點選「發票資訊」，即可查詢發票圖像。</p>
-                <p class="text-c_sliver mt-5">・電子發票會在開獎次日自動兌獎，如中獎會於次月5號以紙本寄送【掛號信】至會員地址(使用手機載具將由財政部自動兌獎)。</p>
-                <p class="text-c_sliver mt-5">・依統一發票使用辦法規定：統一發票一經開立，不得任意更改或改開公司發票。(<a class="text-c_dodger_blue" href="https://www.einvoice.nat.gov.tw/">財政部電子發票流程說明</a>)</p>
+          <div class="text-c_sliver">
+            <div class="form-area">
+              <p>如欲使用手機條碼載具，請於輸入框輸入驗證</p>
+              <div class="input_wrapper mt-1 mb-10">
+                <input
+                  class="text-base py-2 px-4 mt-1 border border-solid border-c_black_haze text-c_mine_shaft rounded-[10px] w-full bg-c_black_haze"
+                  type="text" placeholder="請輸入手機條碼" v-model="vehicle" maxlength="8">
+                <span v-show="!isVehicleValid" class="error-msg text-c_red ">手機碼載具碼有誤，請重新輸入。</span>
               </div>
+              <p class="text-c_sliver mt-5">・friDay購物已採用電子發票，開立後可至【訂單查詢】點選「發票資訊」，即可查詢發票圖像。</p>
+              <p class="text-c_sliver mt-5">・電子發票會在開獎次日自動兌獎，如中獎會於次月5號以紙本寄送【掛號信】至會員地址(使用手機載具將由財政部自動兌獎)。</p>
+              <p class="text-c_sliver mt-5">・依統一發票使用辦法規定：統一發票一經開立，不得任意更改或改開公司發票。(<a class="text-c_dodger_blue"
+                  href="https://www.einvoice.nat.gov.tw/">財政部電子發票流程說明</a>)</p>
             </div>
           </div>
-          <div class="submit-area absolute bottom-0 left-0 w-full p-2 border-t border-solid border-c_alto text-center bg-c_white flex justify-between items-center">
-            <button class="w-[49%] p-2 flex justify-center items-center text-base rounded-[10px] border border-solid border-c_red text-c_red">重置</button>
-            <button class="w-[49%] p-2 flex justify-center items-center text-base text-c_white bg-c_red rounded-[10px] border border-solid border-c_red">確認</button>
-          </div>
+        </div>
+        <div
+          class="submit-area absolute bottom-0 left-0 w-full p-2 border-t border-solid border-c_alto text-center bg-c_white flex justify-between items-center">
+          <button
+            :class="`w-[49%] p-2 flex justify-center items-center text-base rounded-[10px] border border-solid ${isVehicleSetting ? 'border-c_red' : 'border-c_sliver'} ${isVehicleSetting ? 'text-c_red' : 'text-c_sliver'}`">重置</button>
+          <button
+            class="w-[49%] p-2 flex justify-center items-center text-base text-c_white bg-c_red rounded-[10px] border border-solid border-c_red"
+            @click="updateInvoice(currenType)">確認</button>
+        </div>
       </template>
     </fullscreenDialog>
   </div>
@@ -50,7 +57,7 @@
 <script lang="ts" setup name="invoiceManagement">
 import api from '@/apis/api';
 import type { invoice } from '@/types/invoice';
-import { provide, ref } from 'vue';
+import { provide, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import navigation from '@/components/common/navigation.vue';
 import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
@@ -80,7 +87,7 @@ const isCompanyFormShow = ref(false) // 是否顯示公司電子發票輸入表�
 const companyVat = ref('') // 統一編號
 const companyName = ref('') // 公司名稱
 const vehicle = ref('') // 手機條碼載具
-const isVehicleValid = ref(false) // 驗證手機條碼載具是否正確
+const isVehicleValid = ref(true) // 驗證手機條碼載具是否正確
 const isformChecked = ref(false) // 表單驗證
 const isVehicleSetting = ref(false) // 是否設定手機條碼載具
 const isCompanySetting = ref(false) // 是否設定公司電子發票
@@ -111,7 +118,7 @@ function getInvoiceList() {
             break;
           case 5:
             obj.typeInfo = "手機條碼載具 " + v.vehicle || obj.typeInfo
-            vehicle.value = v.vehicle || ""; // 去除載具開頭的斜線
+            vehicle.value = v.vehicle || ""; 
             isVehicleSetting.value = true
             break;
           case 7:
@@ -127,17 +134,57 @@ function getInvoiceList() {
   })
 }
 
+// 驗證手機載具
+async function verifyVehicle() {
+  //先驗證長度
+  if(vehicle.value?.length<8) {
+    isVehicleValid.value = false
+    return 
+  }
+  const v = "/" + vehicle.value.replace(/[^0-9A-Z.+-]/g, "") //去除英數字.+-以外字元(開頭/也會被去掉所以要加回來)
+  isVehicleValid.value = await api.invoice.verifyVehicle(v)
+}
+
 //開啟設定視窗
-function openDialog(type: number){
-  currenType.value = type 
+function openDialog(type: number) {
+  currenType.value = type
   isDialogShow.value = true;
 }
 
 //關閉設定視窗
-function closeDialog(){
+function closeDialog() {
   isDialogShow.value = false;
 }
 
-provide('closeDialog',closeDialog)
+async function updateInvoice(type: number) {
+  let payload = {};
+  switch (type) {
+    case 5:
+      await verifyVehicle()
+      if (!isVehicleValid.value) {
+        return
+      }
+      payload = {
+        invType: "5",
+        isDefault: 'Y',
+        vehicle: vehicle.value,
+      }
+      break;
+  }
+  api.invoice.updateInvoice(payload).then((isSuccess: boolean) => {
+    if (!isSuccess) return
+    // resetMyInvoicePage(type);
+  })
+}
+
+//自動轉大寫與過濾字元
+watch(vehicle, (value) => {
+  const formatted = value.toUpperCase();
+  vehicle.value = formatted;
+}, { immediate: true });
+
+//關閉設定視窗
+
+provide('closeDialog', closeDialog)
 
 </script>
