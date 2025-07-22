@@ -72,4 +72,27 @@ export default {
         return false;
       });
   },
+  // 刪除個人電子發票
+  async deleteInvoice(type:number) {
+    return await fetch(`${frontPath}mgmt/member/invoice/delInvoice?type=${type}`, {
+      ...fetchPostHeaders,
+      body: JSON.stringify(type),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        const {resultCode, resultMsg} = res
+        if (resultCode === 0) {
+          uiAlert.getFadeAlert("重置成功")
+          return true;
+        } else {
+          uiAlert.getFadeAlert(resultMsg)
+          return false;
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        uiAlert.getFadeAlert("重置失敗")
+        return null;
+      });
+  },
 };
