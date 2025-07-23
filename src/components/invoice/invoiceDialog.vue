@@ -37,7 +37,7 @@
 
 <script lang="ts" setup name="invoiceDialog">
 import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
-import { inject, ref, toRefs, watch } from 'vue';
+import { computed, inject, ref, toRefs, watch } from 'vue';
 import api from '@/apis/api';
 
 const vehicle = ref("") // 手機條碼輸入框
@@ -45,7 +45,7 @@ const companyVat = ref("") //公司統一編號輸入框
 const companyName = ref("") //公司名稱
 const isVehicleValid = ref(true) // 驗證手機條碼載具是否正確
 
-const props = withDefaults(defineProps<{originVehicle: string, oirginCompanyVat: string, originCompanyName: string, currenType: number, invoiceItems: Record<string, { typeName: string; typeInfo: string; type: number }>|null }>(), {
+const props = withDefaults(defineProps<{originVehicle: string, oirginCompanyVat: string, originCompanyName: string, currenType: number, isVehicleSetting: boolean, isCompanySetting:boolean, invoiceItems: Record<string, { typeName: string; typeInfo: string; type: number }>|null }>(), {
   originVehicle: "", //之前設定的手機條碼載具
   oirginCompanyVat: "", //之前設定的統一編號
   originCompanyName: "", //之前設定的公司名稱
@@ -55,6 +55,24 @@ const props = withDefaults(defineProps<{originVehicle: string, oirginCompanyVat:
   invoiceItems: null
 })
 const {originVehicle, oirginCompanyVat, originCompanyName, isVehicleSetting, isCompanySetting, currenType, invoiceItems} = toRefs(props)
+
+//重置button的字體顏色
+const resetBtnTextColor = computed(() => {
+  if (currenType.value === 5 || currenType.value === 7) {
+    const isSetting = currenType.value === 5 ? isVehicleSetting.value : isCompanySetting.value;
+    return isSetting ? "text-c_red" : "text-c_sliver";
+  }
+  return "text-c_sliver";
+});
+
+//重置button的border顏色
+const resetBtnBorderColor = computed(() => {
+  if (currenType.value === 5 || currenType.value === 7) {
+    const isSetting = currenType.value === 5 ? isVehicleSetting.value : isCompanySetting.value;
+    return isSetting ? "border-c_red" : "border-c_sliver";
+  }
+  return "border-c_sliver";
+});
 
 const emit = defineEmits(['getInvoiceList'])
 
