@@ -25,7 +25,7 @@
         <div
           class="submit-area absolute bottom-0 left-0 w-full p-2 border-t border-solid border-c_alto text-center bg-c_white flex justify-between items-center">
           <button
-            :class="`w-[49%] p-2 flex justify-center items-center text-base rounded-[10px] border border-solid ${isVehicleSetting ? 'border-c_red' : 'border-c_sliver'} ${isVehicleSetting ? 'text-c_red' : 'text-c_sliver'}`">重置</button>
+            :class="`w-[49%] p-2 flex justify-center items-center text-base rounded-[10px] border border-solid ${isVehicleSetting ? 'border-c_red' : 'border-c_sliver'} ${isVehicleSetting ? 'text-c_red' : 'text-c_sliver'}`" @click="resetInvoice(currenType)">重置</button>
           <button
             class="w-[49%] p-2 flex justify-center items-center text-base text-c_white bg-c_red rounded-[10px] border border-solid border-c_red"
             @click="updateInvoice(currenType)">確認</button>
@@ -39,6 +39,7 @@
 import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
 import { computed, inject, ref, toRefs, watch } from 'vue';
 import api from '@/apis/api';
+import usePopup from '@/hooks/usePopup';
 
 const vehicle = ref("") // 手機條碼輸入框
 const companyVat = ref("") //公司統一編號輸入框
@@ -78,6 +79,8 @@ const emit = defineEmits(['getInvoiceList'])
 
 const closeDialog:any = inject("closeDialog") //關閉dialog方法
 
+const popup = usePopup(); //popup composable
+
 
 init()
 function init(){
@@ -93,7 +96,7 @@ async function updateInvoice(type: number) {
   switch (type) {
     case 5:
       //若沒修改則不需要檢查或打api
-      if(vehicle.value === originVehicle.value) {
+      if(vehicle.value && vehicle.value === originVehicle.value) {
         closeDialog()
         return
       }
@@ -111,7 +114,17 @@ async function updateInvoice(type: number) {
   api.invoice.updateInvoice(payload).then((isSuccess: boolean) => {
     if (!isSuccess) return
     closeDialog()
+    emit("getInvoiceList")
   })
+}
+
+//重置發票資訊
+async function resetInvoice(type: number){
+  const confirm = await popup.confirm('是否將該筆發票資訊刪除');
+  if (!confirm) return;
+  await api.invoice.deleteInvoice(type)
+  closeDialog()
+  emit("getInvoiceList")
 }
 
 // 驗證手機載具

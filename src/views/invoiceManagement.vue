@@ -79,6 +79,13 @@ function getInvoiceList() {
     const invoiceInfo = res ? res : null;
     console.log("invoiceInfo", invoiceInfo);
     if (invoiceInfo) {
+      // Object.values(invoiceItems.value).forEach(v=>{
+      //   const obj = 
+      // })
+
+
+
+
       invoiceInfo.forEach((v: invoice) => {
         const obj = invoiceItems.value[`type${String(v.type)}`]
         switch (v.type) {
@@ -101,6 +108,9 @@ function getInvoiceList() {
     }
     isApiOk.value = true;
   })
+}
+function resetAllState(){
+    
 }
 
 //開啟設定視窗
