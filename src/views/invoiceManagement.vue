@@ -35,23 +35,23 @@ import invoiceDialog from '@/components/invoice/invoiceDialog.vue';
 
 const router = useRouter();
 
-const invoiceItems = ref<Record<string, { typeName: string; typeInfo: string; type: number }>>({
-  "type5": {
+const invoiceItems = ref<{ typeName: string; typeInfo: string; type: number }[]>([
+  {
     typeName: "個人電子發票",
     typeInfo: "尚未設定",
     type: 5,
   },
-  "type1": {
+  {
     typeName: "發票捐贈",
     typeInfo: "伊甸基金會",
     type: 1,
   },
-  "type7": {
+  {
     typeName: "公司電子發票",
     typeInfo: "尚未設定",
     type: 7,
   },
-})
+])
 
 const isEInvoiceFormShow = ref(false) // 是否顯示手機條碼載具輸入表單
 const isCompanyFormShow = ref(false) // 是否顯示公司電子發票輸入表單
@@ -79,32 +79,50 @@ function getInvoiceList() {
     const invoiceInfo = res ? res : null;
     console.log("invoiceInfo", invoiceInfo);
     if (invoiceInfo) {
-      // Object.values(invoiceItems.value).forEach(v=>{
-      //   const obj = 
-      // })
-
-
-
-
-      invoiceInfo.forEach((v: invoice) => {
-        const obj = invoiceItems.value[`type${String(v.type)}`]
-        switch (v.type) {
+      const invoiceMap = invoiceInfo.reduce((map: Record<number, invoice>, v: invoice) => {
+        map[v.type] = v;
+        return map;
+      }, {});
+      console.log("invoiceMap",invoiceMap);
+      invoiceItems.value.forEach(v=>{
+        switch(v.type){
           case 1:
-            obj.typeInfo = v.name || obj.typeInfo //沒值設為原本的伊甸園基金會
-            break;
+            v.typeInfo = invoiceMap[1]?.name || "伊甸基金會"
+            break
           case 5:
-            obj.typeInfo = "手機條碼載具 " + v.vehicle || obj.typeInfo
-            originVehicle.value = v.vehicle || ""; 
+            const vehicle = invoiceMap[5]?.vehicle 
+            v.typeInfo = vehicle?  "手機條碼載具 " + vehicle : "尚未設定"; 
+            originVehicle.value = vehicle || ""; 
             isVehicleSetting.value = true
-            break;
+            break
           case 7:
-            obj.typeInfo = `${v.vatNumber} ${v.companyName}`;
-            oirginCompanyVat.value = v.vatNumber || "";
-            originCompanyName.value = v.companyName || "";
+            const companyInfo = invoiceMap[7]
+            v.typeInfo = `${companyInfo.vatNumber} ${companyInfo.companyName}`;
+            oirginCompanyVat.value = companyInfo.vatNumber || "";
+            originCompanyName.value = companyInfo.companyName || "";
             isCompanySetting.value = true
-            break;
+            break
         }
-      });
+      })
+      // invoiceInfo.forEach((v: invoice) => {
+      //   const obj = invoiceItems.value[`type${String(v.type)}`]
+      //   switch (v.type) {
+      //     case 1:
+      //       obj.typeInfo = v.name || obj.typeInfo //沒值設為原本的伊甸園基金會
+      //       break;
+      //     case 5:
+      //       obj.typeInfo = "手機條碼載具 " + v.vehicle || obj.typeInfo
+      //       originVehicle.value = v.vehicle || ""; 
+      //       isVehicleSetting.value = true
+      //       break;
+      //     case 7:
+      //       obj.typeInfo = `${v.vatNumber} ${v.companyName}`;
+      //       oirginCompanyVat.value = v.vatNumber || "";
+      //       originCompanyName.value = v.companyName || "";
+      //       isCompanySetting.value = true
+      //       break;
+      //   }
+      // });
     }
     isApiOk.value = true;
   })

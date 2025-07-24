@@ -2,7 +2,7 @@
   <div class="invoiceDialog">
     <fullscreenDialog>
       <template v-slot:header>
-        {{ invoiceItems?.[`type${currenType}`].typeName || '發票設定' }}
+        {{ dialogTitle }}
       </template>
       <template v-slot:body>
         <div v-if="currenType === 5" class="member-cloud-invoice-box mt-5">
@@ -19,6 +19,20 @@
               <p class="text-c_sliver mt-5">・電子發票會在開獎次日自動兌獎，如中獎會於次月5號以紙本寄送【掛號信】至會員地址(使用手機載具將由財政部自動兌獎)。</p>
               <p class="text-c_sliver mt-5">・依統一發票使用辦法規定：統一發票一經開立，不得任意更改或改開公司發票。(<a class="text-c_dodger_blue"
                   href="https://www.einvoice.nat.gov.tw/">財政部電子發票流程說明</a>)</p>
+            </div>
+          </div>
+        </div>
+        <div v-if="currenType === 7" class="member-cloud-invoice-box mt-5">
+          <div class="text-c_sliver">
+            <div class="form-area">
+              <div class="input_wrapper mt-1 mb-10">
+                <input
+                  class="text-base py-2 px-4 mt-1 border border-solid border-c_black_haze text-c_mine_shaft rounded-[10px] w-full bg-c_black_haze"
+                  type="text" placeholder="請輸入統一編號" v-model="companyVat" maxlength="8">
+                <span v-show="!companyVat" class="error-msg text-c_red ">輸入格式錯誤，請重新輸入。</span>
+              </div>
+              <p class="text-c_sliver mt-5">如您需紙本發票，請至【訂單查詢】點選「發票資訊」直接下載列印PDF。</p>
+              <p class="text-c_sliver mt-5">依統一發票使用辦法規定：電子發票一經開立，不得任意更改或改開公司發票。(<a  class="text-c_dodger_blue" href="https://www.einvoice.nat.gov.tw/" target="_blank">財政部電子發票流程說明</a>)</p>
             </div>
           </div>
         </div>
@@ -46,7 +60,7 @@ const companyVat = ref("") //公司統一編號輸入框
 const companyName = ref("") //公司名稱
 const isVehicleValid = ref(true) // 驗證手機條碼載具是否正確
 
-const props = withDefaults(defineProps<{originVehicle: string, oirginCompanyVat: string, originCompanyName: string, currenType: number, isVehicleSetting: boolean, isCompanySetting:boolean, invoiceItems: Record<string, { typeName: string; typeInfo: string; type: number }>|null }>(), {
+const props = withDefaults(defineProps<{originVehicle: string, oirginCompanyVat: string, originCompanyName: string, currenType: number, isVehicleSetting: boolean, isCompanySetting:boolean, invoiceItems: { typeName: string; typeInfo: string; type: number }[] | null }>(), {
   originVehicle: "", //之前設定的手機條碼載具
   oirginCompanyVat: "", //之前設定的統一編號
   originCompanyName: "", //之前設定的公司名稱
@@ -74,6 +88,11 @@ const resetBtnBorderColor = computed(() => {
   }
   return "border-c_sliver";
 });
+
+//
+const dialogTitle = computed(()=> {
+  return invoiceItems.value?.find(v=>v.type === currenType.value)?.typeName || "修改發票資訊"
+})
 
 const emit = defineEmits(['getInvoiceList'])
 
