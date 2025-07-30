@@ -20,7 +20,9 @@
         </li>
       </ul>
     </div>
-    <invoiceDialog v-if="isDialogShow" :originVehicle="originVehicle" :oirginCompanyVat="oirginCompanyVat" :originCompanyName="originCompanyName" :isVehicleSetting="isVehicleSetting" :isCompanySetting="isCompanySetting" :currenType="currenType" :invoiceItems="invoiceItems" @getInvoiceList="getInvoiceList"></invoiceDialog>
+    <invoiceDialog v-if="isDialogShow" :originVehicle="originVehicle" :oirginCompanyVat="oirginCompanyVat"
+      :originCompanyName="originCompanyName" :isVehicleSetting="isVehicleSetting" :isCompanySetting="isCompanySetting"
+      :currenType="currenType" :invoiceItems="invoiceItems" @getInvoiceList="getInvoiceList"></invoiceDialog>
   </div>
 </template>
 
@@ -83,24 +85,24 @@ function getInvoiceList() {
         map[v.type] = v;
         return map;
       }, {});
-      console.log("invoiceMap",invoiceMap);
-      invoiceItems.value.forEach(v=>{
-        switch(v.type){
+      console.log("invoiceMap", invoiceMap);
+      invoiceItems.value.forEach(v => {
+        switch (v.type) {
           case 1:
             v.typeInfo = invoiceMap[1]?.name || "伊甸基金會"
             break
           case 5:
-            const vehicle = invoiceMap[5]?.vehicle 
-            v.typeInfo = vehicle?  "手機條碼載具 " + vehicle : "尚未設定"; 
-            originVehicle.value = vehicle || ""; 
-            isVehicleSetting.value = true
+            const vehicle = invoiceMap[5]?.vehicle
+            v.typeInfo = vehicle ? "手機條碼載具 " + vehicle : "尚未設定";
+            originVehicle.value = vehicle || "";
+            isVehicleSetting.value = vehicle ? true : false
             break
           case 7:
             const companyInfo = invoiceMap[7]
-            v.typeInfo = `${companyInfo.vatNumber} ${companyInfo.companyName}`;
-            oirginCompanyVat.value = companyInfo.vatNumber || "";
-            originCompanyName.value = companyInfo.companyName || "";
-            isCompanySetting.value = true
+            v.typeInfo = companyInfo ? `${companyInfo.vatNumber} ${companyInfo.companyName}` : "尚未設定";
+            oirginCompanyVat.value = companyInfo?.vatNumber || "";
+            originCompanyName.value = companyInfo?.companyName || "";
+            isCompanySetting.value = companyInfo ? true : false
             break
         }
       })
@@ -127,8 +129,8 @@ function getInvoiceList() {
     isApiOk.value = true;
   })
 }
-function resetAllState(){
-    
+function resetAllState() {
+
 }
 
 //開啟設定視窗
