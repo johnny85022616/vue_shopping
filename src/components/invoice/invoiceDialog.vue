@@ -29,7 +29,13 @@
                 <input
                   class="text-base py-2 px-4 mt-1 border border-solid border-c_black_haze text-c_mine_shaft rounded-[10px] w-full bg-c_black_haze"
                   type="text" placeholder="請輸入統一編號" v-model="companyVat" maxlength="8">
-                <span v-show="!companyVat" class="error-msg text-c_red ">輸入格式錯誤，請重新輸入。</span>
+                <span v-show="!companyValid.isCompanyVatValid" class="error-msg text-c_red ">輸入格式錯誤，請重新輸入。</span>
+              </div>
+              <div class="input_wrapper mt-1 mb-10">
+                <input
+                  class="text-base py-2 px-4 mt-1 border border-solid border-c_black_haze text-c_mine_shaft rounded-[10px] w-full bg-c_black_haze"
+                  type="text" placeholder="請輸入公司名稱" v-model="companyName">
+                <span v-show="!companyValid.isCompanyNameValid" class="error-msg text-c_red ">輸入格式錯誤，請重新輸入。</span>
               </div>
               <p class="text-c_sliver mt-5">如您需紙本發票，請至【訂單查詢】點選「發票資訊」直接下載列印PDF。</p>
               <p class="text-c_sliver mt-5">依統一發票使用辦法規定：電子發票一經開立，不得任意更改或改開公司發票。(<a class="text-c_dodger_blue"
@@ -61,6 +67,10 @@ const vehicle = ref("") // 手機條碼輸入框
 const companyVat = ref("") //公司統一編號輸入框
 const companyName = ref("") //公司名稱
 const isVehicleValid = ref(true) // 驗證手機條碼載具是否正確
+const companyValid = ref({
+  isCompanyNameValid: true,
+  isCompanyVatValid: true,
+})
 const resetBtnBorderColor = ref('border-c_red')
 const resetBtnTextColor = ref('text-c_red')
 
@@ -85,7 +95,7 @@ watch(currenType, (currenType) => {
   const isSetting = currenType === 5 ? isVehicleSetting.value : isCompanySetting.value
   resetBtnTextColor.value = isSetting ? "text-c_red" : "text-c_sliver"
   resetBtnBorderColor.value = isSetting ? 'border-c_red' : "border-c_sliver"
-},{immediate: true})
+}, { immediate: true })
 
 const emit = defineEmits(['getInvoiceList'])
 
@@ -122,6 +132,18 @@ async function updateInvoice(type: number) {
         vehicle: vehicle.value,
       }
       break;
+
+    case 7:
+      verifyCompanyEmpty()
+      if (!companyValid.value.isCompanyNameValid || !companyValid.value.isCompanyVatValid) {
+        return
+      }
+      payload = {
+        invType: "7",
+        isDefault: 'Y',
+        companyName: companyName.value,
+        vatNumber: companyVat.value,
+      }
   }
   api.invoice.updateInvoice(payload).then((isSuccess: boolean) => {
     if (!isSuccess) return
@@ -149,6 +171,14 @@ async function verifyVehicle() {
   }
   const v = "/" + vehicle.value.replace(/[^0-9A-Z.+-]/g, "") //去除英數字.+-以外字元(開頭/也會被去掉所以要加回來)
   isVehicleValid.value = await api.invoice.verifyVehicle(v)
+}
+
+//只判斷是否為空白，公司通一編號交由api驗證
+function verifyCompanyEmpty() {
+  companyValid.value.isCompanyNameValid = true
+  companyValid.value.isCompanyVatValid = true
+  if (!companyName.value) companyValid.value.isCompanyNameValid = false
+  if (!companyVat.value) companyValid.value.isCompanyVatValid = false
 }
 
 //自動轉大寫與過濾字元
