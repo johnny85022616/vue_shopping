@@ -59,7 +59,7 @@
 
 <script lang="ts" setup name="invoiceDialog">
 import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
-import { computed, inject, ref, toRefs, watch } from 'vue';
+import { computed, inject, reactive, ref, toRefs, watch } from 'vue';
 import api from '@/apis/api';
 import usePopup from '@/hooks/usePopup';
 
@@ -67,10 +67,11 @@ const vehicle = ref("") // 手機條碼輸入框
 const companyVat = ref("") //公司統一編號輸入框
 const companyName = ref("") //公司名稱
 const isVehicleValid = ref(true) // 驗證手機條碼載具是否正確
-const companyValid = ref({
+const companyValid = reactive({
   isCompanyNameValid: true,
   isCompanyVatValid: true,
 })
+const isSetting = ref(false)
 const resetBtnBorderColor = ref('border-c_red')
 const resetBtnTextColor = ref('text-c_red')
 
@@ -135,7 +136,7 @@ async function updateInvoice(type: number) {
 
     case 7:
       verifyCompanyEmpty()
-      if (!companyValid.value.isCompanyNameValid || !companyValid.value.isCompanyVatValid) {
+      if (!companyValid.isCompanyNameValid || !companyValid.isCompanyVatValid) {
         return
       }
       payload = {
@@ -175,10 +176,10 @@ async function verifyVehicle() {
 
 //只判斷是否為空白，公司通一編號交由api驗證
 function verifyCompanyEmpty() {
-  companyValid.value.isCompanyNameValid = true
-  companyValid.value.isCompanyVatValid = true
-  if (!companyName.value) companyValid.value.isCompanyNameValid = false
-  if (!companyVat.value) companyValid.value.isCompanyVatValid = false
+  companyValid.isCompanyNameValid = true
+  companyValid.isCompanyVatValid = true
+  if (!companyName.value) companyValid.isCompanyNameValid = false
+  if (!companyVat.value) companyValid.isCompanyVatValid = false
 }
 
 //自動轉大寫與過濾字元
