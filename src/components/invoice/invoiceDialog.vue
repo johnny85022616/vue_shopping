@@ -71,7 +71,7 @@ const companyValid = reactive({
   isCompanyNameValid: true,
   isCompanyVatValid: true,
 })
-const isSetting = ref(false)
+const isSet = ref(false)
 const resetBtnBorderColor = ref('border-c_red')
 const resetBtnTextColor = ref('text-c_red')
 
@@ -94,6 +94,7 @@ const dialogTitle = computed(() => {
 //設定reset Button樣式
 watch(currenType, (currenType) => {
   const isSetting = currenType === 5 ? isVehicleSetting.value : isCompanySetting.value
+  isSet.value= isSetting
   resetBtnTextColor.value = isSetting ? "text-c_red" : "text-c_sliver"
   resetBtnBorderColor.value = isSetting ? 'border-c_red' : "border-c_sliver"
 }, { immediate: true })
