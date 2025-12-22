@@ -1,23 +1,24 @@
 // product/v2/productinfo取得商品列表api回來的商品型態
 export interface product {
-  productId: number;
+  nPid: number;
   name: string;
-  images?: string;
-  marketPrice?: number;
-  price?: number;
-  promoPrice?: number;
-  isQuantity?: number;
-  isIntangible?: number;
-  isStore?: number;
-  campaignQty?: number;
-  auto_category_id_L: string;
-  auto_category_id_L_c: string;
-  auto_category_id_M: string;
-  auto_category_id_M_c: string;
-  auto_category_id: string;
-  auto_category_id_c: string;
+  images: string;
+  skuId: string;
+  memberPrice: number;
+  qtyava: boolean;
+  pageId: string;
+  supplierId: number;
+  isQuantity: number;
+  pid: string;
+  productId: string;
+  price: number;
+  image_url: string;
+  priceSuffix?: string;
+  bestDiscountPriceSuffix?: string
+  bestDiscountLabel?: string;
   [key: string]: any; //供之後vue添加屬性不報錯
 }
+
 export interface productsObj {
   [key: number]: product;
 }
