@@ -71,64 +71,36 @@ const api_product = {
         return null;
       });
   },
-  /** 
-   ** 取單商品資料
-      NORMAL(0, "主商品"), // 一般商品、主商品
-      COMBINE_PARENT(1, "組合母商品"), // 組合商品的母商品
-      COMBINE(2, "組合商品"), // 組合商品的子商品
-      INCREASE(3, "加購"),
-      GIFT(4, "贈品"),
-      PROMOTION(5, "促銷商品"), 
-      PREORDER(6, "預購商品"),
-      STORE_DISCOUNT(7, "限折"),
-      PROMOITON_GIFT(8, "贈品活動");
-   * */
-  async getProduct(
-    pid: number,
-    campaignFlagsType = 'claim',
-    checkComboQty = false /** 是否檢查為組合並檢查庫存 */
-  ): Promise<productInfo | null> {
-    const cacheName = 'product_info_' + pid + '_' + campaignFlagsType + '_' + checkComboQty;
-    const cache = tools.getCache(cacheName);
-    let pInfo = null;
+ // 取單商品資料
+  async getProductApi(pid:string, campaignFlagsType = 'claim') {
+    return await apiTools.fetchJson(`${cloudApiPath}product/v3/${pid}?campaign_attr=${campaignFlagsType}`);
+  },
+  async getProduct(pid:string, campaignFlagsType = 'claim', appendAddCartPayload = false /** 是否先組合加入購物車參數 */) {
+    // return await this.getProductApi(pid, campaignFlagsType)
+    //   .then(async (res) => {
+    //     let pInfo = res.resultData || null;
+    //     if (pInfo) {
+    //       // 格式化商品資料
+    //       pInfo = formatProductInfo(pInfo, 'product');
+          
 
-    if (cache) {
-      pInfo = cache;
-    } else {
-      pInfo = await fetch(`${cloudApiPath}product/v2/${pid}?campaign_attr=${campaignFlagsType}`)
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.resultData) tools.setCache(cacheName, res.resultData, 300);
-          return res.resultData || null;
-        })
-        .catch(() => {
-          return null;
-        });
-    }
+    //       // 取得組合商品的規格資料
+    //       if (pInfo.type === 'A') {
+    //         await module.exports.processComboProductGroupSpecs(pInfo);
+    //       }
 
-    if (!pInfo) return null;
+    //       if (appendAddCartPayload) {
+    //         // 另外處理加入購物車參數
+    //         pInfo = formatPreAddCartParams(pInfo);
+    //       }
+    //     }
 
-    if (checkComboQty) {
-      const isCombo = pInfo.tags.some((v: string) => v === 'COMBO');
-      if (isCombo) {
-        const comboInfo = await this.getComboProduct(pid);
-        if (comboInfo) {
-          if (comboInfo.saveComboPurchaseQty) {
-            pInfo.comboPurchaseMaxQty = comboInfo.saveComboPurchaseQty;
-          }
-          if (comboInfo.uiComboData) {
-            pInfo.uiComboData = comboInfo.uiComboData;
-          }
-        }
-      }
-    }
-
-    // API裡 promoPrice 都設 null, 後面給 campaignFlags 去計算
-    if (pInfo.price && pInfo.price.promoPrice) {
-      pInfo.price.promoPrice = null;
-    }
-
-    return pInfo;
+    //     return pInfo;
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //     return null;
+    //   });
   },
   // 取得商品的組合商品
   async getComboProduct(pid: number) {

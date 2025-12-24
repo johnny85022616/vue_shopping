@@ -41,7 +41,7 @@ const { siteData } = storeToRefs(bsiteStore);
 const props = defineProps(['param'])
 const { param } = props
 
-const pid = ref<number | null>(null)
+const pid = ref<string | null>(null)
 const isBsite = ref(false); //是否為B網
 const bsiteLogin = ref(false);
 const pInfo = ref<any | null>(null); // 商品資料
@@ -90,12 +90,12 @@ const getBrandPromotionData = async (url: string) => {
 const getProductDetail = async () => {
   if (!pid.value) return
   const data = await api.product.getProduct(pid.value)
-  if (data) {
-    parseProductDetail(data)
-  } else {
-    isApiRequested.value = true
-    alert("抱歉，該商品已下架，請試試其他商品");
-  }
+  // if (data) {
+  //   parseProductDetail(data)
+  // } else {
+  //   isApiRequested.value = true
+  //   alert("抱歉，該商品已下架，請試試其他商品");
+  // }
 }
 
 const parseProductDetail = async (productInfo: productInfo) => {
@@ -120,7 +120,7 @@ const parseProductDetail = async (productInfo: productInfo) => {
   }
   // 有組合商品才取得資料
   if (productInfo.tags.some((v) => v === "COMBO")) {
-    getComboData();
+    console.log(11111);
   }
 
   pInfo.value = productInfo;
@@ -140,18 +140,6 @@ const parseProductDetail = async (productInfo: productInfo) => {
   if (buyItemData && api.member.isLogin) {
     autoAddCart(buyItemData)
   }
-}
-
-//取得組合商品資料
-const getComboData = async () => {
-  if (!pid.value) return
-  api.product.getComboProduct(pid.value).then((res: any) => {
-    if (res.cartComboData.length > 0) {
-      comboInfo.value = res;
-    } else {
-      pInfo.value.isSoldOut = true;
-    }
-  });
 }
 
 //自動加入購物車
