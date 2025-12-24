@@ -8,42 +8,68 @@ import type { product, productsObj } from '@/types/product';
 import type { comboProduct } from '@/types/comboProduct';
 import type { productInfo } from '@/types/productInfo';
 import bestDiscountApi from '@/apis/bestDiscount_util';
-
+import apiTools from './tools.js';
 const { cloudApiPath, aiApiPath, fetchPostHeaders, frontCloudApiPath } = config;
 
 const api_product = {
   // 取商品集合資料
-  async getProducts(pids: (string | number)[], type = 1): Promise<productsObj | null> {
-    const resultData = await fetch(`${cloudApiPath}product/v2/productinfo`, {
-      ...fetchPostHeaders,
-      body: JSON.stringify({
+  async getProducts(pids: string[], type = 1, isPrimary=true) {
+    // 如果有設定 coverLogin 為 N 則不顯示價格
+    let coverLogin = 'N';
+
+    // 如果B網站有設定 coverLogin 則使用 B 網的設定
+    if (window?.siteData?.coverLogin) {
+      coverLogin = window.siteData.coverLogin;
+    }
+    // 如果專櫃有設定 coverLogin 則使用專櫃的設定
+    if (window?.fridayShopData?.coverLogin) {
+      coverLogin = window.fridayShopData.coverLogin;
+    }
+    // 是否隱藏價格
+    const isHidePrice = coverLogin === 'Y';
+    // 判斷傳入的 pids 決定回傳組商品資料主Key是 pageId 還是 nPid
+    const objKey = /^(Q|E)/i.test(pids[0]) ? 'pageId' : 'nPid';
+
+    return await apiTools.fetchJson(`${cloudApiPath}product/v3/productinfo`, 'POST', {
         param: {
           productIdList: pids,
           type,
+          isPrimary,
         },
-      }),
-    } as anyObject)
-      .then((res) => res.json())
+      })
       .then((res) => {
         const { resultCode, resultData } = res;
-        return resultCode === 0 && resultData.length > 0
-          ? resultData.map((v: product) => {
-              const img = v.images && v.images.replace('-uat2', '');
-              return Object.assign(v, { images: img, image_url: img });
-            })
-          : null;
+
+        if (resultCode === 0 && Array.isArray(resultData) && resultData.length > 0) {
+          return resultData.reduce((acc, item) => {
+            const pid = item[objKey];
+            if (isHidePrice) {
+              acc[pid] = { ...item, price: '****', pid: item.pageId, image_url: item.images || '' };
+            } else {
+              acc[pid] = {
+                ...item,
+                isQuantity: item.qtyava ? 1 : 0,
+                pid: item.pageId,
+                productId: item.pageId,
+                price: item.bestDiscountPrice || item.memberPrice,
+                priceSuffix: item.bestDiscountPrice && '(折扣後)',
+                memberPrice: item.memberPrice,
+                bestDiscountPrice: item.bestDiscountPrice,
+                bestDiscountPriceSuffix: item.bestDiscountPrice ? '最佳折後價' : undefined,
+                bestDiscountLabel: item.bestDiscountPrice ? '(最佳折後)' : undefined,
+                image_url: item.images || '',
+              };
+            }
+            return acc;
+          }, {});
+        } else {
+          return null;
+        }
       })
       .catch((err) => {
         console.error(err);
         return null;
       });
-    if (!resultData) {
-      return null;
-    }
-    return resultData.reduce((p: productsObj, v: product) => {
-      const idx = v.productId;
-      return Object.assign(p, { [idx]: v });
-    }, {});
   },
   /** 
    ** 取單商品資料
