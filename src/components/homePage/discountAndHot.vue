@@ -10,7 +10,7 @@
         <div class="h-100 flex items-center text-c_mine_shaft">
           <div class="box-border rounded-2xl text-sm text-center">
             <a class="flex items-center text-c_dodger_blue no-underline"
-              :href="'https://event.shopping.friday.tw/event/202111/20211122-lookmore/index.html?pids=' + promotionId"
+              href="/campaign/DO_241004094023093"
               target="_blank">看更多
               <i class="bg-player-icon bg-center bg-no-repeat bg-100% ml-1 inline-block w-4 h-4"></i>
             </a>
@@ -22,17 +22,10 @@
           v-for="(item, index) of prodData" :key="index" href="" @click="e => tools.goProductPage(e, item.pid)">
           <img class="aspect-square" :src="item.image_url" :alt="item.name">
           <div class="reactive w-full flex items-baseline mt-2">
-            <span v-if="item.discount"
-              class="absolute left-[-5px] top-[148px] p-[2px] text-c_white bg-c_fcoin text-sm text-center min-w-10 max-w-[50px] flex items-center justify-center rounded-lg ">
-              {{ formatDiscount(item.discount) }}<p class="text-xs">折</p>
-            </span>
             <p class="text-c_red text-xl text-left">${{ tools.priceFormat(item.price) }}</p>
           </div>
           <span class="text-sm line-clamp-2 mt-2">
             {{ item.name }}
-          </span>
-          <span class="homepage-promotion-timer__label">
-            {{ item.promotion }}
           </span>
         </a>
       </div>
@@ -46,29 +39,25 @@ import type { product } from '@/types/product';
   import tools from '@/util/tools';
   import { reactive, ref } from 'vue';
   const prodData = ref<product[] | null>([])
-  const promotionId = ref("B23001813")
-
-  const getPidsByPromotionId = async () => {
-    const campaignInfo = await api.campaign.getCampaignDetail(['DO_241004094023093']);
-    console.log(campaignInfo);
-      if (!(campaignInfo && campaignInfo[0].campaignRange?.v[9])) return [];
-
-      const pids = campaignInfo[0].campaignRange.v[9].split(',').splice(0, 6);
-      const products = await api.product.getProducts(pids);
-      console.log(prodData);
-      if(!products) return []
-      prodData.value = pids.map((v:string)=> products[Number(v)]);
-  }
-  const formatDiscount = (discount: number) => {
-    if (discount) {
-      return Math.floor(discount)
-    }
-    return 0
-  }
 
   const init = async () => {
-    const data = await getPidsByPromotionId()
-    Object.assign(prodData, data)
+    const campaignInfo = await fetchCampaignInfo();
+    console.log(1111,campaignInfo);
+      return parseCampaignProducts(campaignInfo);
   }
+
+   async function fetchCampaignInfo(): Promise<campaignInfo[]> {
+      return await api.campaign.getCampaignDetail(["DO_241004094023093"]);
+    }
+    async function parseCampaignProducts(campaignInfo: campaignInfo[]) {
+      if (!campaignInfo || !campaignInfo[0]) return [];
+      if (!campaignInfo[0].campaignRange?.v[9]) return [];
+
+      const pids = campaignInfo[0].campaignRange.v[9].split(",").splice(0, 6);
+      const products = await api.product.getProducts(pids);
+      console.log(products);
+      const etlData = pids.map((v:string) => products?.[v]);
+      prodData.value = etlData
+    }
   init()
 </script>
