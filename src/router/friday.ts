@@ -40,7 +40,7 @@ export const fridayRoutes = [
   },
   //單品頁連結
   {
-    path: '/product/:productId([\\d]+)',
+    path: '/product/:productId',
     name: 'product',
     component: Product,
     props: (route: any) => ({
