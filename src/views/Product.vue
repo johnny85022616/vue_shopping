@@ -90,12 +90,12 @@ const getBrandPromotionData = async (url: string) => {
 const getProductDetail = async () => {
   if (!pid.value) return
   const data = await api.product.getProduct(pid.value)
-  // if (data) {
-  //   parseProductDetail(data)
-  // } else {
-  //   isApiRequested.value = true
-  //   alert("抱歉，該商品已下架，請試試其他商品");
-  // }
+  if (data) {
+    parseProductDetail(data)
+  } else {
+    isApiRequested.value = true
+    alert("抱歉，該商品已下架，請試試其他商品");
+  }
 }
 
 const parseProductDetail = async (productInfo: productInfo) => {
@@ -177,6 +177,7 @@ const getSimilarKW = async (pid: string) => {
 }
 
 const init = async () => {
+  alert(param.productId)
   pid.value = param.productId;
   getSimilarKW(param.productId)
   if (siteData.value) {
@@ -196,8 +197,6 @@ const init = async () => {
 
   getProductDetail()
 };
-
-
 
 init();
 </script>

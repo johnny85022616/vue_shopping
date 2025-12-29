@@ -3,13 +3,13 @@ import tools from '@/util/tools';
 import product_ui from './product/product_ui';
 import api_campaign from './api_campaign';
 import { getCampaignUI } from './campaign/campaign_util';
-import type { anyObject } from '@/types/common';
 import type { product, productsObj } from '@/types/product';
 import type { comboProduct } from '@/types/comboProduct';
 import type { productInfo } from '@/types/productInfo';
 import bestDiscountApi from '@/apis/bestDiscount_util';
 import apiTools from './tools.js';
 const { cloudApiPath, aiApiPath, fetchPostHeaders, frontCloudApiPath } = config;
+import product_utils from './product/product_utils';
 
 const api_product = {
   // 取商品集合資料
@@ -76,31 +76,31 @@ const api_product = {
     return await apiTools.fetchJson(`${cloudApiPath}product/v3/${pid}?campaign_attr=${campaignFlagsType}`);
   },
   async getProduct(pid:string, campaignFlagsType = 'claim', appendAddCartPayload = false /** 是否先組合加入購物車參數 */) {
-    // return await this.getProductApi(pid, campaignFlagsType)
-    //   .then(async (res) => {
-    //     let pInfo = res.resultData || null;
-    //     if (pInfo) {
-    //       // 格式化商品資料
-    //       pInfo = formatProductInfo(pInfo, 'product');
+    return await this.getProductApi(pid, campaignFlagsType)
+      .then(async (res) => {
+        let pInfo = res.resultData || null;
+        if (pInfo) {
+          // 格式化商品資料
+          pInfo = product_utils.formatProductInfo(pInfo, 'product');
           
 
-    //       // 取得組合商品的規格資料
-    //       if (pInfo.type === 'A') {
-    //         await module.exports.processComboProductGroupSpecs(pInfo);
-    //       }
+          // 取得組合商品的規格資料
+          if (pInfo.type === 'A') {
+            // await module.exports.processComboProductGroupSpecs(pInfo);
+          }
 
-    //       if (appendAddCartPayload) {
-    //         // 另外處理加入購物車參數
-    //         pInfo = formatPreAddCartParams(pInfo);
-    //       }
-    //     }
+          if (appendAddCartPayload) {
+            // 另外處理加入購物車參數
+            // pInfo = formatPreAddCartParams(pInfo);
+          }
+        }
 
-    //     return pInfo;
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     return null;
-    //   });
+        return pInfo;
+      })
+      .catch((err) => {
+        console.error(err);
+        return null;
+      });
   },
   // 取得商品的組合商品
   async getComboProduct(pid: number) {
@@ -188,18 +188,10 @@ const api_product = {
       ALD: 'AED',
     };
 
-    if (campaignFlags) {
+    if (campaignFlags && Array.isArray(campaignFlags) && campaignFlags.length > 0) {
       if (/print=1/i.test(location.search)) console.log(campaignFlags);
-      const campaignIds: string[] = [];
-      campaignFlags.v.forEach((v) => {
-        if (v)
-          v.forEach((y) => {
-            // 過濾需要算折扣的資料即可 , campaign_utils.js 要做對應處理
-            campaignIds.push(y);
-          });
-      });
       // 取得活動並比對自己有沒有已領取
-      let data = await this.getCampiagn(campaignIds, myOwnCampaignIds);
+      let data = await this.getCampiagn(campaignFlags, myOwnCampaignIds);
       const campaignInfo = data?.filter(
         (v) => /^(PD|CD|AC|FV|BC|PC|SC|OC|ED|AED|LD|ALD|ADD|AWD)_/i.test(v.campaignId) || v.campaignRange?.v2?.[0]
       );

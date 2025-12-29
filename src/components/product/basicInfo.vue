@@ -12,9 +12,9 @@
       <!-- 商品代碼、商品廠商連結 -->
       <div class="infoLink flex items-center justify-between mb-5">
         <div class="product-payment__sku w-4/5 inline text-nowrap text-ellipsis text-c_sliver">
-          <label class="mr-1">商品代碼</label>
+          <label class="mr-1">賣場編號</label>
           <span>{{ data.pid }} <i class="inline-block bg-copy-icon w-5 h-5 bg-no-repeat bg-100% bg-center"
-              @click="copyNumber(data.pid)"></i></span>
+              @click="copyNumber(Number(data.pageId))"></i></span>
         </div>
         <div v-if="isBsiteBrand" class="product-payment__brand mb-1">
           <a class="text-c_blue_ribbon" v-if="bsiteData" :href="brandUrl">看<strong>{{ bsiteData.siteName
@@ -24,23 +24,36 @@
       <!-- 商品價格 -->
       <div class="price">
         <!-- 有優惠價格 -->
-        <div v-if="data.payMethodList[0] === 'CASH' && data.price.promoPrice" class="infoPrice flex items-baseline justify-start">
+         <!-- groupProduct顯示價格區間 -->
+        <template v-if="data.priceRange && data.priceRange.length > 1">
+          <div class="priceRangeBox">
+            <span v-if="data.memberPrice !== null" class="product-payment__currency ml-2 text-c_pomegranate text-sm">$</span>
+            <span v-if="data.memberPrice !== null" class="product-payment__red-price text-3xl text-c_pomegranate">{{
+            tools.priceFormat(data.priceRange[0])
+          }}</span>
+            <span class="product-payment__red-price ml-2 text-c_pomegranate text-sm"> ~ </span>
+            <span v-if="data.memberPrice !== null" class="product-payment__currency ml-2 text-c_pomegranate text-sm">$</span>
+            <span v-if="data.memberPrice !== null" class="product-payment__red-price text-3xl text-c_pomegranate">{{
+            tools.priceFormat(data.priceRange[1])
+          }}</span>
+            <span v-if="data.hasBestDiscountVariant" class="product-payment__list-price ml-2 text-c_pomegranate text-sm">(最佳折後價)</span>
+          </div>
+        </template>
+        <div v-else-if="data.payMethodList[0] === 'CASH' && data.bestDiscountPrice" class="infoPrice flex items-baseline justify-start">
           <div class="flex items-baseline mr-2">
-            <span class="product-payment__list-price block text-c_sliver min-w-10 text-base">網路價</span>
-            <span class="product-payment__list-price text-c_sliver min-w-10 text-base line-through">${{
-              tools.priceFormat(data.price.memberPrice)
+            <span class="product-payment__list-price block text-c_sliver min-w-10 text-sm">網路價</span>
+            <span class="product-payment__currency ml-2 text-c_sliver text-sm">$</span>
+            <span class="product-payment__red-price text-c_sliver text-sm">{{
+              tools.priceFormat(data.memberPrice)
             }}</span>
+            <span class="product-payment__list-price block ml-2 text-c_pomegranate text-base mr-2">最佳折後價</span>
             <span class="product-payment__currency ml-2 text-c_pomegranate text-sm">$</span>
             <span class="product-payment__red-price text-2xl text-c_pomegranate">{{
-              tools.priceFormat(data.price.promoPrice)
+              tools.priceFormat(data.bestDiscountPrice)
             }}</span>
           </div>
-          <div v-if="bestDiscount" class="flex items-baseline mr-2">
-            <span>(最優再折$<span class="product-payment__more-discount-price text-sm text-c_pomegranate">{{
-              tools.priceFormat(bestDiscount) }}</span>)</span>
-          </div>
         </div>
-        <div v-else class="infoPrice flex items-baseline justify-start">
+        <!-- <div v-else class="infoPrice flex items-baseline justify-start">
           <div v-if="!bestDiscount" class="flex items-baseline mr-2">
             <span v-if="data.price.marketPrice"
               class="product-payment__list-price block text-c_sliver min-w-10 text-base">市價</span>
@@ -65,7 +78,7 @@
             <span>(最優再折$<span class="product-payment__more-discount-price text-sm text-c_pomegranate">{{
               tools.priceFormat(bestDiscount) }}</span>)</span>
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="flex">
         <span class="storeIcon bg-c_olivine h-5 text-c_white rounded-md px-2 mt-2 mr-2" v-if="isStoreIconShow">超商取貨</span>
@@ -129,17 +142,17 @@ const isShowLookBrand = async () => {
   }
 }
 //取得供應商最佳解 + 商品本身最佳解加總
-const getBestDiscount = async () => {
-  console.log(window.fridayData);
-  const supplierBestDiscount =
-    await api.product.querySupplierBestDiscount(data.value.pid);
-  const bd = data.value?.price?.bestDiscountO || 0;
-  bestDiscount.value = bd + supplierBestDiscount;
-}
+// const getBestDiscount = async () => {
+//   console.log(window.fridayData);
+//   const supplierBestDiscount =
+//     await api.product.querySupplierBestDiscount(data.value.pid);
+//   const bd = data.value?.price?.bestDiscountO || 0;
+//   bestDiscount.value = bd + supplierBestDiscount;
+// }
 
 const init = async () => {
   await isShowLookBrand();
-  getBestDiscount()
+  // getBestDiscount()
 }
 init()
 
