@@ -56,10 +56,10 @@
   </div>
 </template>
 <script lang="ts" setup name="modifyMemberInfo">
-import { Gender, type Region } from '@/hooks/form/useMemberForm';
+import { Gender, type Region } from '@/composables/form/useMemberForm';
 import navigation from '../components/common/navigation.vue';
 import { useRouter } from 'vue-router';
-import useMemberForm from '@/hooks/form/useMemberForm';
+import useMemberForm from '@/composables/form/useMemberForm';
 import agreeBox from '@/components/modifyMemberInfo/agreeBox.vue';
 import { reactive, ref, toRefs } from 'vue';
 import api from '@/apis/api';

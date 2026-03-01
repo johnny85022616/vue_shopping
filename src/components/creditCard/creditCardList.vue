@@ -31,7 +31,7 @@
 </template>
 
 <script lang="ts" setup name="consigneeList">;
-import type { creditCardConposable } from '@/hooks/useCreditCard';
+import type { creditCardConposable } from '@/composables/useCreditCard';
 import type { creditCard } from '@/types/creditCard';
 import { inject, toRefs } from 'vue';
 

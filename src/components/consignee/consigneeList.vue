@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts" setup name="consigneeList">
-import type { consigneeConposable } from '@/hooks/useConsignee';
+import type { consigneeConposable } from '@/composables/useConsignee';
 import type { consignee } from '@/types/consignee';
 import { inject, toRefs } from 'vue';
 

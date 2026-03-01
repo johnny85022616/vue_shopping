@@ -14,7 +14,7 @@ import type { catg, group } from "@/types/category";
 import type { anyObject } from "@/types/common";
 import type { mixProduct } from "@/types/mixProducts";
 import { nextTick, onUpdated, ref, toRefs, watch } from "vue";
-import useAtBottom from "@/hooks/useAtBottom";
+import useAtBottom from "@/composables/useAtBottom";
 import tools from "@/util/tools";
 import api from "@/apis/api";
 import { useBsiteStore } from "@/stores/bsiteStore";

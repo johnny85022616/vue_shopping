@@ -16,7 +16,7 @@ import aiProductItem from '@/components/common/aiProductItem.vue';
 import tools from '@/util/tools';
 import api from "@/apis/api";
 import { nextTick, reactive, ref, toRef, toRefs, watch } from "vue";
-import useAtBottom from '@/hooks/useAtBottom';
+import useAtBottom from '@/composables/useAtBottom';
 import { useBsiteStore } from "@/stores/bsiteStore";
 import { storeToRefs } from "pinia";
 import type { mixProduct } from '@/types/mixProducts';

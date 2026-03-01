@@ -61,7 +61,7 @@
 import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
 import { computed, inject, reactive, ref, toRefs, watch } from 'vue';
 import api from '@/apis/api';
-import usePopup from '@/hooks/usePopup';
+import usePopup from '@/composables/usePopup';
 
 const vehicle = ref("") // 手機條碼輸入框
 const companyVat = ref("") //公司統一編號輸入框

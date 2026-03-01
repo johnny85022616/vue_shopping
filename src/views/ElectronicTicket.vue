@@ -44,7 +44,7 @@ import api from '@/apis/api';
 import navigation from '@/components/common/navigation.vue';
 import type { electronicTicket } from '@/types/electronicTicket';
 import { nextTick, ref, toRefs, watch } from 'vue';
-import useAtBottom from '@/hooks/useAtBottom';
+import useAtBottom from '@/composables/useAtBottom';
 import { RouterLink, useRoute } from "vue-router";
 
 const ticketList = ref<electronicTicket[] | null>(null) //電子票券資料

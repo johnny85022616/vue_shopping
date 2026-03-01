@@ -21,7 +21,7 @@
 import navigation from '@/components/common/navigation.vue';
 import consigneeList from '@/components/consignee/consigneeList.vue';
 import createDialog from '@/components/consignee/createDialog.vue';
-import useConsignee from '@/hooks/useConsignee';
+import useConsignee from '@/composables/useConsignee';
 import { provide, ref, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 

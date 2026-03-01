@@ -2,7 +2,7 @@ import { ref, type Ref } from 'vue';
 import api from '@/apis/api';
 import type { Addr, consignee, createConsigneePayload } from '@/types/consignee';
 import type { OrNull } from '@/types/util';
-import usePopup from '@/hooks/usePopup';
+import usePopup from '@/composables/usePopup';
 
 export interface consigneeConposable {
   isInitDataLoaded: Ref<boolean>;

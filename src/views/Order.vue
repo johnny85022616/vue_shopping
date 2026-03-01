@@ -230,7 +230,7 @@ import qaDialog from '@/components/order/qaDialog.vue';
 import tools from '@/util/tools';
 import type { order, orderProduct } from '@/types/order';
 import api from '@/apis/api';
-import useAtBottom from '@/hooks/useAtBottom';
+import useAtBottom from '@/composables/useAtBottom';
 import { useBsiteStore } from '@/stores/bsiteStore';
 import { computed, nextTick, provide, ref, watch } from 'vue';
 import { storeToRefs } from 'pinia';

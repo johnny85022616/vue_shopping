@@ -23,7 +23,7 @@
 import navigation from '@/components/common/navigation.vue';
 import creditCardList from '@/components/creditCard/creditCardList.vue';
 import createDialog from '@/components/creditCard/createDialog.vue';
-import useCreditCard from '@/hooks/useCreditCard';
+import useCreditCard from '@/composables/useCreditCard';
 import { provide, ref, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter()

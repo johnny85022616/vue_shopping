@@ -40,10 +40,10 @@
 </template>
 <script lang="ts" setup name="createDialog">
 import fullscreenDialog from '@/components/common/fullscreenDialog.vue';
-import useMemberForm from '@/hooks/form/useMemberForm';
+import useMemberForm from '@/composables/form/useMemberForm';
 import { inject, ref, toRefs, watch } from 'vue';
-import type { creditCardConposable } from '@/hooks/useCreditCard';
-import useCreditCardForm from '@/hooks/form/useCreditCardForm';
+import type { creditCardConposable } from '@/composables/useCreditCard';
+import useCreditCardForm from '@/composables/form/useCreditCardForm';
 
 const { memberForm, formCheck: checkMemeber } = useMemberForm();
 const { creditCardForm, checkCreditCard } = useCreditCardForm();
