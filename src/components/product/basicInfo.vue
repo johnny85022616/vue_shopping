@@ -53,10 +53,10 @@
             }}</span>
           </div>
         </div>
-        <!-- <div v-else class="infoPrice flex items-baseline justify-start">
+        <div v-else class="infoPrice flex items-baseline justify-start">
           <div v-if="!bestDiscount" class="flex items-baseline mr-2">
             <span v-if="data.price.marketPrice"
-              class="product-payment__list-price block text-c_sliver min-w-10 text-base">市價</span>
+              class="product-payment__list-price block text-c_sliver min-w-10 text-base">網路價</span>
             <span v-if="data.price.marketPrice"
               class="product-payment__list-price block text-c_sliver min-w-10 text-base line-through">${{
                 tools.priceFormat(data.price.marketPrice)
@@ -78,7 +78,7 @@
             <span>(最優再折$<span class="product-payment__more-discount-price text-sm text-c_pomegranate">{{
               tools.priceFormat(bestDiscount) }}</span>)</span>
           </div>
-        </div> -->
+        </div>
       </div>
       <div class="flex">
         <span class="storeIcon bg-c_olivine h-5 text-c_white rounded-md px-2 mt-2 mr-2" v-if="isStoreIconShow">超商取貨</span>
@@ -142,17 +142,17 @@ const isShowLookBrand = async () => {
   }
 }
 //取得供應商最佳解 + 商品本身最佳解加總
-// const getBestDiscount = async () => {
-//   console.log(window.fridayData);
-//   const supplierBestDiscount =
-//     await api.product.querySupplierBestDiscount(data.value.pid);
-//   const bd = data.value?.price?.bestDiscountO || 0;
-//   bestDiscount.value = bd + supplierBestDiscount;
-// }
+const getBestDiscount = async () => {
+  // console.log(window.fridayData);
+  // const supplierBestDiscount =
+  //   await api.product.querySupplierBestDiscount(data.value.pid);
+  // const bd = data.value?.price?.bestDiscountO || 0;
+  // bestDiscount.value = bd + supplierBestDiscount;
+}
 
 const init = async () => {
   await isShowLookBrand();
-  // getBestDiscount()
+  getBestDiscount()
 }
 init()
 
