@@ -141,18 +141,10 @@ const isShowLookBrand = async () => {
     }
   }
 }
-//取得供應商最佳解 + 商品本身最佳解加總
-const getBestDiscount = async () => {
-  // console.log(window.fridayData);
-  // const supplierBestDiscount =
-  //   await api.product.querySupplierBestDiscount(data.value.pid);
-  // const bd = data.value?.price?.bestDiscountO || 0;
-  // bestDiscount.value = bd + supplierBestDiscount;
-}
+
 
 const init = async () => {
   await isShowLookBrand();
-  getBestDiscount()
 }
 init()
 
