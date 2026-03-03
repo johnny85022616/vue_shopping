@@ -16,6 +16,17 @@ For any UI/UX-related request, frontend styling, or component development, stric
 4. **Stack Synthesis**: Apply stack-specific guidance (`--stack vue` for this project).
 5. **Implementation**: Implement only after synthesizing results from both `gemini.md` (logic/structure) and `SKILL.md` (design/UX).
 
+## Enforcement (Must Follow)
+- For any UI/UX task, **do not start implementation** before Step 2 (`--design-system`) and Step 4 (`--stack vue`) are executed.
+- If a required command fails, times out, or is skipped, stop implementation and explicitly report the blocker first.
+- The user should **not** need to repeatedly remind to use `ui-ux-pro-max`; this is default behavior for UI work in this repo.
+
+## Proof of Use (Always Report for UI Tasks)
+In every UI-related response, include a short `Skill Usage Proof` section with:
+1. Executed command(s) (at least `--design-system` and `--stack vue`)
+2. Key recommendations applied
+3. Concrete mapping to changed files/components
+
 ## Quality Guardrails (Must Apply)
 - **Icons**: Use SVG icon sets (e.g., Lucide, Heroicons); **strictly no emojis** as UI icons.
 - **Feedback**: Ensure interactive elements provide clear hover/focus feedback (transitions 150-300ms).
