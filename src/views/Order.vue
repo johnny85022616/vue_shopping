@@ -5,6 +5,20 @@
       <p class="text-c_red text-xs">提醒您:本公司不會主動打電話告知您任何有關付款修改的問題，若接到可疑電話請拒絕回應。</p>
     </div>
     <div class="order__list bg-c_background mt-5">
+      <!-- <div class="bg-c_white m-2 p-3 rounded-[10px]">
+        <dateTimePicker
+          ref="dateTimePickerRef"
+          v-model:startTime="startTime"
+          v-model:endTime="endTime"
+        />
+        <button
+          class="mt-3 px-4 py-2 bg-c_dodger_blue text-c_white rounded cursor-pointer transition-colors duration-200 hover:opacity-90"
+          type="button"
+          @click="filterOrderByDateTime"
+        >
+          過濾
+        </button>
+      </div> -->
       <template v-if="orderData && orderData.length > 0">
         <ul class="bigOrder">
           <li class="bigOrderWrap bg-c_white my-4 mx-2 rounded-[10px] shadow-[0_0_8px_0_rgba(0,0,0,0.3)] first-of-type:mt-0"
@@ -224,6 +238,7 @@
 
 <script lang="ts" setup name="order">
 import navigation from '@/components/common/navigation.vue';
+// import dateTimePicker, { type DateTimeRangeState } from '@/components/common/dateTimePicker.vue';
 import statusBar from '@/components/order/statusBar.vue';
 import shippingDetailDialog from '@/components/order/shippingDetailDialog.vue';
 import qaDialog from '@/components/order/qaDialog.vue';
@@ -251,6 +266,9 @@ const choseMemberId = ref<OrNull<string>>(null);
 const isQaRecordDialogOpen = ref(false); //是否開啟問答紀錄popup
 const isShippingDetailDialogOpen = ref(false); //是否開啟貨態明細
 const shippingDetailInfo = ref<OrNull<orderProduct>>(null) //貨態明細所需商品資料(productData)
+// const startTime = ref<Date | null>(null);
+// const endTime = ref<Date | null>(null);
+// const dateTimePickerRef = ref<{ getDateTimeState: () => DateTimeRangeState } | null>(null);
 
 const bsiteStore = useBsiteStore()
 const { siteData } = storeToRefs(bsiteStore)
@@ -341,6 +359,15 @@ async function refreshOrder() {
   await getOrderData();
   openFirstOrder(); //預設開啟第一筆product區塊
 }
+
+// function filterOrderByDateTime() {
+//   const pickerState = dateTimePickerRef.value?.getDateTimeState() || {
+//     startTime: startTime.value,
+//     endTime: endTime.value,
+//   };
+//   startTime.value = pickerState.startTime;
+//   endTime.value = pickerState.endTime;
+// }
 
 //預設開啟第一張(若原本有開啟過則不需再開啟)
 function openFirstOrder() {
@@ -444,17 +471,19 @@ async function getProductImgData(index: number) {
   const order = orderData.value?.[index];
   if (order && !order.isGetImgAlready) {
     for (let mainPrd of order.productData) {
-      const prdInfo = await api.product.getProducts([mainPrd.productId]);
+      const mainPrdId = String(mainPrd.productId);
+      const prdInfo = await api.product.getProducts([mainPrdId]);
       mainPrd.proofUrl = await api.order.getOrderProductProof(order.dealId, mainPrd.productId, mainPrd.sizeId);
-      if (prdInfo && prdInfo[mainPrd.productId]) {
-        mainPrd.images = prdInfo[mainPrd.productId].images || "";
-        mainPrd.supplierId = prdInfo[mainPrd.productId].supplierId;
+      if (prdInfo && prdInfo[mainPrdId]) {
+        mainPrd.images = prdInfo[mainPrdId].images || "";
+        mainPrd.supplierId = prdInfo[mainPrdId].supplierId;
       }
       if (mainPrd.combodata) {
         for (let comboPrd of mainPrd.combodata) {
-          const comboPrdInfo = await api.product.getProducts([comboPrd.productId]);
-          if (comboPrdInfo && comboPrdInfo[comboPrd.productId]) {
-            comboPrd.images = comboPrdInfo[comboPrd.productId].images;
+          const comboPrdId = String(comboPrd.productId);
+          const comboPrdInfo = await api.product.getProducts([comboPrdId]);
+          if (comboPrdInfo && comboPrdInfo[comboPrdId]) {
+            comboPrd.images = comboPrdInfo[comboPrdId].images;
           }
         }
       }
