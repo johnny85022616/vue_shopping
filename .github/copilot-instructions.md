@@ -1,40 +1,28 @@
-# Copilot Instructions
+# Project Context: Vue 3 + TS + Tailwind 專案規範
 
-## Core Standards (Priority 1)
-For all tasks in this repository, first refer to the project's general guidelines, coding style, and architecture defined in:
-- `gemini.md`
+## 1. Core Tech Stack (核心技術棧)
+- **Framework:** Vue 3 (必須使用 `<script setup lang="ts">`)
+- **Language:** TypeScript (嚴格模式，禁止使用 any)
+- **Styling:** Tailwind CSS (優先使用 Utility Classes，減少使用 @apply)
+- **State Management:** Pinia (Store 存放於 `src/stores/`)
 
-## UI/UX Specialization (Priority 2)
-For any UI/UX-related request, frontend styling, or component development, strictly follow the specialized rules and workflow defined in:
-- `.gemini/skills/ui-ux-pro-max/SKILL.md`
+## 2. Coding Standards (代碼規範)
 
-## Required Workflow
-1. **Context Analysis**: Analyze requirement context (product type, style keywords, industry, stack) based on `gemini.md`.
-2. **Design-System Generation (Required)**: 
-   - Run: `python3 .gemini/skills/ui-ux-pro-max/scripts/search.py "<query>" --design-system -p "<Project Name>"`
-3. **Domain Research**: Add domain searches when needed (`style`, `ux`, `typography`, `color`, `landing`, `chart`).
-4. **Stack Synthesis**: Apply stack-specific guidance (`--stack vue` for this project).
-5. **Implementation**: Implement only after synthesizing results from both `gemini.md` (logic/structure) and `SKILL.md` (design/UX).
+### Component Structure (組件結構)
+- 檔案命名：使用 **PascalCase** (例如：`UserCard.vue`)。
+- 排序邏輯：`<script setup>` > `<template>` > `<style>`。
+- 通訊方式：統一使用 `defineProps` 與 `defineEmits`。
 
-## Enforcement (Must Follow)
-- For any UI/UX task, **do not start implementation** before Step 2 (`--design-system`) and Step 4 (`--stack vue`) are executed.
-- If a required command fails, times out, or is skipped, stop implementation and explicitly report the blocker first.
-- The user should **not** need to repeatedly remind to use `ui-ux-pro-max`; this is default behavior for UI work in this repo.
 
-## Proof of Use (Always Report for UI Tasks)
-In every UI-related response, include a short `Skill Usage Proof` section with:
-1. Executed command(s) (at least `--design-system` and `--stack vue`)
-2. Key recommendations applied
-3. Concrete mapping to changed files/components
 
-## Quality Guardrails (Must Apply)
-- **Icons**: Use SVG icon sets (e.g., Lucide, Heroicons); **strictly no emojis** as UI icons.
-- **Feedback**: Ensure interactive elements provide clear hover/focus feedback (transitions 150-300ms).
-- **Accessibility & Contrast**: Maintain WCAG 2.1 contrast ratios; ensure border visibility and keyboard focus states.
-- **Responsive**: Preserve responsive behavior (375px to 1440px) and prevent Layout Shift (CLS).
-- **Project Alignment**: Ensure code patterns match the examples found in `gemini.md`.
+### TypeScript Requirements (型別要求)
+- **Interface 優先**：優先使用 `interface` 而非 `type` 定義 Props。
+- **回傳值型別**：所有的 Function 與 API 請求必須明確定義回傳型別。
 
-## Scope Discipline
-- Keep changes minimal and aligned with existing design system and Tailwind tokens.
-- Do not introduce extra pages/components/features unless explicitly requested.
-- If requirements are ambiguous, prioritize the "Simplicity" principle in `gemini.md`.
+### Tailwind CSS (樣式規範)
+- 響應式設計：優先使用 `sm:`, `md:`, `lg:` 等前綴。
+- 動態類名：複雜的類名組合請使用 `clsx` 或 `cva` 模式。
+
+## 3. Directory Mapping (目錄導航)
+- `src/components/`: 可複用的 UI 元件。
+- `src/composables/`: 存放邏輯封裝 (Hook)，命名以 `use` 開頭。
