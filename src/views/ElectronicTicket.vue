@@ -57,6 +57,7 @@ const isLookAllBtnShow = ref(false) //看所有票券Btn
 const route = useRoute()
 
 async function init(){
+  console.log(11111);
   await getTicket();
   //如果第一次找不到資料顯示無資料
     if (!ticketList.value) isNoData.value = true;
